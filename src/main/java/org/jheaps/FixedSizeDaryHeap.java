@@ -21,7 +21,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * A d-ary heap with a maximum number of elements.
+ * An implicit d-ary heap with a maximum number of elements.
  * 
  * An implicit d-ary heap implementation of the {@link Heap} interface. The heap
  * is sorted according to the {@linkplain Comparable natural ordering} of its
@@ -30,10 +30,11 @@ import java.util.Comparator;
  *
  * <p>
  * Implicit implementations of a heap use an array in order to store the
- * elements. This implementation automatically maintains the size of the array
- * much like a {@link java.util.Vector} does, providing amortized O(log(n)) time
- * cost for the {@code insert} and {@code deleteMin} operations. Operation
- * {@code findMin}, is a worst-case O(1) operation.
+ * elements. This implementation uses a fixes size array, providing providing
+ * worst-case O(log(n)) time cost for the {@code insert} and {@code deleteMin}
+ * operations. Operation {@code findMin}, is a worst-case O(1) operation.
+ * {@link DaryHeap} provides a more dynamic implementation in cost of amortized
+ * complexity bounds.
  *
  * <p>
  * Note that the ordering maintained by a d-ary heap, like any heap, and whether

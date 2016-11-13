@@ -87,7 +87,7 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 	/**
 	 * Size of the pairing heap
 	 */
-	private long size = 0;
+	private long size;
 
 	/**
 	 * Constructs a new, empty pairing heap, using the natural ordering of its
@@ -102,8 +102,7 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 	 */
 	@ConstantTime
 	public PairingHeap() {
-		this.root = null;
-		this.comparator = null;
+		this(null);
 	}
 
 	/**
@@ -124,8 +123,12 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 	public PairingHeap(Comparator<? super K> comparator) {
 		this.root = null;
 		this.comparator = comparator;
+		this.size = 0;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@LogarithmicTime(amortized = true)
 	public AddressableHeap.Handle<K> insert(K key) {
@@ -142,6 +145,9 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 		return n;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@ConstantTime(amortized = true)
 	public AddressableHeap.Handle<K> findMin() {
@@ -151,6 +157,9 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 		return root;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@LogarithmicTime(amortized = true)
 	public void deleteMin() {
@@ -166,25 +175,34 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 		size--;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@ConstantTime
 	public boolean isEmpty() {
 		return size == 0;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@ConstantTime
 	public long size() {
 		return size;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Comparator<? super K> comparator() {
 		return comparator;
 	}
 
 	/**
-	 * Clear the contents of the heap.
+	 * {@inheritDoc}
 	 */
 	@Override
 	@ConstantTime(amortized = true)
@@ -193,6 +211,9 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 		size = 0;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@LogarithmicTime(amortized = true)
 	public void meld(MergeableHeap<K> other) {
@@ -235,11 +256,17 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 			o_c = y_s = o_s = null;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public K getKey() {
 			return key;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		@SuppressWarnings("unchecked")
 		@LogarithmicTime(amortized = true)
@@ -283,6 +310,9 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 			}
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		@LogarithmicTime(amortized = true)
 		public void delete() {

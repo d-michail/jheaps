@@ -120,7 +120,10 @@ public interface AddressableHeap<K> {
 	long size();
 
 	/**
-	 * Clear all the elements of this heap.
+	 * Clear all the elements of this heap. After calling this method all
+	 * handles are invalidated and the behavior of methods
+	 * {@link Handle#decreaseKey(Object)} and {@link Handle#delete()} is
+	 * undefined.
 	 */
 	void clear();
 

@@ -21,7 +21,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * A binary heap with a maximum number of elements.
+ * An implicit binary heap with a maximum number of elements.
  *
  * An implicit binary heap implementation of the {@link Heap} interface. The
  * heap is sorted according to the {@linkplain Comparable natural ordering} of

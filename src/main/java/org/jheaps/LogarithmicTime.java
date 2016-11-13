@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 
 /**
  * Marker interface used by implementations to indicate that an operation takes
- * log(n) time where n is the size of the input. The primary purpose of this
+ * O(log(n)) time where n is the size of the input. The primary purpose of this
  * interface is to allow generic algorithms to alter their behavior to provide
  * good performance.
  */

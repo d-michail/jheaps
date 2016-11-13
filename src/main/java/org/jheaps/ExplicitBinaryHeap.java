@@ -304,6 +304,9 @@ public class ExplicitBinaryHeap<K> implements AddressableHeap<K>, Serializable {
 		@LogarithmicTime
 		@SuppressWarnings("unchecked")
 		public void decreaseKey(K newKey) {
+			if (this != root && y_s == null) {
+				throw new IllegalArgumentException("Invalid handle!");
+			}
 			int c;
 			if (comparator == null) {
 				c = ((Comparable<? super K>) newKey).compareTo(key);
@@ -318,11 +321,6 @@ public class ExplicitBinaryHeap<K> implements AddressableHeap<K>, Serializable {
 			if (c == 0 || root == this) {
 				return;
 			}
-
-			if (y_s == null) {
-				throw new IllegalArgumentException("Invalid handle!");
-			}
-
 			fixup(this);
 		}
 
