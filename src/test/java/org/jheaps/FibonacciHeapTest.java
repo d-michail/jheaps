@@ -25,13 +25,13 @@ import java.util.Comparator;
 
 import org.junit.Test;
 
-public class PairingHeapTest extends AbstractAddressableHeapTest {
+public class FibonacciHeapTest extends AbstractAddressableHeapTest {
 
 	@Test
 	public void testMeld() throws IOException, ClassNotFoundException {
 
-		PairingHeap<Integer> h1 = new PairingHeap<Integer>();
-		PairingHeap<Integer> h2 = new PairingHeap<Integer>();
+		FibonacciHeap<Integer> h1 = new FibonacciHeap<Integer>();
+		FibonacciHeap<Integer> h2 = new FibonacciHeap<Integer>();
 
 		for (int i = 0; i < SIZE; i++) {
 			if (i % 2 == 0) {
@@ -51,14 +51,13 @@ public class PairingHeapTest extends AbstractAddressableHeapTest {
 			h1.deleteMin();
 		}
 		assertTrue(h1.isEmpty());
-
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMeldWrong() throws IOException, ClassNotFoundException {
 
-		PairingHeap<Integer> h1 = new PairingHeap<Integer>();
-		PairingHeap<Integer> h2 = new PairingHeap<Integer>(comparator);
+		FibonacciHeap<Integer> h1 = new FibonacciHeap<Integer>();
+		FibonacciHeap<Integer> h2 = new FibonacciHeap<Integer>(comparator);
 
 		for (int i = 0; i < SIZE; i++) {
 			if (i % 2 == 0) {
@@ -83,11 +82,11 @@ public class PairingHeapTest extends AbstractAddressableHeapTest {
 
 	@Override
 	protected AddressableHeap<Integer> createHeap() {
-		return new PairingHeap<Integer>();
+		return new FibonacciHeap<Integer>();
 	}
 
 	@Override
 	protected AddressableHeap<Integer> createHeap(Comparator<Integer> comparator) {
-		return new PairingHeap<Integer>(comparator);
+		return new FibonacciHeap<Integer>(comparator);
 	}
 }

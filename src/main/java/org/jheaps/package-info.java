@@ -1,4 +1,4 @@
 /**
- * Java Heaps Library main package
+ * JHeaps Library main package
  */
 package org.jheaps;

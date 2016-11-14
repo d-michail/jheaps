@@ -1,7 +1,7 @@
 /*
- * (C) Copyright 2014-2016, by Dimitrios Michail.
+ * (C) Copyright 2014-2016, by Dimitrios Michail
  *
- * Java Heaps Library
+ * JHeaps Library
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -239,10 +239,9 @@ public abstract class AbstractAddressableHeapTest {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testDelete() {
-
 		AddressableHeap<Integer> h = createHeap();
 
 		AddressableHeap.Handle<Integer> array[];
@@ -285,8 +284,70 @@ public abstract class AbstractAddressableHeapTest {
 	}
 
 	@Test
-	public void testClear() {
+	@SuppressWarnings("unchecked")
+	public void testDelete1() {
+		AddressableHeap<Integer> h = createHeap();
 
+		AddressableHeap.Handle<Integer> array[];
+		array = new AddressableHeap.Handle[8];
+		for (int i = 0; i < 8; i++) {
+			array[i] = h.insert(i);
+		}
+
+		array[5].delete();
+		assertEquals(Integer.valueOf(0), h.findMin().getKey());
+		array[7].delete();
+		assertEquals(Integer.valueOf(0), h.findMin().getKey());
+		array[0].delete();
+		assertEquals(Integer.valueOf(1), h.findMin().getKey());
+		array[2].delete();
+		assertEquals(Integer.valueOf(1), h.findMin().getKey());
+		array[1].delete();
+		assertEquals(Integer.valueOf(3), h.findMin().getKey());
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testAddDelete() {
+		AddressableHeap<Integer> h = createHeap();
+
+		AddressableHeap.Handle<Integer> array[];
+		array = new AddressableHeap.Handle[SIZE];
+		for (int i = 0; i < SIZE; i++) {
+			array[i] = h.insert(i);
+		}
+
+		for (int i = SIZE - 1; i >= 0; i--) {
+			array[i].delete();
+			if (i > 0) {
+				assertEquals(Integer.valueOf(0), h.findMin().getKey());
+			}
+		}
+		assertTrue(h.isEmpty());
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testAddDeleteComparator() {
+		AddressableHeap<Integer> h = createHeap(comparator);
+
+		AddressableHeap.Handle<Integer> array[];
+		array = new AddressableHeap.Handle[SIZE];
+		for (int i = 0; i < SIZE; i++) {
+			array[i] = h.insert(i);
+		}
+
+		for (int i = 0; i < SIZE; i++) {
+			array[i].delete();
+			if (i < SIZE - 1) {
+				assertEquals(Integer.valueOf(SIZE - 1), h.findMin().getKey());
+			}
+		}
+		assertTrue(h.isEmpty());
+	}
+
+	@Test
+	public void testClear() {
 		AddressableHeap<Integer> h = createHeap();
 
 		for (int i = 0; i < 15; i++) {
