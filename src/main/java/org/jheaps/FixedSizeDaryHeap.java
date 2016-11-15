@@ -21,20 +21,23 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * An implicit d-ary heap with a maximum number of elements.
- * 
- * An implicit d-ary heap implementation of the {@link Heap} interface. The heap
- * is sorted according to the {@linkplain Comparable natural ordering} of its
- * keys, or by a {@link Comparator} provided at heap creation time, depending on
- * which constructor is used.
+ * An implicit d-ary heap with a maximum number of elements. The heap is sorted
+ * according to the {@linkplain Comparable natural ordering} of its keys, or by
+ * a {@link Comparator} provided at heap creation time, depending on which
+ * constructor is used.
  *
  * <p>
  * Implicit implementations of a heap use an array in order to store the
- * elements. This implementation uses a fixes size array, providing providing
- * worst-case O(log(n)) time cost for the {@code insert} and {@code deleteMin}
- * operations. Operation {@code findMin}, is a worst-case O(1) operation.
- * {@link DaryHeap} provides a more dynamic implementation in cost of amortized
- * complexity bounds.
+ * elements. This implementation uses a fixed size array, providing worst-case
+ * O(log(n)) time for the {@code insert} and {@code deleteMin} operations.
+ * Operation {@code findMin}, is a worst-case O(1) operation. {@link DaryHeap}
+ * provides a more dynamic implementation in the expense of amortized complexity
+ * bounds.
+ *
+ * <p>
+ * Constructing such a heap from an array of elements can be performed using the
+ * method {@link #heapify(int, Object[])} or
+ * {@link #heapify(int, Object[], Comparator)} in linear time.
  *
  * <p>
  * Note that the ordering maintained by a d-ary heap, like any heap, and whether
@@ -89,6 +92,8 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 	 *            the children of each node in the d-ary heap
 	 * @param capacity
 	 *            the heap capacity
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
 	 */
 	public FixedSizeDaryHeap(int d, int capacity) {
 		super(d, null, capacity);
@@ -114,6 +119,8 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 	 *            the keys will be used.
 	 * @param capacity
 	 *            the heap capacity
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
 	 */
 	public FixedSizeDaryHeap(int d, Comparator<? super K> comparator, int capacity) {
 		super(d, comparator, capacity);
@@ -129,11 +136,23 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 	 *            the number of children of the d-ary heap
 	 * @param array
 	 *            an array of elements
-	 * @return a binary heap
+	 * @return a d-ary heap
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
+	 * @throws IllegalArgumentException
+	 *             in case the array is null
 	 */
 	@LinearTime
 	public static <K> FixedSizeDaryHeap<K> heapify(int d, K[] array) {
-		assert array != null && array.length > 0 && d >= 2;
+		if (d < 2) {
+			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
+		}
+		if (array == null) {
+			throw new IllegalArgumentException("Array cannot be null");
+		}
+		if (array.length == 0) {
+			return new FixedSizeDaryHeap<K>(d, 0);
+		}
 
 		FixedSizeDaryHeap<K> h = new FixedSizeDaryHeap<K>(d, array.length);
 
@@ -159,11 +178,23 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 	 *            an array of elements
 	 * @param comparator
 	 *            the comparator to use
-	 * @return a binary heap
+	 * @return a d-ary heap
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
+	 * @throws IllegalArgumentException
+	 *             in case the array is null
 	 */
 	@LinearTime
 	public static <K> FixedSizeDaryHeap<K> heapify(int d, K[] array, Comparator<? super K> comparator) {
-		assert array != null && array.length > 0 && d >= 2;
+		if (d < 2) {
+			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
+		}
+		if (array == null) {
+			throw new IllegalArgumentException("Array cannot be null");
+		}
+		if (array.length == 0) {
+			return new FixedSizeDaryHeap<K>(d, comparator, 0);
+		}
 
 		FixedSizeDaryHeap<K> h = new FixedSizeDaryHeap<K>(d, comparator, array.length);
 
@@ -177,10 +208,16 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 		return h;
 	}
 
+	/**
+	 * Ensure that the array representation has the necessary capacity.
+	 * 
+	 * @param capacity
+	 *            the requested capacity
+	 */
 	@Override
 	protected void ensureCapacity(int capacity) {
 		checkCapacity(capacity);
-		if (capacity > array.length) {
+		if (capacity >= array.length) {
 			throw new IllegalStateException("Data structure has no extra space");
 		}
 	}

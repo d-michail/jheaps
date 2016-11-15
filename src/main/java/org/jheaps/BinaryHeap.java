@@ -32,6 +32,11 @@ import java.util.Comparator;
  * much like a {@link java.util.Vector} does, providing amortized O(log(n)) time
  * cost for the {@code insert} and {@code deleteMin} operations. Operation
  * {@code findMin}, is a worst-case O(1) operation.
+ * 
+ * <p>
+ * Constructing such a heap from an array of elements can be performed using the
+ * method {@link #heapify(Object[])} or {@link #heapify(Object[], Comparator)}
+ * in linear time.
  *
  * <p>
  * Note that the ordering maintained by a binary heap, like any heap, and
@@ -181,10 +186,17 @@ public class BinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Seri
 	 * @param array
 	 *            an array of elements
 	 * @return a binary heap
+	 * @throws IllegalArgumentException
+	 *             in case the array is null
 	 */
 	@LinearTime
 	public static <K> BinaryHeap<K> heapify(K[] array) {
-		assert array != null && array.length > 0;
+		if (array == null) {
+			throw new IllegalArgumentException("Array cannot be null");
+		}
+		if (array.length == 0) {
+			return new BinaryHeap<K>();
+		}
 
 		BinaryHeap<K> h = new BinaryHeap<K>(array.length);
 
@@ -209,10 +221,17 @@ public class BinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Seri
 	 * @param comparator
 	 *            the comparator to use
 	 * @return a binary heap
+	 * @throws IllegalArgumentException
+	 *             in case the array is null
 	 */
 	@LinearTime
 	public static <K> BinaryHeap<K> heapify(K[] array, Comparator<? super K> comparator) {
-		assert array != null && array.length > 0;
+		if (array == null) {
+			throw new IllegalArgumentException("Array cannot be null");
+		}
+		if (array.length == 0) {
+			return new BinaryHeap<K>(comparator);
+		}
 
 		BinaryHeap<K> h = new BinaryHeap<K>(comparator, array.length);
 
@@ -226,11 +245,17 @@ public class BinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Seri
 		return h;
 	}
 
+	/**
+	 * Ensure that the array representation has the necessary capacity.
+	 * 
+	 * @param capacity
+	 *            the requested capacity
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void ensureCapacity(int capacity) {
 		checkCapacity(capacity);
-		K[] newArray = (K[]) new Object[capacity];
+		K[] newArray = (K[]) new Object[capacity + 1];
 		System.arraycopy(array, 1, newArray, 1, size);
 		array = newArray;
 	}

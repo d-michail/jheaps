@@ -21,20 +21,23 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * An implicit binary heap with a maximum number of elements.
- *
- * An implicit binary heap implementation of the {@link Heap} interface. The
- * heap is sorted according to the {@linkplain Comparable natural ordering} of
- * its keys, or by a {@link Comparator} provided at heap creation time,
- * depending on which constructor is used.
+ * An implicit binary heap with a maximum number of elements. The heap is sorted
+ * according to the {@linkplain Comparable natural ordering} of its keys, or by
+ * a {@link Comparator} provided at heap creation time, depending on which
+ * constructor is used.
  *
  * <p>
  * Implicit implementations of a Heap use an array in order to store the
  * elements. This implementation uses a fixed size array which is provided
- * during construction, providing worst case O(log(n)) time cost for the
+ * during construction, providing worst case O(log(n)) time for the
  * {@code insert} and {@code deleteMin} operations. Operation {@code findMin},
  * is a worst-case O(1) operation. {@link BinaryHeap} provides a more dynamic
- * implementation in cost of amortized complexity bounds.
+ * implementation in the expense of amortized complexity bounds.
+ * 
+ * <p>
+ * Constructing such a heap from an array of elements can be performed using the
+ * method {@link #heapify(Object[])} or {@link #heapify(Object[], Comparator)}
+ * in linear time.
  *
  * <p>
  * Note that the ordering maintained by a binary heap, like any heap, and
@@ -135,10 +138,17 @@ public class FixedSizeBinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implem
 	 * @param array
 	 *            an array of elements
 	 * @return a binary heap
+	 * @throws IllegalArgumentException
+	 *             in case the array is null
 	 */
 	@LinearTime
 	public static <K> FixedSizeBinaryHeap<K> heapify(K[] array) {
-		assert array != null && array.length > 0;
+		if (array == null) {
+			throw new IllegalArgumentException("Array cannot be null");
+		}
+		if (array.length == 0) {
+			return new FixedSizeBinaryHeap<K>(0);
+		}
 
 		FixedSizeBinaryHeap<K> h = new FixedSizeBinaryHeap<K>(array.length);
 
@@ -163,10 +173,17 @@ public class FixedSizeBinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implem
 	 * @param comparator
 	 *            the comparator to use
 	 * @return a binary heap
+	 * @throws IllegalArgumentException
+	 *             in case the array is null
 	 */
 	@LinearTime
 	public static <K> FixedSizeBinaryHeap<K> heapify(K[] array, Comparator<? super K> comparator) {
-		assert array != null && array.length > 0;
+		if (array == null) {
+			throw new IllegalArgumentException("Array cannot be null");
+		}
+		if (array.length == 0) {
+			return new FixedSizeBinaryHeap<K>(comparator, 0);
+		}
 
 		FixedSizeBinaryHeap<K> h = new FixedSizeBinaryHeap<K>(comparator, array.length);
 
@@ -180,10 +197,16 @@ public class FixedSizeBinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implem
 		return h;
 	}
 
+	/**
+	 * Ensure that the array representation has the necessary capacity.
+	 * 
+	 * @param capacity
+	 *            the requested capacity
+	 */
 	@Override
 	protected void ensureCapacity(int capacity) {
 		checkCapacity(capacity);
-		if (capacity > array.length) {
+		if (capacity >= array.length) {
 			throw new IllegalStateException("Data structure has no extra space");
 		}
 	}

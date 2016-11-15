@@ -41,7 +41,7 @@ abstract class AbstractDaryImplicitHeap<K> extends AbstractImplicitHeap<K> imple
 	public AbstractDaryImplicitHeap(int d, Comparator<? super K> comparator, int capacity) {
 		super(comparator, capacity);
 		if (d < 2) {
-			throw new IllegalArgumentException("Invalid number of children in D-ary heap");
+			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
 		}
 		this.d = d;
 	}

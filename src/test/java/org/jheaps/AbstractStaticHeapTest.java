@@ -60,7 +60,6 @@ public abstract class AbstractStaticHeapTest {
 
 	@Test
 	public void test() {
-
 		Heap<Integer> h = createHeap(SIZE);
 
 		for (int i = 0; i < SIZE; i++) {
@@ -257,7 +256,7 @@ public abstract class AbstractStaticHeapTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalSize1() {
-		Heap<Integer> h = createHeap(0);
+		Heap<Integer> h = createHeap(-1);
 		h.insert(1);
 	}
 

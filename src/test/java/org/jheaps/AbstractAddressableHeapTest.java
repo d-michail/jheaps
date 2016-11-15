@@ -195,7 +195,6 @@ public abstract class AbstractAddressableHeapTest {
 
 	@Test
 	public void testSortRandomSeed1() {
-
 		AddressableHeap<Integer> h = createHeap();
 
 		Random generator = new Random(1);
@@ -213,12 +212,10 @@ public abstract class AbstractAddressableHeapTest {
 			}
 			prev = cur;
 		}
-
 	}
 
 	@Test
 	public void testSortRandomSeed2() {
-
 		AddressableHeap<Integer> h = createHeap();
 
 		Random generator = new Random(2);
@@ -236,7 +233,6 @@ public abstract class AbstractAddressableHeapTest {
 			}
 			prev = cur;
 		}
-
 	}
 
 	@Test
@@ -390,8 +386,17 @@ public abstract class AbstractAddressableHeapTest {
 		array[2].delete();
 	}
 
-	@SuppressWarnings("unchecked")
+	@Test(expected = IllegalArgumentException.class)
+	public void testDeleteMinDeleteTwice() {
+		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap.Handle<Integer> e1 = h.insert(50);
+		h.insert(100);
+		h.deleteMin();
+		e1.delete();
+	}
+
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testDecreaseKey() {
 
 		AddressableHeap<Integer> h = createHeap();

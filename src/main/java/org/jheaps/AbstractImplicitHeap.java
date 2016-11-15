@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
  * @author Dimitrios Michail
  *
  * @param <K>
- *            the key type
+ *            the type of keys maintained by this heap
  */
 abstract class AbstractImplicitHeap<K> implements Heap<K>, Serializable {
 
@@ -41,7 +41,7 @@ abstract class AbstractImplicitHeap<K> implements Heap<K>, Serializable {
 	/**
 	 * The minimum heap capacity.
 	 */
-	protected static final int MIN_HEAP_CAPACITY = 1;
+	protected static final int MIN_HEAP_CAPACITY = 0;
 
 	/**
 	 * The comparator used to maintain order in this heap, or null if it uses
@@ -134,7 +134,11 @@ abstract class AbstractImplicitHeap<K> implements Heap<K>, Serializable {
 
 		// make sure there is space
 		if (size == array.length - 1) {
-			ensureCapacity(2 * array.length - 1);
+			if (array.length == 1) {
+				ensureCapacity(1);
+			} else {
+				ensureCapacity(2 * (array.length - 1));
+			}
 		}
 
 		array[++size] = key;
@@ -164,7 +168,7 @@ abstract class AbstractImplicitHeap<K> implements Heap<K>, Serializable {
 			fixdownWithComparator(1);
 		}
 
-		if (2 * MIN_HEAP_CAPACITY < array.length - 1 && 4 * size < array.length - 1) {
+		if (2 < array.length - 1 && 4 * size < array.length - 1) {
 			ensureCapacity((array.length - 1) / 2 + 1);
 		}
 	}

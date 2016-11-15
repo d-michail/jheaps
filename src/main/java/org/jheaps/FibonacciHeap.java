@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 /**
- * A Fibonacci heap implementation of the {@link AddressableHeap} interface. The
+ * Fibonacci heaps implementation of the {@link AddressableHeap} interface. The
  * heap is sorted according to the {@linkplain Comparable natural ordering} of
  * its keys, or by a {@link Comparator} provided at heap creation time,
  * depending on which constructor is used.
@@ -31,6 +31,10 @@ import java.util.NoSuchElementException;
  * <p>
  * This implementation provides amortized O(1) time for operations that do not
  * involve deleting an element such as {@code insert}, and {@code decreaseKey}.
+ * Operation {@code findMin} is worst-case O(1). Operations {@code deleteMin}
+ * and {@code delete} are amortized O(log(n)). The operation {@code meld} is
+ * also amortized O(1).
+ * 
  *
  * <p>
  * Note that the ordering maintained by a Fibonacci heap, like any heap, and
@@ -268,7 +272,7 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 	 * {@inheritDoc}
 	 */
 	@Override
-	@ConstantTime
+	@ConstantTime(amortized = true)
 	@SuppressWarnings("unchecked")
 	public void meld(MergeableHeap<K> other) {
 		FibonacciHeap<K> h = (FibonacciHeap<K>) other;

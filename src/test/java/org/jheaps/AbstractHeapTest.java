@@ -238,7 +238,6 @@ public abstract class AbstractHeapTest {
 			}
 			prev = cur;
 		}
-
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -249,7 +248,7 @@ public abstract class AbstractHeapTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalSize1() {
-		Heap<Integer> h = createHeap(0);
+		Heap<Integer> h = createHeap(-1);
 		h.insert(1);
 	}
 

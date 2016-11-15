@@ -31,7 +31,7 @@ import java.util.NoSuchElementException;
 public interface Heap<K> {
 
 	/**
-	 * Returns the comparator used to order the keys in this Heap, or
+	 * Returns the comparator used to order the keys in this heap, or
 	 * {@code null} if this heap uses the {@linkplain Comparable natural
 	 * ordering} of its keys.
 	 *

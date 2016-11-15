@@ -28,12 +28,13 @@ import java.util.NoSuchElementException;
  * depending on which constructor is used.
  *
  * <p>
- * This implementation provides amortized log(n) time cost for the
+ * This implementation provides amortized O(log(n)) time cost for the
  * {@code insert}, {@code deleteMin}, and {@code decreaseKey} operations.
  * Operation {@code findMin}, is a worst-case O(1) operation. The algorithms are
- * based on the <a href="http://dx.doi.org/10.1007/BF01840439"> Pairing Heap
+ * based on the <a href="http://dx.doi.org/10.1007/BF01840439">pairing heap
  * paper</a>. Pairing heaps are very efficient in practice, especially in
- * applications requiring the {@code decreaseKey} operation.
+ * applications requiring the {@code decreaseKey} operation. The operation
+ * {@code meld} is amortized O(log(n)).
  *
  * <p>
  * Note that the ordering maintained by a pairing heap, like any heap, and

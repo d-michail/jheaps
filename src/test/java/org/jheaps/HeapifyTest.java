@@ -19,6 +19,7 @@ package org.jheaps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Array;
 import java.util.Comparator;
@@ -128,6 +129,39 @@ public class HeapifyTest {
 			}
 			prev = cur;
 			elements--;
+		}
+	}
+
+	@Test
+	public void testHeapifyZeroLengthArray() {
+		Integer[] a = new Integer[0];
+
+		@SuppressWarnings("unchecked")
+		Heap<Integer>[] h = (Heap<Integer>[]) Array.newInstance(Heap.class, 10);
+
+		h[0] = BinaryHeap.heapify(a);
+		h[1] = DaryHeap.heapify(2, a);
+		h[2] = DaryHeap.heapify(3, a);
+		h[3] = DaryHeap.heapify(4, a);
+		h[4] = DaryHeap.heapify(5, a);
+		h[5] = FixedSizeBinaryHeap.heapify(a);
+		h[6] = FixedSizeDaryHeap.heapify(2, a);
+		h[7] = FixedSizeDaryHeap.heapify(3, a);
+		h[8] = FixedSizeDaryHeap.heapify(4, a);
+		h[9] = FixedSizeDaryHeap.heapify(5, a);
+
+		for (int i = 0; i < 10; i++) {
+			assertTrue(h[i].isEmpty());
+			try {
+				h[i].insert(1);
+				if (i >= 5) {
+					fail("No!");
+				}
+			} catch (IllegalStateException e) {
+				if (i < 5) {
+					fail("No!");
+				}
+			}
 		}
 	}
 

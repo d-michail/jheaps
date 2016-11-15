@@ -24,7 +24,7 @@ import java.util.Comparator;
  *
  * An insert operation returns a {@link AddressableHeap.Handle} which can later
  * be used in order to manipulate the element, such as decreasing its key, or
- * deleting it.
+ * deleting it. Storing the handle externally is the responsibility of the user.
  *
  * @param <K>
  *            the type of keys maintained by this heap
@@ -34,8 +34,8 @@ import java.util.Comparator;
 public interface AddressableHeap<K> {
 
 	/**
-	 * A heap element handle. Allows someone to address an element already in
-	 * the heap and perform additional operations.
+	 * A heap element handle. Allows someone to address an element already in a
+	 * heap and perform additional operations.
 	 *
 	 * @param <K>
 	 *            the type of keys maintained by this heap
@@ -43,9 +43,9 @@ public interface AddressableHeap<K> {
 	interface Handle<K> {
 
 		/**
-		 * Return the key of an element.
+		 * Return the key of the element.
 		 *
-		 * @return the key of an element
+		 * @return the key of the element
 		 */
 		K getKey();
 
@@ -67,6 +67,8 @@ public interface AddressableHeap<K> {
 		 *
 		 * @throws IllegalArgumentException
 		 *             in case this function is called twice on the same element
+		 *             or the element has already been deleted using
+		 *             {@link AddressableHeap#deleteMin()}.
 		 */
 		void delete();
 
@@ -113,15 +115,15 @@ public interface AddressableHeap<K> {
 	boolean isEmpty();
 
 	/**
-	 * Returns the number of elements in this heap.
+	 * Returns the number of elements in the heap.
 	 *
-	 * @return the number of elements in this heap
+	 * @return the number of elements in the heap
 	 */
 	long size();
 
 	/**
-	 * Clear all the elements of this heap. After calling this method all
-	 * handles are invalidated and the behavior of methods
+	 * Clear all the elements of the heap. After calling this method all handles
+	 * should be considered invalidated and the behavior of methods
 	 * {@link Handle#decreaseKey(Object)} and {@link Handle#delete()} is
 	 * undefined.
 	 */

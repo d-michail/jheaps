@@ -32,9 +32,9 @@ import java.lang.annotation.Target;
 public @interface ConstantTime {
 
 	/**
-	 * Whether the running time is amortized or worst-case.
+	 * Whether the running time is amortized or actual.
 	 *
-	 * @return {@code true} if amortized, {@code false} if worst-case
+	 * @return {@code true} if amortized, {@code false} if actual
 	 */
 	public boolean amortized() default false;
 

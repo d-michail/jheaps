@@ -20,7 +20,7 @@ package org.jheaps;
 /**
  * A heap that allows melding with another heap.
  *
- * The second heap is destroyed (becomes empty) after the meld operation. A
+ * The second heap becomes empty after the meld operation. A
  * {@code ClassCastException} will be thrown if the two heaps are not of the
  * same type. Moreover, the two heaps need to use the same comparators. If only
  * one of them uses a custom comparator or both use custom comparators but are
@@ -43,7 +43,7 @@ public interface MergeableHeap<K> {
 	 * @throws ClassCastException
 	 *             if {@code other} is not compatible with this heap
 	 * @throws IllegalArgumentException
-	 *             if {@code other} does not have a compatible comparator.
+	 *             if {@code other} does not have a compatible comparator
 	 */
 	void meld(MergeableHeap<K> other);
 

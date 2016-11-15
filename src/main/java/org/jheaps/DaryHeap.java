@@ -32,6 +32,11 @@ import java.util.Comparator;
  * much like a {@link java.util.Vector} does, providing amortized O(log(n)) time
  * cost for the {@code insert} and {@code deleteMin} operations. Operation
  * {@code findMin}, is a worst-case O(1) operation.
+ * 
+ * <p>
+ * Constructing such a heap from an array of elements can be performed using the
+ * method {@link #heapify(int, Object[])} or
+ * {@link #heapify(int, Object[], Comparator)} in linear time.
  *
  * <p>
  * Note that the ordering maintained by a d-ary heap, like any heap, and whether
@@ -69,12 +74,12 @@ public class DaryHeap<K> extends AbstractDaryImplicitHeap<K> implements Serializ
 	private final static long serialVersionUID = 1;
 
 	/**
-	 * Default initial capacity of the d-ary heap.
+	 * Default initial capacity of the heap.
 	 */
 	public static final int DEFAULT_HEAP_CAPACITY = 128;
 
 	/**
-	 * Constructs a new, empty d-ary, using the natural ordering of its keys.
+	 * Constructs a new, empty heap, using the natural ordering of its keys.
 	 *
 	 * <p>
 	 * All keys inserted into the heap must implement the {@link Comparable}
@@ -92,7 +97,9 @@ public class DaryHeap<K> extends AbstractDaryImplicitHeap<K> implements Serializ
 	 * the sequence of insertions and deletions.
 	 * 
 	 * @param d
-	 *            the children of each node in the d-ary heap
+	 *            the number of children of each node in the d-ary heap
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
 	 */
 	public DaryHeap(int d) {
 		super(d, null, DEFAULT_HEAP_CAPACITY);
@@ -117,9 +124,11 @@ public class DaryHeap<K> extends AbstractDaryImplicitHeap<K> implements Serializ
 	 * automatically based on the sequence of insertions and deletions.
 	 *
 	 * @param d
-	 *            the children of each node in the d-ary heap
+	 *            the number of children of each node in the d-ary heap
 	 * @param capacity
 	 *            the initial heap capacity
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
 	 */
 	public DaryHeap(int d, int capacity) {
 		super(d, null, capacity);
@@ -142,11 +151,13 @@ public class DaryHeap<K> extends AbstractDaryImplicitHeap<K> implements Serializ
 	 * the sequence of insertions and deletions.
 	 *
 	 * @param d
-	 *            the children of each node in the d-ary heap
+	 *            the number of children of each node in the d-ary heap
 	 * @param comparator
 	 *            the comparator that will be used to order this heap. If
 	 *            {@code null}, the {@linkplain Comparable natural ordering} of
 	 *            the keys will be used.
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
 	 */
 	public DaryHeap(int d, Comparator<? super K> comparator) {
 		super(d, comparator, DEFAULT_HEAP_CAPACITY);
@@ -169,13 +180,15 @@ public class DaryHeap<K> extends AbstractDaryImplicitHeap<K> implements Serializ
 	 * automatically based on the sequence of insertions and deletions.
 	 *
 	 * @param d
-	 *            the children of each node in the d-ary heap
+	 *            the number of children of each node in the d-ary heap
 	 * @param comparator
 	 *            the comparator that will be used to order this heap. If
 	 *            {@code null}, the {@linkplain Comparable natural ordering} of
 	 *            the keys will be used.
 	 * @param capacity
 	 *            the initial heap capacity
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
 	 */
 	public DaryHeap(int d, Comparator<? super K> comparator, int capacity) {
 		super(d, comparator, capacity);
@@ -191,11 +204,23 @@ public class DaryHeap<K> extends AbstractDaryImplicitHeap<K> implements Serializ
 	 *            the number of children of the d-ary heap
 	 * @param array
 	 *            an array of elements
-	 * @return a binary heap
+	 * @return a d-ary heap
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
+	 * @throws IllegalArgumentException
+	 *             in case the array is null
 	 */
 	@LinearTime
 	public static <K> DaryHeap<K> heapify(int d, K[] array) {
-		assert array != null && array.length > 0 && d >= 2;
+		if (d < 2) {
+			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
+		}
+		if (array == null) {
+			throw new IllegalArgumentException("Array cannot be null");
+		}
+		if (array.length == 0) {
+			return new DaryHeap<K>(d);
+		}
 
 		DaryHeap<K> h = new DaryHeap<K>(d, array.length);
 
@@ -221,11 +246,23 @@ public class DaryHeap<K> extends AbstractDaryImplicitHeap<K> implements Serializ
 	 *            an array of elements
 	 * @param comparator
 	 *            the comparator to use
-	 * @return a binary heap
+	 * @return a d-ary heap
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
+	 * @throws IllegalArgumentException
+	 *             in case the array is null
 	 */
 	@LinearTime
 	public static <K> DaryHeap<K> heapify(int d, K[] array, Comparator<? super K> comparator) {
-		assert array != null && array.length > 0 && d >= 2;
+		if (d < 2) {
+			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
+		}
+		if (array == null) {
+			throw new IllegalArgumentException("Array cannot be null");
+		}
+		if (array.length == 0) {
+			return new DaryHeap<K>(d, comparator);
+		}
 
 		DaryHeap<K> h = new DaryHeap<K>(d, comparator, array.length);
 
@@ -239,6 +276,12 @@ public class DaryHeap<K> extends AbstractDaryImplicitHeap<K> implements Serializ
 		return h;
 	}
 
+	/**
+	 * Ensure that the array representation has the necessary capacity.
+	 * 
+	 * @param capacity
+	 *            the requested capacity
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void ensureCapacity(int capacity) {
