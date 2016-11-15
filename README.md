@@ -1,4 +1,4 @@
-# Java Heaps Library
+# JHeaps Library
 
 Copyright (C) 2014-2016 Dimitrios Michail
 
@@ -12,6 +12,7 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
+limitations under the License.
 
 ***
 
@@ -53,18 +54,6 @@ in memory can change.
 Some heaps are meldable, that is they efficiently support the union operation: 
 
 * MELD(H1,H2): add all elements of H2 into H1 and destroy H2
-
-## Applications?
-
-* A* search.
-* Heapsort.
-* Online median.
-* Hiffman encoding.
-* Minimum Spanning Tree algorithms.
-* Discrete event-driven simulation.
-* Network bandwidth management.
-* Dijkstra's shortest-paths algorithm.
-* ...
 
 ## Pairing heaps?
 
