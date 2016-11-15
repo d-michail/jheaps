@@ -10,6 +10,7 @@ layout: page
 JHeaps is a free library that provides various heap implementations written in Java. 
 
 Key features: 
+
 * It is easy to use
 * The data structures have a well defined interface
 * It is fast and well documented
@@ -34,8 +35,8 @@ Every JHeaps release is published to the Maven Central Repository. You can add a
 
 ### Documentation
 
-Extensive documentation of the available classes and interfaces can be found in the latest versions
-[javadoc](/apidocs).
+Extensive documentation of the available classes and interfaces can be found in the latest version's
+[javadoc]({{ "/apidocs" | prepend:site.baseurl }}).
 
 ### Compatibility
 

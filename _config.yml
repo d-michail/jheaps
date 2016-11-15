@@ -18,8 +18,8 @@ email:
 description: > # this means to ignore newlines until "baseurl:"
   A free, production-ready, efficient Java library containing a collection of 
   heap data-structures.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://www.jheaps.org" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/jheaps" # the subpath of your site, e.g. /blog
+url: "https://d-michail.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
 github_username:  d-michail
 
