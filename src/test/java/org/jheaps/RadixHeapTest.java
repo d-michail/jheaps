@@ -26,21 +26,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Test;
 
-public abstract class AbstractHeapTest {
+public class RadixHeapTest {
 
 	private static final int SIZE = 100000;
 
-	protected abstract Heap<Long> createHeap();
-
-	protected abstract Heap<Long> createHeap(int capacity);
-
 	@Test
 	public void test() {
-		Heap<Long> h = createHeap();
+		Heap<Long> h = new RadixHeap(0, SIZE);
 
 		for (long i = 0; i < SIZE; i++) {
 			h.insert(i);
@@ -50,73 +47,57 @@ public abstract class AbstractHeapTest {
 		}
 
 		for (int i = SIZE - 1; i >= 0; i--) {
-			assertEquals(h.findMin(), Long.valueOf(SIZE - i - 1));
+			assertEquals(h.findMin().longValue(), Long.valueOf(SIZE - i - 1).longValue());
 			h.deleteMin();
 		}
 	}
 
 	@Test
-	public void testOnlyInsert() {
-		Heap<Long> h = createHeap();
+	public void testVerySmall() {
+		RadixHeap h = new RadixHeap(29, 36);
 
-		for (long i = 0; i < SIZE; i++) {
-			h.insert(SIZE - i);
-			assertEquals(Long.valueOf(SIZE - i), h.findMin());
-			assertFalse(h.isEmpty());
-			assertEquals(h.size(), i + 1);
-		}
-	}
+		h.insert(29l);
+		h.insert(30l);
+		h.insert(31l);
+		h.insert(30l);
+		h.insert(33l);
+		h.insert(36l);
+		h.insert(35l);
 
-	@Test
-	public void testOnly4() {
-
-		Heap<Long> h = createHeap();
-
-		assertTrue(h.isEmpty());
-
-		h.insert(780l);
-		assertEquals(h.size(), 1);
-		assertEquals(Long.valueOf(780).longValue(), h.findMin().longValue());
-
-		h.insert(-389l);
-		assertEquals(h.size(), 2);
-		assertEquals(Long.valueOf(-389), h.findMin());
-
-		h.insert(306l);
-		assertEquals(h.size(), 3);
-		assertEquals(Long.valueOf(-389), h.findMin());
-
-		h.insert(579l);
-		assertEquals(h.size(), 4);
-		assertEquals(Long.valueOf(-389), h.findMin());
-
-		h.deleteMin();
-		assertEquals(h.size(), 3);
-		assertEquals(Long.valueOf(306), h.findMin());
-
-		h.deleteMin();
-		assertEquals(h.size(), 2);
-		assertEquals(Long.valueOf(579), h.findMin());
-
-		h.deleteMin();
-		assertEquals(h.size(), 1);
-		assertEquals(Long.valueOf(780), h.findMin());
-
-		h.deleteMin();
+		assertEquals(h.size(), 7);
+		assertEquals(h.findMin().longValue(), 29l);
+		assertEquals(h.size(), 7);
+		assertEquals(h.deleteMin().longValue(), 29l);
+		assertEquals(h.size(), 6);
+		assertEquals(h.findMin().longValue(), 30l);
+		assertEquals(h.deleteMin().longValue(), 30l);
+		assertEquals(h.findMin().longValue(), 30l);
+		assertEquals(h.deleteMin().longValue(), 30l);
+		assertEquals(h.findMin().longValue(), 31l);
+		assertEquals(h.deleteMin().longValue(), 31l);
+		assertEquals(h.findMin().longValue(), 33l);
+		assertEquals(h.deleteMin().longValue(), 33l);
+		assertEquals(h.findMin().longValue(), 35l);
+		assertEquals(h.deleteMin().longValue(), 35l);
+		assertEquals(h.findMin().longValue(), 36l);
+		assertEquals(h.deleteMin().longValue(), 36l);
 		assertEquals(h.size(), 0);
-
 		assertTrue(h.isEmpty());
-
 	}
 
 	@Test
 	public void testSortRandomSeed1() {
-		Heap<Long> h = createHeap();
+		Heap<Long> h = new RadixHeap(0, SIZE + 1);
 
 		Random generator = new Random(1);
 
+		long[] a = new long[SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			h.insert(generator.nextLong());
+			a[i] = (long) (SIZE * generator.nextDouble());
+		}
+		Arrays.sort(a);
+		for (int i = 0; i < SIZE; i++) {
+			h.insert(a[i]);
 		}
 
 		Long prev = null, cur;
@@ -131,13 +112,18 @@ public abstract class AbstractHeapTest {
 	}
 
 	@Test
-	public void testSort1RandomSeed1() {
-		Heap<Long> h = createHeap();
+	public void testSort2RandomSeed1() {
+		Heap<Long> h = new RadixHeap(0, SIZE + 1);
 
 		Random generator = new Random(1);
 
+		long[] a = new long[SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			h.insert(generator.nextLong());
+			a[i] = (long) (SIZE * generator.nextDouble());
+		}
+		Arrays.sort(a);
+		for (int i = 0; i < SIZE; i++) {
+			h.insert(a[i]);
 		}
 
 		Long prev = null, cur;
@@ -152,12 +138,17 @@ public abstract class AbstractHeapTest {
 
 	@Test
 	public void testSortRandomSeed2() {
-		Heap<Long> h = createHeap();
+		Heap<Long> h = new RadixHeap(0, SIZE + 1);
 
 		Random generator = new Random(2);
 
+		long[] a = new long[SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			h.insert(generator.nextLong());
+			a[i] = (long) (SIZE * generator.nextDouble());
+		}
+		Arrays.sort(a);
+		for (int i = 0; i < SIZE; i++) {
+			h.insert(a[i]);
 		}
 
 		Long prev = null, cur;
@@ -172,13 +163,18 @@ public abstract class AbstractHeapTest {
 	}
 
 	@Test
-	public void testSort1RandomSeed2() {
-		Heap<Long> h = createHeap();
+	public void testSort2RandomSeed2() {
+		Heap<Long> h = new RadixHeap(0, SIZE + 1);
 
-		Random generator = new Random(1);
+		Random generator = new Random(2);
 
+		long[] a = new long[SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			h.insert(generator.nextLong());
+			a[i] = (long) (SIZE * generator.nextDouble());
+		}
+		Arrays.sort(a);
+		for (int i = 0; i < SIZE; i++) {
+			h.insert(a[i]);
 		}
 
 		Long prev = null, cur;
@@ -192,23 +188,8 @@ public abstract class AbstractHeapTest {
 	}
 
 	@Test
-	public void testFindMinDeleteMinSameObject() {
-		Heap<Long> h = createHeap();
-
-		Random generator = new Random(1);
-
-		for (int i = 0; i < SIZE; i++) {
-			h.insert(generator.nextLong());
-		}
-
-		while (!h.isEmpty()) {
-			assertEquals(h.findMin(), h.deleteMin());
-		}
-	}
-
-	@Test
 	public void testClear() {
-		Heap<Long> h = createHeap();
+		Heap<Long> h = new RadixHeap(0, 15);
 
 		for (long i = 0; i < 15; i++) {
 			h.insert(i);
@@ -219,10 +200,27 @@ public abstract class AbstractHeapTest {
 		assertTrue(h.isEmpty());
 	}
 
-	@SuppressWarnings("unchecked")
+	@Test(expected = IllegalArgumentException.class)
+	public void testMonotone() {
+		RadixHeap h = new RadixHeap(0, 1000);
+		h.insert(100l);
+		h.insert(99l);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction() {
+		new RadixHeap(-1, 100);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction1() {
+		new RadixHeap(100, 99);
+	}
+
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testSerializable() throws IOException, ClassNotFoundException {
-		Heap<Long> h = createHeap();
+		Heap<Long> h = new RadixHeap(0, 15);
 
 		for (long i = 0; i < 15; i++) {
 			h.insert(i);
