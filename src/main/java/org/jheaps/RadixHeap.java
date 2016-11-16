@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * An implicit radix heap implementation of the {@link Heap} interface. The heap
- * stores long keys sorted according to the {@linkplain Comparable natural
+ * An implicit radix heap implementation of the {@link MapHeap} interface. The
+ * heap stores long keys sorted according to the {@linkplain Comparable natural
  * ordering} of its keys. A radix heap is a monotone heap, especially designed
  * for algorithms (such as Dijkstra) which scan elements in order of
  * nondecreasing keys.
@@ -48,10 +48,10 @@ import java.util.NoSuchElementException;
  *
  * @author Dimitrios Michail
  * 
- * @see Heap
+ * @see MapHeap
  * @see Serializable
  */
-public class RadixHeap implements Heap<Long>, Serializable {
+public class RadixHeap<V> implements MapHeap<Long, V>, Serializable {
 
 	private final static long serialVersionUID = 1;
 
@@ -65,7 +65,7 @@ public class RadixHeap implements Heap<Long>, Serializable {
 	 * The buckets as lists. We use array-lists instead of linked-lists, to be
 	 * cache friendly.
 	 */
-	private List<Long>[] buckets;
+	private List<Entry<Long, V>>[] buckets;
 
 	/**
 	 * Number of elements
@@ -85,7 +85,7 @@ public class RadixHeap implements Heap<Long>, Serializable {
 	/**
 	 * The current minimum value
 	 */
-	private Long currentMin;
+	private Entry<Long, V> currentMin;
 
 	/**
 	 * The bucket of the current minimum value
@@ -130,9 +130,9 @@ public class RadixHeap implements Heap<Long>, Serializable {
 		}
 
 		// construct representation
-		this.buckets = (List<Long>[]) Array.newInstance(List.class, numBuckets);
+		this.buckets = (List<Entry<Long, V>>[]) Array.newInstance(List.class, numBuckets);
 		for (int i = 0; i < this.buckets.length; i++) {
-			buckets[i] = new ArrayList<Long>();
+			buckets[i] = new ArrayList<Entry<Long, V>>();
 		}
 		this.size = 0;
 		this.currentMin = null;
@@ -165,7 +165,7 @@ public class RadixHeap implements Heap<Long>, Serializable {
 	 */
 	@Override
 	@ConstantTime
-	public void insert(Long key) {
+	public void insert(Long key, V value) {
 		if (key == null) {
 			throw new IllegalArgumentException("Null keys not permitted");
 		}
@@ -176,17 +176,18 @@ public class RadixHeap implements Heap<Long>, Serializable {
 			throw new IllegalArgumentException("Key is more than the maximum allowed key");
 		}
 
+		Entry<Long, V> p = new DefaultMapHeapEntryImpl<Long, V>(key, value);
 		if (size == 0) {
-			buckets[0].add(key);
-			currentMin = key;
+			buckets[0].add(p);
+			currentMin = p;
 			currentMinBucket = 0;
 		} else {
-			if (key < currentMin) {
+			if (key < currentMin.getKey()) {
 				throw new IllegalArgumentException("Invalid key. Monotone heap.");
 			}
 			// here key >= min
-			int b = 1 + Math.min(msd(currentMin, key), buckets.length - 2);
-			buckets[b].add(key);
+			int b = 1 + Math.min(msd(currentMin.getKey(), key), buckets.length - 2);
+			buckets[b].add(p);
 		}
 		size++;
 	}
@@ -196,7 +197,7 @@ public class RadixHeap implements Heap<Long>, Serializable {
 	 */
 	@Override
 	@ConstantTime
-	public Long findMin() {
+	public Entry<Long, V> findMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
@@ -211,15 +212,15 @@ public class RadixHeap implements Heap<Long>, Serializable {
 	 */
 	@Override
 	@ConstantTime(amortized = true)
-	public Long deleteMin() {
+	public Entry<Long, V> deleteMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
 
-		List<Long> b = buckets[currentMinBucket];
+		List<Entry<Long, V>> b = buckets[currentMinBucket];
 		int bSize = b.size();
 
-		Long result = currentMin;
+		Entry<Long, V> result = currentMin;
 		if (currentMinBucket == 0 || bSize == 1) {
 			b.remove(bSize - 1);
 			updateMin(currentMinBucket);
@@ -230,18 +231,18 @@ public class RadixHeap implements Heap<Long>, Serializable {
 			 */
 			int minPos = -1;
 			int pos = 0;
-			Long min = null;
-			Long secondMin = null;
-			for (Long val : b) {
+			Entry<Long, V> min = null;
+			Entry<Long, V> secondMin = null;
+			for (Entry<Long, V> val : b) {
 				// track position of current minimum
 				if (currentMin == val) {
 					minPos = pos;
 				}
 				// track minimum and second minimum values
-				if (min == null || val < min) {
+				if (min == null || val.getKey() < min.getKey()) {
 					secondMin = min;
 					min = val;
-				} else if (secondMin == null || val < secondMin) {
+				} else if (secondMin == null || val.getKey() < secondMin.getKey()) {
 					secondMin = val;
 				}
 				pos++;
@@ -253,9 +254,9 @@ public class RadixHeap implements Heap<Long>, Serializable {
 			 */
 			pos = 0;
 			int minNewBucket = currentMinBucket;
-			for (Long val : b) {
+			for (Entry<Long, V> val : b) {
 				if (pos != minPos) {
-					int newBucket = 1 + Math.min(msd(secondMin, val), buckets.length - 2);
+					int newBucket = 1 + Math.min(msd(secondMin.getKey(), val.getKey()), buckets.length - 2);
 					if (newBucket < minNewBucket) {
 						minNewBucket = newBucket;
 					}
@@ -308,6 +309,14 @@ public class RadixHeap implements Heap<Long>, Serializable {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Heap<Long> asHeap() {
+		return new MapHeapAsHeapAdapter<Long, V>(this);
+	}
+
+	/**
 	 * Find the current minimum starting searching from a specified bucket.
 	 */
 	private void updateMin(int startBucket) {
@@ -317,9 +326,9 @@ public class RadixHeap implements Heap<Long>, Serializable {
 					if (i == 0) {
 						currentMin = buckets[i].get(buckets[i].size() - 1);
 					} else {
-						Long min = null;
-						for (Long val : buckets[i]) {
-							if (min == null || val < min) {
+						Entry<Long, V> min = null;
+						for (Entry<Long, V> val : buckets[i]) {
+							if (min == null || val.getKey() < min.getKey()) {
 								min = val;
 							}
 						}
