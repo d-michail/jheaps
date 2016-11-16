@@ -19,15 +19,15 @@ package org.jheaps;
 
 import java.util.Comparator;
 
-public class ExplicitBinaryHeapTest extends AbstractAddressableHeapTest {
+public class AddressableBinaryHeapTest extends AbstractAddressableHeapTest {
 
 	@Override
 	protected AddressableHeap<Integer> createHeap() {
-		return new ExplicitBinaryHeap<Integer>();
+		return new AddressableBinaryHeap<Integer>();
 	}
 
 	@Override
 	protected AddressableHeap<Integer> createHeap(Comparator<Integer> comparator) {
-		return new ExplicitBinaryHeap<Integer>(comparator);
+		return new AddressableBinaryHeap<Integer>(comparator);
 	}
 }

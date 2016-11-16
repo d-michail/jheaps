@@ -64,7 +64,7 @@ import java.util.NoSuchElementException;
  * @see Comparable
  * @see Comparator
  */
-public class ExplicitBinaryHeap<K> implements AddressableHeap<K>, Serializable {
+public class AddressableBinaryHeap<K> implements AddressableHeap<K>, Serializable {
 
 	private final static long serialVersionUID = 1;
 
@@ -99,7 +99,7 @@ public class ExplicitBinaryHeap<K> implements AddressableHeap<K>, Serializable {
 	 * heap whose keys are integers), the {@code insert(Object key)} call will
 	 * throw a {@code ClassCastException}.
 	 */
-	public ExplicitBinaryHeap() {
+	public AddressableBinaryHeap() {
 		this(null);
 	}
 
@@ -119,7 +119,7 @@ public class ExplicitBinaryHeap<K> implements AddressableHeap<K>, Serializable {
 	 *            {@code null}, the {@linkplain Comparable natural ordering} of
 	 *            the keys will be used.
 	 */
-	public ExplicitBinaryHeap(Comparator<? super K> comparator) {
+	public AddressableBinaryHeap(Comparator<? super K> comparator) {
 		this.comparator = comparator;
 		this.size = 0;
 		this.root = null;
@@ -244,7 +244,7 @@ public class ExplicitBinaryHeap<K> implements AddressableHeap<K>, Serializable {
 
 		// fix priorities
 		fixdown(root);
-		
+
 		oldRoot.o_c = null;
 		return oldRoot;
 	}

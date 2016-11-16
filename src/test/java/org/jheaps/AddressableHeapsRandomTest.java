@@ -51,7 +51,7 @@ public class AddressableHeapsRandomTest {
 		@SuppressWarnings("unchecked")
 		AddressableHeap<Integer>[] h = (AddressableHeap<Integer>[]) Array.newInstance(AddressableHeap.class, 3);
 		h[0] = new PairingHeap<Integer>();
-		h[1] = new ExplicitBinaryHeap<Integer>();
+		h[1] = new AddressableBinaryHeap<Integer>();
 		h[2] = new FibonacciHeap<Integer>();
 
 		@SuppressWarnings("unchecked")
