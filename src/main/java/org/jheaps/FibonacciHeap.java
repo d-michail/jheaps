@@ -179,7 +179,7 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 	 */
 	@Override
 	@LogarithmicTime(amortized = true)
-	public void deleteMin() {
+	public AddressableHeap.Handle<K> deleteMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
@@ -229,6 +229,8 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 		// clear other fields
 		z.next = null;
 		z.prev = null;
+
+		return z;
 	}
 
 	/**
@@ -392,6 +394,10 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 			return;
 		}
 
+		if (n.next == null || n.prev == null) {
+			throw new IllegalArgumentException("Invalid handle!");
+		}
+
 		// if not root and heap order violation
 		Node y = n.parent;
 		if (y != null && ((Comparable<? super K>) n.key).compareTo(y.key) < 0) {
@@ -416,6 +422,10 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 		n.key = newKey;
 		if (c == 0) {
 			return;
+		}
+
+		if (n.next == null || n.prev == null) {
+			throw new IllegalArgumentException("Invalid handle!");
 		}
 
 		// if not root and heap order violation

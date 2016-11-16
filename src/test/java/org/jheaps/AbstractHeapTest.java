@@ -197,7 +197,6 @@ public abstract class AbstractHeapTest {
 
 	@Test
 	public void testSortRandomSeed1() {
-
 		Heap<Integer> h = createHeap();
 
 		Random generator = new Random(1);
@@ -215,12 +214,30 @@ public abstract class AbstractHeapTest {
 			}
 			prev = cur;
 		}
+	}
 
+	@Test
+	public void testSort1RandomSeed1() {
+		Heap<Integer> h = createHeap();
+
+		Random generator = new Random(1);
+
+		for (int i = 0; i < SIZE; i++) {
+			h.insert(generator.nextInt());
+		}
+
+		Integer prev = null, cur;
+		while (!h.isEmpty()) {
+			cur = h.deleteMin();
+			if (prev != null) {
+				assertTrue(prev.compareTo(cur) <= 0);
+			}
+			prev = cur;
+		}
 	}
 
 	@Test
 	public void testSortRandomSeed2() {
-
 		Heap<Integer> h = createHeap();
 
 		Random generator = new Random(2);
@@ -237,6 +254,41 @@ public abstract class AbstractHeapTest {
 				assertTrue(prev.compareTo(cur) <= 0);
 			}
 			prev = cur;
+		}
+	}
+
+	@Test
+	public void testSort1RandomSeed2() {
+		Heap<Integer> h = createHeap();
+
+		Random generator = new Random(1);
+
+		for (int i = 0; i < SIZE; i++) {
+			h.insert(generator.nextInt());
+		}
+
+		Integer prev = null, cur;
+		while (!h.isEmpty()) {
+			cur = h.deleteMin();
+			if (prev != null) {
+				assertTrue(prev.compareTo(cur) <= 0);
+			}
+			prev = cur;
+		}
+	}
+
+	@Test
+	public void testFindMinDeleteMinSameObject() {
+		Heap<Integer> h = createHeap();
+
+		Random generator = new Random(1);
+
+		for (int i = 0; i < SIZE; i++) {
+			h.insert(generator.nextInt());
+		}
+
+		while (!h.isEmpty()) {
+			assertEquals(h.findMin(), h.deleteMin());
 		}
 	}
 

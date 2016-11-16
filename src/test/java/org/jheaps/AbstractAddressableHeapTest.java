@@ -215,6 +215,26 @@ public abstract class AbstractAddressableHeapTest {
 	}
 
 	@Test
+	public void testSort1RandomSeed1() {
+		AddressableHeap<Integer> h = createHeap();
+
+		Random generator = new Random(1);
+
+		for (int i = 0; i < SIZE; i++) {
+			h.insert(generator.nextInt());
+		}
+
+		Integer prev = null, cur;
+		while (!h.isEmpty()) {
+			cur = h.deleteMin().getKey();
+			if (prev != null) {
+				assertTrue(prev.compareTo(cur) <= 0);
+			}
+			prev = cur;
+		}
+	}
+
+	@Test
 	public void testSortRandomSeed2() {
 		AddressableHeap<Integer> h = createHeap();
 
@@ -232,6 +252,41 @@ public abstract class AbstractAddressableHeapTest {
 				assertTrue(prev.compareTo(cur) <= 0);
 			}
 			prev = cur;
+		}
+	}
+
+	@Test
+	public void testSort2RandomSeed2() {
+		AddressableHeap<Integer> h = createHeap();
+
+		Random generator = new Random(2);
+
+		for (int i = 0; i < SIZE; i++) {
+			h.insert(generator.nextInt());
+		}
+
+		Integer prev = null, cur;
+		while (!h.isEmpty()) {
+			cur = h.deleteMin().getKey();
+			if (prev != null) {
+				assertTrue(prev.compareTo(cur) <= 0);
+			}
+			prev = cur;
+		}
+	}
+
+	@Test
+	public void testFindMinDeleteMinSameObject() {
+		AddressableHeap<Integer> h = createHeap();
+
+		Random generator = new Random(1);
+
+		for (int i = 0; i < SIZE; i++) {
+			h.insert(generator.nextInt());
+		}
+
+		while (!h.isEmpty()) {
+			assertEquals(h.findMin(), h.deleteMin());
 		}
 	}
 
@@ -393,6 +448,27 @@ public abstract class AbstractAddressableHeapTest {
 		h.insert(100);
 		h.deleteMin();
 		e1.delete();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDeleteMinDeleteTwice1() {
+		AddressableHeap<Integer> h = createHeap();
+
+		for (int i = 100; i < 200; i++) {
+			h.insert(i);
+		}
+
+		h.deleteMin().delete();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDeleteMinDecreaseKey() {
+		AddressableHeap<Integer> h = createHeap();
+
+		for (int i = 100; i < 200; i++) {
+			h.insert(i);
+		}
+		h.deleteMin().decreaseKey(0);
 	}
 
 	@Test

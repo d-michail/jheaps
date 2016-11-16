@@ -58,13 +58,14 @@ public interface Heap<K> {
 	K findMin();
 
 	/**
-	 * Delete an element with the minimum key. If multiple such elements exists,
-	 * only one of them will be deleted.
+	 * Delete and return an element with the minimum key. If multiple such
+	 * elements exists, only one of them will be deleted.
 	 *
+	 * @return the deleted element with the minimum key
 	 * @throws NoSuchElementException
 	 *             if the heap is empty
 	 */
-	void deleteMin();
+	K deleteMin();
 
 	/**
 	 * Returns {@code true} if this heap is empty.

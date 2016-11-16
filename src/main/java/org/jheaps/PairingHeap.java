@@ -163,17 +163,21 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 	 */
 	@Override
 	@LogarithmicTime(amortized = true)
-	public void deleteMin() {
+	public AddressableHeap.Handle<K> deleteMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
 		assert root.o_s == null && root.y_s == null;
 
+		Handle<K> oldRoot = root;
+		
 		// cut all children, combine them and overwrite old root
 		root = combine(cutChildren(root));
 
 		// decrease size
 		size--;
+
+		return oldRoot;
 	}
 
 	/**

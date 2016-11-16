@@ -155,11 +155,12 @@ abstract class AbstractImplicitHeap<K> implements Heap<K>, Serializable {
 	 */
 	@Override
 	@LogarithmicTime(amortized = true)
-	public void deleteMin() {
+	public K deleteMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
 
+		K result = array[1];
 		array[1] = array[size--];
 
 		if (comparator == null) {
@@ -171,6 +172,7 @@ abstract class AbstractImplicitHeap<K> implements Heap<K>, Serializable {
 		if (2 < array.length - 1 && 4 * size < array.length - 1) {
 			ensureCapacity((array.length - 1) / 2 + 1);
 		}
+		return result;
 	}
 
 	protected final void checkCapacity(int capacity) {

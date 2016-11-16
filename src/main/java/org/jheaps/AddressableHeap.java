@@ -102,10 +102,14 @@ public interface AddressableHeap<K> {
 	AddressableHeap.Handle<K> findMin();
 
 	/**
-	 * Delete an element with the minimum key. If multiple such elements exists,
-	 * only one of them will be deleted.
+	 * Delete and return an element with the minimum key. If multiple such
+	 * elements exists, only one of them will be deleted. After the element is
+	 * deleted the handle is invalidated and only method {#link
+	 * {@link Handle#getKey()} can be used.
+	 * 
+	 * @return a handle to the deleted element with minimum key
 	 */
-	void deleteMin();
+	AddressableHeap.Handle<K> deleteMin();
 
 	/**
 	 * Returns {@code true} if this heap is empty.

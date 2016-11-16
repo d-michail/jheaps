@@ -196,22 +196,24 @@ public class ExplicitBinaryHeap<K> implements AddressableHeap<K>, Serializable {
 	 */
 	@Override
 	@LogarithmicTime
-	public void deleteMin() {
+	public AddressableHeap.Handle<K> deleteMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
+		Node oldRoot = root;
 
 		// easy special cases
 		if (size == 1) {
 			root = null;
 			size = 0;
-			return;
+			return oldRoot;
 		} else if (size == 2) {
 			root = root.o_c;
 			root.o_c = null;
 			root.y_s = null;
 			size = 1;
-			return;
+			oldRoot.o_c = null;
+			return oldRoot;
 		}
 
 		// remove last node
@@ -242,6 +244,9 @@ public class ExplicitBinaryHeap<K> implements AddressableHeap<K>, Serializable {
 
 		// fix priorities
 		fixdown(root);
+		
+		oldRoot.o_c = null;
+		return oldRoot;
 	}
 
 	/**
