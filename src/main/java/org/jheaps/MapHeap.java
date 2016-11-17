@@ -29,6 +29,8 @@ import java.util.NoSuchElementException;
  *            the type of values maintained by this heap
  *
  * @author Dimitrios Michail
+ * 
+ * @see Heap
  */
 public interface MapHeap<K, V> {
 
