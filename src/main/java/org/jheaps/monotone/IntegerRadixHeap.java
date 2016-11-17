@@ -25,17 +25,18 @@ import java.util.List;
 import org.jheaps.MapHeap;
 
 /**
- * An implicit radix heap for (signed) long keys. The heap stores long keys
- * sorted according to the {@linkplain Comparable natural ordering} of its keys.
- * A radix heap is a monotone heap, especially designed for algorithms (such as
- * Dijkstra) which scan elements in order of nondecreasing keys.
+ * An implicit radix heap for (signed) integer keys. The heap stores integer
+ * keys sorted according to the {@linkplain Comparable natural ordering} of its
+ * keys. A radix heap is a monotone heap, especially designed for algorithms
+ * (such as Dijkstra) which scan elements in order of nondecreasing keys.
  *
  * <p>
  * Implicit implementations of a heap use arrays in order to store the elements.
  * Operations {@code insert} and {@code findMin} are worst-case constant time.
  * The cost of operation {@code deleteMin} is amortized O(logC) assuming the
  * radix-heap contains keys in the range {@literal [0, C]} or equivalently
- * {@literal [a,a+C]}. This implementation views long values as signed numbers.
+ * {@literal [a,a+C]}. This implementation views integer values as signed
+ * numbers.
  * 
  * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
@@ -50,7 +51,7 @@ import org.jheaps.MapHeap;
  * @see MapHeap
  * @see Serializable
  */
-public class LongRadixHeap<V> extends AbstractRadixHeap<Long, V> {
+public class IntegerRadixHeap<V> extends AbstractRadixHeap<Integer, V> {
 
 	private final static long serialVersionUID = 1;
 
@@ -73,7 +74,7 @@ public class LongRadixHeap<V> extends AbstractRadixHeap<Long, V> {
 	 *             if the maximum key is less than the minimum key
 	 */
 	@SuppressWarnings("unchecked")
-	public LongRadixHeap(long minKey, long maxKey) {
+	public IntegerRadixHeap(int minKey, int maxKey) {
 		super();
 		if (minKey < 0) {
 			throw new IllegalArgumentException("Minimum key must be non-negative");
@@ -93,9 +94,9 @@ public class LongRadixHeap<V> extends AbstractRadixHeap<Long, V> {
 		}
 
 		// construct representation
-		this.buckets = (List<Entry<Long, V>>[]) Array.newInstance(List.class, numBuckets);
+		this.buckets = (List<Entry<Integer, V>>[]) Array.newInstance(List.class, numBuckets);
 		for (int i = 0; i < this.buckets.length; i++) {
-			buckets[i] = new ArrayList<Entry<Long, V>>();
+			buckets[i] = new ArrayList<Entry<Integer, V>>();
 		}
 		this.size = 0;
 		this.currentMin = null;
@@ -106,7 +107,7 @@ public class LongRadixHeap<V> extends AbstractRadixHeap<Long, V> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected int compare(Long o1, Long o2) {
+	protected int compare(Integer o1, Integer o2) {
 		if (o1 < o2) {
 			return -1;
 		} else if (o1 > o2) {
@@ -120,17 +121,17 @@ public class LongRadixHeap<V> extends AbstractRadixHeap<Long, V> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected int msd(Long a, Long b) {
+	protected int msd(Integer a, Integer b) {
 		/*
 		 * Value equal
 		 */
-		if (a.longValue() == b.longValue()) {
+		if (a.intValue() == b.intValue()) {
 			return -1;
 		}
 		/*
 		 * This is a fast way to compute floor(log_2(a xor b)).
 		 */
-		double axorb = a ^ b;
+		float axorb = a ^ b;
 		return Math.getExponent(axorb);
 	}
 

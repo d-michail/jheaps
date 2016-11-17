@@ -32,79 +32,79 @@ import java.util.Random;
 import org.jheaps.Heap;
 import org.jheaps.MapHeap;
 import org.jheaps.MapHeap.Entry;
-import org.jheaps.monotone.LongRadixHeap;
+import org.jheaps.monotone.IntegerRadixHeap;
 import org.junit.Test;
 
-public class LongRadixHeapTest {
+public class IntegerRadixHeapTest {
 
 	private static final int SIZE = 100000;
 
 	@Test
 	public void test() {
-		Heap<Long> h = new LongRadixHeap<Long>(0, SIZE).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap<Integer>(0, SIZE).asHeap();
 
-		for (long i = 0; i < SIZE; i++) {
+		for (int i = 0; i < SIZE; i++) {
 			h.insert(i);
-			assertEquals(Long.valueOf(0), h.findMin());
+			assertEquals(Integer.valueOf(0), h.findMin());
 			assertFalse(h.isEmpty());
 			assertEquals(h.size(), i + 1);
 		}
 
 		for (int i = SIZE - 1; i >= 0; i--) {
-			assertEquals(h.findMin().longValue(), Long.valueOf(SIZE - i - 1).longValue());
+			assertEquals(h.findMin().intValue(), Integer.valueOf(SIZE - i - 1).intValue());
 			h.deleteMin();
 		}
 	}
 
 	@Test
 	public void testVerySmall() {
-		Heap<Long> h = new LongRadixHeap<Long>(29, 36).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap<Integer>(29, 36).asHeap();
 
-		h.insert(29l);
-		h.insert(30l);
-		h.insert(31l);
-		h.insert(30l);
-		h.insert(33l);
-		h.insert(36l);
-		h.insert(35l);
+		h.insert(29);
+		h.insert(30);
+		h.insert(31);
+		h.insert(30);
+		h.insert(33);
+		h.insert(36);
+		h.insert(35);
 
 		assertEquals(h.size(), 7);
-		assertEquals(h.findMin().longValue(), 29l);
+		assertEquals(h.findMin().intValue(), 29l);
 		assertEquals(h.size(), 7);
-		assertEquals(h.deleteMin().longValue(), 29l);
+		assertEquals(h.deleteMin().intValue(), 29l);
 		assertEquals(h.size(), 6);
-		assertEquals(h.findMin().longValue(), 30l);
-		assertEquals(h.deleteMin().longValue(), 30l);
-		assertEquals(h.findMin().longValue(), 30l);
-		assertEquals(h.deleteMin().longValue(), 30l);
-		assertEquals(h.findMin().longValue(), 31l);
-		assertEquals(h.deleteMin().longValue(), 31l);
-		assertEquals(h.findMin().longValue(), 33l);
-		assertEquals(h.deleteMin().longValue(), 33l);
-		assertEquals(h.findMin().longValue(), 35l);
-		assertEquals(h.deleteMin().longValue(), 35l);
-		assertEquals(h.findMin().longValue(), 36l);
-		assertEquals(h.deleteMin().longValue(), 36l);
+		assertEquals(h.findMin().intValue(), 30l);
+		assertEquals(h.deleteMin().intValue(), 30l);
+		assertEquals(h.findMin().intValue(), 30l);
+		assertEquals(h.deleteMin().intValue(), 30l);
+		assertEquals(h.findMin().intValue(), 31l);
+		assertEquals(h.deleteMin().intValue(), 31l);
+		assertEquals(h.findMin().intValue(), 33l);
+		assertEquals(h.deleteMin().intValue(), 33l);
+		assertEquals(h.findMin().intValue(), 35l);
+		assertEquals(h.deleteMin().intValue(), 35l);
+		assertEquals(h.findMin().intValue(), 36l);
+		assertEquals(h.deleteMin().intValue(), 36l);
 		assertEquals(h.size(), 0);
 		assertTrue(h.isEmpty());
 	}
 
 	@Test
 	public void testSortRandomSeed1() {
-		Heap<Long> h = new LongRadixHeap<Long>(0, SIZE + 1).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap<Integer>(0, SIZE + 1).asHeap();
 
 		Random generator = new Random(1);
 
-		long[] a = new long[SIZE];
+		int[] a = new int[SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			a[i] = (long) (SIZE * generator.nextDouble());
+			a[i] = (int) (SIZE * generator.nextDouble());
 		}
 		Arrays.sort(a);
 		for (int i = 0; i < SIZE; i++) {
 			h.insert(a[i]);
 		}
 
-		Long prev = null, cur;
+		Integer prev = null, cur;
 		while (!h.isEmpty()) {
 			cur = h.findMin();
 			h.deleteMin();
@@ -117,20 +117,20 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void testSort2RandomSeed1() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(0, SIZE + 1).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap<Boolean>(0, SIZE + 1).asHeap();
 
 		Random generator = new Random(1);
 
-		long[] a = new long[SIZE];
+		int[] a = new int[SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			a[i] = (long) (SIZE * generator.nextDouble());
+			a[i] = (int) (SIZE * generator.nextDouble());
 		}
 		Arrays.sort(a);
 		for (int i = 0; i < SIZE; i++) {
 			h.insert(a[i]);
 		}
 
-		Long prev = null, cur;
+		Integer prev = null, cur;
 		while (!h.isEmpty()) {
 			cur = h.deleteMin();
 			if (prev != null) {
@@ -142,20 +142,20 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void testSortRandomSeed2() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(0, SIZE + 1).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap<Boolean>(0, SIZE + 1).asHeap();
 
 		Random generator = new Random(2);
 
-		long[] a = new long[SIZE];
+		int[] a = new int[SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			a[i] = (long) (SIZE * generator.nextDouble());
+			a[i] = (int) (SIZE * generator.nextDouble());
 		}
 		Arrays.sort(a);
 		for (int i = 0; i < SIZE; i++) {
 			h.insert(a[i]);
 		}
 
-		Long prev = null, cur;
+		Integer prev = null, cur;
 		while (!h.isEmpty()) {
 			cur = h.findMin();
 			h.deleteMin();
@@ -168,20 +168,20 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void testSort2RandomSeed2() {
-		Heap<Long> h = new LongRadixHeap<Long>(0, SIZE + 1).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap<Integer>(0, SIZE + 1).asHeap();
 
 		Random generator = new Random(2);
 
-		long[] a = new long[SIZE];
+		int[] a = new int[SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			a[i] = (long) (SIZE * generator.nextDouble());
+			a[i] = (int) (SIZE * generator.nextDouble());
 		}
 		Arrays.sort(a);
 		for (int i = 0; i < SIZE; i++) {
 			h.insert(a[i]);
 		}
 
-		Long prev = null, cur;
+		Integer prev = null, cur;
 		while (!h.isEmpty()) {
 			cur = h.deleteMin();
 			if (prev != null) {
@@ -193,20 +193,20 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void testSort3RandomSeed1() {
-		MapHeap<Long, String> h = new LongRadixHeap<String>(0, SIZE + 1);
+		MapHeap<Integer, String> h = new IntegerRadixHeap<String>(0, SIZE + 1);
 
 		Random generator = new Random(1);
 
-		long[] a = new long[SIZE];
+		int[] a = new int[SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			a[i] = (long) (SIZE * generator.nextDouble());
+			a[i] = (int) (SIZE * generator.nextDouble());
 		}
 		Arrays.sort(a);
 		for (int i = 0; i < SIZE; i++) {
 			h.insert(a[i], String.valueOf(a[i]));
 		}
 
-		Entry<Long, String> prev = null, cur;
+		Entry<Integer, String> prev = null, cur;
 		while (!h.isEmpty()) {
 			cur = h.deleteMin();
 			assertEquals(String.valueOf(cur.getKey()), cur.getValue());
@@ -219,37 +219,37 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void testSameMinMax() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(100, 100).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap<Boolean>(100, 100).asHeap();
 
 		for (int i = 0; i < 15; i++) {
-			h.insert(100l);
+			h.insert(100);
 		}
 
 		assertEquals(15, h.size());
 		for (int i = 0; i < 15; i++) {
-			assertEquals(100l, h.deleteMin().longValue());
+			assertEquals(100l, h.deleteMin().intValue());
 		}
 		assertEquals(0, h.size());
 	}
-	
+
 	@Test
 	public void testMaxDifference() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(0, Long.MAX_VALUE).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap<Boolean>(0, Integer.MAX_VALUE).asHeap();
 
-		h.insert(0l);
-		h.insert(Long.MAX_VALUE);
+		h.insert(0);
+		h.insert(Integer.MAX_VALUE);
 
 		assertEquals(2, h.size());
-		assertEquals(0l, h.deleteMin().longValue());
-		assertEquals(Long.MAX_VALUE, h.deleteMin().longValue());
+		assertEquals(0, h.deleteMin().intValue());
+		assertEquals(Integer.MAX_VALUE, h.deleteMin().intValue());
 		assertEquals(0, h.size());
 	}
 
 	@Test
 	public void testClear() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(0, 15).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap<Boolean>(0, 15).asHeap();
 
-		for (long i = 0; i < 15; i++) {
+		for (int i = 0; i < 15; i++) {
 			h.insert(i);
 		}
 
@@ -260,27 +260,27 @@ public class LongRadixHeapTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMonotone() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(0, 1000).asHeap();
-		h.insert(100l);
-		h.insert(99l);
+		Heap<Integer> h = new IntegerRadixHeap<Boolean>(0, 1000).asHeap();
+		h.insert(100);
+		h.insert(99);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction() {
-		new LongRadixHeap<Long>(-1, 100);
+		new IntegerRadixHeap<Integer>(-1, 100);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction1() {
-		new LongRadixHeap<Boolean>(100, 99);
+		new IntegerRadixHeap<Boolean>(100, 99);
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSerializable() throws IOException, ClassNotFoundException {
-		Heap<Long> h = new LongRadixHeap<Long>(0, 15).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap<Integer>(0, 15).asHeap();
 
-		for (long i = 0; i < 15; i++) {
+		for (int i = 0; i < 15; i++) {
 			h.insert(i);
 		}
 
@@ -297,11 +297,11 @@ public class LongRadixHeapTest {
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object o = ois.readObject();
 		ois.close();
-		h = (Heap<Long>) o;
+		h = (Heap<Integer>) o;
 
 		for (int i = 0; i < 15; i++) {
 			assertEquals(15 - i, h.size());
-			assertEquals(Long.valueOf(i), h.findMin());
+			assertEquals(Integer.valueOf(i), h.findMin());
 			h.deleteMin();
 		}
 		assertTrue(h.isEmpty());

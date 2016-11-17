@@ -125,4 +125,32 @@ public class DoubleRadixHeapTest {
 		}
 	}
 
+	@Test
+	public void testSameMinMax() {
+		Heap<Double> h = new DoubleRadixHeap<Boolean>(1.0, 1.0).asHeap();
+
+		for (int i = 0; i < 15; i++) {
+			h.insert(1.0);
+		}
+
+		assertEquals(15, h.size());
+		for (int i = 0; i < 15; i++) {
+			assertEquals(1.0, h.deleteMin(), 1e-9);
+		}
+		assertEquals(0, h.size());
+	}
+
+	@Test
+	public void testMaxDifference() {
+		Heap<Double> h = new DoubleRadixHeap<Boolean>(0.0, Double.MAX_VALUE).asHeap();
+
+		h.insert(0.0);
+		h.insert(Double.MAX_VALUE);
+
+		assertEquals(2, h.size());
+		assertEquals(0.0, h.deleteMin(), 1e-9);
+		assertEquals(Double.MAX_VALUE, h.deleteMin(), 1e-9);
+		assertEquals(0, h.size());
+	}
+
 }
