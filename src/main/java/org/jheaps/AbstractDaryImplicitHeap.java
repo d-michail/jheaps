@@ -48,38 +48,39 @@ abstract class AbstractDaryImplicitHeap<K> extends AbstractImplicitHeap<K> imple
 
 	@SuppressWarnings("unchecked")
 	protected void fixup(int k) {
-		assert k >= 1 && k <= size;
+		// assert k >= 1 && k <= size;
 
+		K key = array[k];
 		while (k > 1) {
 			int p = (k - 2) / d + 1;
-			if (((Comparable<? super K>) array[p]).compareTo(array[k]) <= 0) {
+			if (((Comparable<? super K>) array[p]).compareTo(key) <= 0) {
 				break;
 			}
-			K tmp = array[k];
 			array[k] = array[p];
-			array[p] = tmp;
 			k = p;
 		}
+		array[k] = key;
 	}
 
 	protected void fixupWithComparator(int k) {
-		assert k >= 1 && k <= size;
+		// assert k >= 1 && k <= size;
 
+		K key = array[k];
 		while (k > 1) {
 			int p = (k - 2) / d + 1;
-			if (comparator.compare(array[p], array[k]) <= 0) {
+			if (comparator.compare(array[p], key) <= 0) {
 				break;
 			}
-			K tmp = array[k];
 			array[k] = array[p];
-			array[p] = tmp;
 			k = p;
 		}
+		array[k] = key;
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void fixdown(int k) {
 		int c;
+		K key = array[k];
 		while ((c = d * (k - 1) + 2) <= size) {
 			int maxc = c;
 			for (int i = 1; i < d; i++) {
@@ -87,19 +88,18 @@ abstract class AbstractDaryImplicitHeap<K> extends AbstractImplicitHeap<K> imple
 					maxc = c + i;
 				}
 			}
-			if (((Comparable<? super K>) array[k]).compareTo(array[maxc]) <= 0) {
+			if (((Comparable<? super K>) key).compareTo(array[maxc]) <= 0) {
 				break;
 			}
-
-			K tmp = array[k];
 			array[k] = array[maxc];
-			array[maxc] = tmp;
 			k = maxc;
 		}
+		array[k] = key;
 	}
 
 	protected void fixdownWithComparator(int k) {
 		int c;
+		K key = array[k];
 		while ((c = d * (k - 1) + 2) <= size) {
 			int maxc = c;
 			for (int i = 1; i < d; i++) {
@@ -107,15 +107,13 @@ abstract class AbstractDaryImplicitHeap<K> extends AbstractImplicitHeap<K> imple
 					maxc = c + i;
 				}
 			}
-			if (comparator.compare(array[k], array[maxc]) <= 0) {
+			if (comparator.compare(key, array[maxc]) <= 0) {
 				break;
 			}
-
-			K tmp = array[k];
 			array[k] = array[maxc];
-			array[maxc] = tmp;
 			k = maxc;
 		}
+		array[k] = key;
 	}
 
 }

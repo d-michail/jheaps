@@ -42,60 +42,58 @@ abstract class AbstractBinaryImplicitHeap<K> extends AbstractImplicitHeap<K> imp
 
 	@SuppressWarnings("unchecked")
 	protected void fixup(int k) {
-		assert k >= 1 && k <= size;
+		// assert k >= 1 && k <= size;
 
-		while (k > 1 && ((Comparable<? super K>) array[k / 2]).compareTo(array[k]) > 0) {
-			K tmp = array[k];
+		K key = array[k];
+		while (k > 1 && ((Comparable<? super K>) array[k / 2]).compareTo(key) > 0) {
 			array[k] = array[k / 2];
-			array[k / 2] = tmp;
 			k /= 2;
 		}
+		array[k] = key;
 	}
 
 	protected void fixupWithComparator(int k) {
-		assert k >= 1 && k <= size;
+		// assert k >= 1 && k <= size;
 
-		while (k > 1 && comparator.compare(array[k / 2], array[k]) > 0) {
-			K tmp = array[k];
+		K key = array[k];
+		while (k > 1 && comparator.compare(array[k / 2], key) > 0) {
 			array[k] = array[k / 2];
-			array[k / 2] = tmp;
 			k /= 2;
 		}
+		array[k] = key;
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void fixdown(int k) {
+		K key = array[k];
 		while (2 * k <= size) {
 			int j = 2 * k;
 			if (j < size && ((Comparable<? super K>) array[j]).compareTo(array[j + 1]) > 0) {
 				j++;
 			}
-			if (((Comparable<? super K>) array[k]).compareTo(array[j]) <= 0) {
+			if (((Comparable<? super K>) key).compareTo(array[j]) <= 0) {
 				break;
 			}
-
-			K tmp = array[k];
 			array[k] = array[j];
-			array[j] = tmp;
 			k = j;
 		}
+		array[k] = key;
 	}
 
 	protected void fixdownWithComparator(int k) {
+		K key = array[k];
 		while (2 * k <= size) {
 			int j = 2 * k;
 			if (j < size && comparator.compare(array[j], array[j + 1]) > 0) {
 				j++;
 			}
-			if (comparator.compare(array[k], array[j]) <= 0) {
+			if (comparator.compare(key, array[j]) <= 0) {
 				break;
 			}
-
-			K tmp = array[k];
 			array[k] = array[j];
-			array[j] = tmp;
 			k = j;
 		}
+		array[k] = key;
 	}
 
 }
