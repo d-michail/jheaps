@@ -51,4 +51,18 @@ class DefaultMapHeapEntryImpl<K, V> implements MapHeap.Entry<K, V>, Serializable
 		return value;
 	}
 
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append('{');
+		if (key != null) {
+			sb.append(key.toString());
+		}
+		if (value != null) {
+			sb.append(',').append(value.toString());
+		}
+		sb.append('}');
+		return sb.toString();
+	}
+
 }

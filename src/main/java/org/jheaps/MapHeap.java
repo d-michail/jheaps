@@ -125,6 +125,7 @@ public interface MapHeap<K, V> {
 		 *             heap.
 		 */
 		V getValue();
+		 
 	}
 
 }

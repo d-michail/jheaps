@@ -23,18 +23,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An implicit radix heap implementation of the {@link MapHeap} interface. The
- * heap stores long keys sorted according to the {@linkplain Comparable natural
- * ordering} of its keys. A radix heap is a monotone heap, especially designed
- * for algorithms (such as Dijkstra) which scan elements in order of
- * nondecreasing keys.
+ * An implicit radix heap for (signed) long keys. The heap stores long keys
+ * sorted according to the {@linkplain Comparable natural ordering} of its keys.
+ * A radix heap is a monotone heap, especially designed for algorithms (such as
+ * Dijkstra) which scan elements in order of nondecreasing keys.
  *
  * <p>
  * Implicit implementations of a heap use arrays in order to store the elements.
  * Operations {@code insert} and {@code findMin} are worst-case constant time.
  * The cost of operation {@code deleteMin} is amortized O(logC) assuming the
  * radix-heap contains keys in the range {@literal [0, C]} or equivalently
- * {@literal [a,a+C]}.
+ * {@literal [a,a+C]}. This implementation views long values as signed numbers.
  * 
  * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
@@ -49,15 +48,9 @@ import java.util.List;
  * @see MapHeap
  * @see Serializable
  */
-public class RadixHeap<V> extends AbstractRadixHeap<Long, V> {
+public class LongRadixHeap<V> extends AbstractRadixHeap<Long, V> {
 
 	private final static long serialVersionUID = 1;
-
-	/**
-	 * Maximum number of buckets to handle the full range of values supported by
-	 * a long number from zero to 2<sup>63</sup>-1.
-	 */
-	private final static int MAX_BUCKETS = 66;
 
 	/**
 	 * Constructs a new heap which can store values between a minimum and a
@@ -78,7 +71,7 @@ public class RadixHeap<V> extends AbstractRadixHeap<Long, V> {
 	 *             if the maximum key is less than the minimum key
 	 */
 	@SuppressWarnings("unchecked")
-	public RadixHeap(long minKey, long maxKey) {
+	public LongRadixHeap(long minKey, long maxKey) {
 		super();
 		if (minKey < 0) {
 			throw new IllegalArgumentException("Minimum key must be non-negative");
@@ -91,10 +84,10 @@ public class RadixHeap<V> extends AbstractRadixHeap<Long, V> {
 
 		// compute number of buckets
 		int numBuckets;
-		if (minKey == 0 && maxKey == Long.MAX_VALUE) {
-			numBuckets = MAX_BUCKETS;
+		if (maxKey == minKey) {
+			numBuckets = 2;
 		} else {
-			numBuckets = 3 + (int) Math.floor(Math.log(maxKey - minKey + 1) / Math.log(2));
+			numBuckets = 2 + 1 + (int) Math.floor(Math.log(maxKey - minKey) / Math.log(2));
 		}
 
 		// construct representation

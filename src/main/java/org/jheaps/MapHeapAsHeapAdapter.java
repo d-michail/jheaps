@@ -75,4 +75,9 @@ class MapHeapAsHeapAdapter<K, V> implements Heap<K>, Serializable {
 		heap.clear();
 	}
 
+	@Override
+	public String toString() {
+		return heap.toString();
+	}
+
 }

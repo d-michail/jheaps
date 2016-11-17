@@ -23,11 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An implicit radix heap implementation of the {@link MapHeap} interface. The
- * heap stores {@link BigInteger} keys sorted according to the
- * {@linkplain Comparable natural ordering} of its keys. A radix heap is a
- * monotone heap, especially designed for algorithms (such as Dijkstra) which
- * scan elements in order of nondecreasing keys.
+ * An implicit radix heap for {@link BigInteger} keys. The heap stores
+ * {@link BigInteger} keys sorted according to the {@linkplain Comparable
+ * natural ordering} of its keys. A radix heap is a monotone heap, especially
+ * designed for algorithms (such as Dijkstra) which scan elements in order of
+ * nondecreasing keys.
  *
  * <p>
  * Implicit implementations of a heap use arrays in order to store the elements.
@@ -46,7 +46,7 @@ import java.util.List;
  *
  * @author Dimitrios Michail
  * 
- * @see RadixHeap
+ * @see LongRadixHeap
  * @see MapHeap
  */
 public class BigIntegerRadixHeap<V> extends AbstractRadixHeap<BigInteger, V> {
@@ -90,7 +90,8 @@ public class BigIntegerRadixHeap<V> extends AbstractRadixHeap<BigInteger, V> {
 		this.maxKey = maxKey;
 
 		// compute number of buckets
-		int numBuckets = 2 + maxKey.subtract(minKey).add(BigInteger.ONE).bitLength();
+		BigInteger diff = maxKey.subtract(minKey);
+		int numBuckets = 2 + 1 + diff.bitLength();
 
 		// construct representation
 		this.buckets = (List<Entry<BigInteger, V>>[]) Array.newInstance(List.class, numBuckets);
