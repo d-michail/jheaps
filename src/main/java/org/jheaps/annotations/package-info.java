@@ -17,6 +17,6 @@
  */
 
 /**
- * JHeaps main package.
+ * Annotation types.
  */
-package org.jheaps;
+package org.jheaps.annotations;

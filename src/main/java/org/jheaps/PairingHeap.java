@@ -21,6 +21,9 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
+import org.jheaps.annotations.ConstantTime;
+import org.jheaps.annotations.LogarithmicTime;
+
 /**
  * A pairing heap implementation of the {@link AddressableHeap} interface. The
  * heap is sorted according to the {@linkplain Comparable natural ordering} of

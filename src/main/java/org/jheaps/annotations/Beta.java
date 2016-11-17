@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -23,20 +23,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marker interface used by implementations to indicate that an operation takes
- * O(log(n)) time where n is the size of the input. The primary purpose of this
- * interface is to allow generic algorithms to alter their behavior to provide
- * good performance.
+ * Marker interface used by implementations to indicate that a public API may
+ * change or be removed in the future.
+ * 
+ * @author Dimitrios Michail
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface LogarithmicTime {
-
-	/**
-	 * Whether the running time is amortized or actual.
-	 *
-	 * @return {@code true} if amortized, {@code false} if actual
-	 */
-	public boolean amortized() default false;
-
+@Retention(RetentionPolicy.CLASS)
+@Target(value = { ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.TYPE,
+		ElementType.ANNOTATION_TYPE })
+public @interface Beta {
 }

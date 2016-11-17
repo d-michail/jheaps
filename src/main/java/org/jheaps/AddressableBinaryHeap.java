@@ -22,6 +22,9 @@ import java.util.BitSet;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
+import org.jheaps.annotations.ConstantTime;
+import org.jheaps.annotations.LogarithmicTime;
+
 /**
  * An explicit binary heap implementation of the {@link AddressableHeap}
  * interface. The heap is sorted according to the {@linkplain Comparable natural

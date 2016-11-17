@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,12 +24,15 @@ import java.lang.annotation.Target;
 
 /**
  * Marker interface used by implementations to indicate that an operation takes
- * constant time. The primary purpose of this interface is to allow generic
- * algorithms to alter their behavior to provide good performance.
+ * O(log(n)) time where n is the size of the input. The primary purpose of this
+ * interface is to allow generic algorithms to alter their behavior to provide
+ * good performance.
+ * 
+ * @author Dimitrios Michail
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = { ElementType.METHOD, ElementType.CONSTRUCTOR })
-public @interface ConstantTime {
+@Target(ElementType.METHOD)
+public @interface LogarithmicTime {
 
 	/**
 	 * Whether the running time is amortized or actual.

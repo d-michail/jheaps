@@ -20,6 +20,8 @@ package org.jheaps;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.jheaps.annotations.LinearTime;
+
 /**
  * An implicit d-ary heap with a maximum number of elements. The heap is sorted
  * according to the {@linkplain Comparable natural ordering} of its keys, or by

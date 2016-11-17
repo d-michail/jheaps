@@ -20,6 +20,8 @@ package org.jheaps;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.jheaps.annotations.LinearTime;
+
 /**
  * An implicit binary heap implementation of the {@link Heap} interface. The
  * heap is sorted according to the {@linkplain Comparable natural ordering} of

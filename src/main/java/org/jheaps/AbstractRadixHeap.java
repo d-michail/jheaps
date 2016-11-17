@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.jheaps.annotations.ConstantTime;
+
 /**
  * Base abstract implementation of a radix heap.
  * 

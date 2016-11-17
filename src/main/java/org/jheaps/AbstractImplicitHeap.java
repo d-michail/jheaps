@@ -21,6 +21,9 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
+import org.jheaps.annotations.ConstantTime;
+import org.jheaps.annotations.LogarithmicTime;
+
 /**
  * Abstract implementation of a heap using an array representation.
  * 
