@@ -15,10 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.monotone;
 
 import java.io.Serializable;
 import java.util.Comparator;
+
+import org.jheaps.Heap;
+import org.jheaps.MapHeap;
 
 /**
  * A {@link MapHeap} to {@link Heap} adapter.

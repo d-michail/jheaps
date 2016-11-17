@@ -15,12 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.monotone;
 
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jheaps.MapHeap;
 
 /**
  * An implicit radix heap for {@link BigInteger} keys. The heap stores

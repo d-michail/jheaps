@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.monotone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -29,7 +29,10 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Random;
 
+import org.jheaps.Heap;
+import org.jheaps.MapHeap;
 import org.jheaps.MapHeap.Entry;
+import org.jheaps.monotone.LongRadixHeap;
 import org.junit.Test;
 
 public class LongRadixHeapTest {

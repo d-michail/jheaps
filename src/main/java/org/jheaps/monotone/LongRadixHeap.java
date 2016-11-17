@@ -15,34 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.monotone;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jheaps.MapHeap;
+
 /**
- * An implicit radix heap for double keys. The heap stores double keys sorted
- * according to the {@linkplain Comparable natural ordering} of its keys. A
- * radix heap is a monotone heap, especially designed for algorithms (such as
+ * An implicit radix heap for (signed) long keys. The heap stores long keys
+ * sorted according to the {@linkplain Comparable natural ordering} of its keys.
+ * A radix heap is a monotone heap, especially designed for algorithms (such as
  * Dijkstra) which scan elements in order of nondecreasing keys.
- *
- * <p>
- * Note that this implementation uses the fact that the IEEE floating-point
- * standard has the property that for any valid floating-point numbers a and b,
- * {@literal a<=b} if and only if {@literal bits(a)<= bits(b)}, where
- * {@literal bits(x)} denotes the re-interpretation of x as an unsigned integer
- * (long in our case).
  *
  * <p>
  * Implicit implementations of a heap use arrays in order to store the elements.
  * Operations {@code insert} and {@code findMin} are worst-case constant time.
  * The cost of operation {@code deleteMin} is amortized O(logC) assuming the
  * radix-heap contains keys in the range {@literal [0, C]} or equivalently
- * {@literal [a,a+C]}. Note, however, that C here depends on the distance of the
- * minimum and maximum value when they are translated into unsigned longs.
+ * {@literal [a,a+C]}. This implementation views long values as signed numbers.
  * 
  * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
@@ -57,14 +50,9 @@ import java.util.List;
  * @see MapHeap
  * @see Serializable
  */
-public class DoubleRadixHeap<V> extends AbstractRadixHeap<Double, V> {
+public class LongRadixHeap<V> extends AbstractRadixHeap<Long, V> {
 
 	private final static long serialVersionUID = 1;
-
-	/**
-	 * Mask for unsigned longs
-	 */
-	private static final long UNSIGNED_MASK = 0x7fffffffffffffffL;
 
 	/**
 	 * Constructs a new heap which can store values between a minimum and a
@@ -85,27 +73,29 @@ public class DoubleRadixHeap<V> extends AbstractRadixHeap<Double, V> {
 	 *             if the maximum key is less than the minimum key
 	 */
 	@SuppressWarnings("unchecked")
-	public DoubleRadixHeap(double minKey, double maxKey) {
+	public LongRadixHeap(long minKey, long maxKey) {
 		super();
-		if (!Double.isFinite(minKey) || minKey < 0.0) {
-			throw new IllegalArgumentException("Minimum key must be finite and non-negative");
+		if (minKey < 0) {
+			throw new IllegalArgumentException("Minimum key must be non-negative");
 		}
 		this.minKey = minKey;
-		if (!Double.isFinite(maxKey) || maxKey < minKey) {
-			throw new IllegalArgumentException("Maximum key must be finite and not less than the minimum");
+		if (maxKey < minKey) {
+			throw new IllegalArgumentException("Maximum key cannot be less than the minimum");
 		}
 		this.maxKey = maxKey;
 
 		// compute number of buckets
-		BigInteger minKeyAsBigInt = asUnsignedLongToBigInt(minKey);
-		BigInteger maxKeyAsBigInt = asUnsignedLongToBigInt(maxKey);
-		BigInteger diff = maxKeyAsBigInt.subtract(minKeyAsBigInt);
-		int numBuckets = 2 + 1 + diff.bitLength();
+		int numBuckets;
+		if (maxKey == minKey) {
+			numBuckets = 2;
+		} else {
+			numBuckets = 2 + 1 + (int) Math.floor(Math.log(maxKey - minKey) / Math.log(2));
+		}
 
 		// construct representation
-		this.buckets = (List<Entry<Double, V>>[]) Array.newInstance(List.class, numBuckets);
+		this.buckets = (List<Entry<Long, V>>[]) Array.newInstance(List.class, numBuckets);
 		for (int i = 0; i < this.buckets.length; i++) {
-			buckets[i] = new ArrayList<Entry<Double, V>>();
+			buckets[i] = new ArrayList<Entry<Long, V>>();
 		}
 		this.size = 0;
 		this.currentMin = null;
@@ -116,57 +106,31 @@ public class DoubleRadixHeap<V> extends AbstractRadixHeap<Double, V> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected int compare(Double o1, Double o2) {
-		/*
-		 * Convert to IEEE and compare as unsigned
-		 */
-		long x = Double.doubleToLongBits(o1) ^ Long.MIN_VALUE;
-		long y = Double.doubleToLongBits(o2) ^ Long.MIN_VALUE;
-
-		// assert
-		/*
-		 * if (o1.doubleValue() < o2.doubleValue()) { assert x < y; } else if
-		 * (o1.doubleValue() == o2.doubleValue()) { assert x == y; } else {
-		 * assert x > y; }
-		 */
-		return (x < y) ? -1 : ((x == y) ? 0 : 1);
+	protected int compare(Long o1, Long o2) {
+		if (o1 < o2) {
+			return -1;
+		} else if (o1 > o2) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected int msd(Double a, Double b) {
+	protected int msd(Long a, Long b) {
 		/*
-		 * For this to work, arithmetic must be unsigned
+		 * Value equal
 		 */
-		long ux = Double.doubleToLongBits(a);
-		long uy = Double.doubleToLongBits(b);
-		if (ux == uy) {
+		if (a.longValue() == b.longValue()) {
 			return -1;
 		}
-		double d = unsignedLongToDouble(ux ^ uy);
-		return Math.getExponent(d);
-	}
-
-	private double unsignedLongToDouble(long x) {
-		double d = (double) (x & UNSIGNED_MASK);
-		if (d < 0) {
-			d += 0x1.0p63;
-		}
-		return d;
-	}
-
-	private BigInteger unsignedLongToBigInt(long x) {
-		BigInteger asBigInt = BigInteger.valueOf(x & UNSIGNED_MASK);
-		if (x < 0) {
-			asBigInt = asBigInt.setBit(Long.SIZE - 1);
-		}
-		return asBigInt;
-	}
-
-	private BigInteger asUnsignedLongToBigInt(Double a) {
-		return unsignedLongToBigInt(Double.doubleToLongBits(a));
+		/*
+		 * This is a fast way to compute floor(log_2(a xor b)).
+		 */
+		return Math.getExponent(a ^ b);
 	}
 
 }

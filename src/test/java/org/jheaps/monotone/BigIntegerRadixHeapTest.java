@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.monotone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,6 +30,8 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Random;
 
+import org.jheaps.Heap;
+import org.jheaps.monotone.BigIntegerRadixHeap;
 import org.junit.Test;
 
 public class BigIntegerRadixHeapTest {

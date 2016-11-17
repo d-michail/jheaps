@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.monotone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -23,6 +23,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
+import org.jheaps.Heap;
+import org.jheaps.monotone.DoubleRadixHeap;
 import org.junit.Test;
 
 public class DoubleRadixHeapTest {

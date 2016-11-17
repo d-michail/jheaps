@@ -1,10 +1,12 @@
-package org.jheaps;
+package org.jheaps.monotone;
 
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.jheaps.Heap;
+import org.jheaps.MapHeap;
 import org.jheaps.annotations.ConstantTime;
 
 /**
