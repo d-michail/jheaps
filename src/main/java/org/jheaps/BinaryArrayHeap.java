@@ -71,7 +71,7 @@ import org.jheaps.annotations.LinearTime;
  * @see Comparator
  * @see Serializable
  */
-public class BinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Serializable {
+public class BinaryArrayHeap<K> extends AbstractBinaryArrayHeap<K> implements Serializable {
 
 	private final static long serialVersionUID = 1;
 
@@ -95,10 +95,10 @@ public class BinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Seri
 	 *
 	 * <p>
 	 * The initial capacity of the heap is
-	 * {@link BinaryHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically based
+	 * {@link BinaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically based
 	 * on the sequence of insertions and deletions.
 	 */
-	public BinaryHeap() {
+	public BinaryArrayHeap() {
 		super(null, DEFAULT_HEAP_CAPACITY);
 	}
 
@@ -123,7 +123,7 @@ public class BinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Seri
 	 * @param capacity
 	 *            the initial heap capacity
 	 */
-	public BinaryHeap(int capacity) {
+	public BinaryArrayHeap(int capacity) {
 		super(null, capacity);
 	}
 
@@ -140,7 +140,7 @@ public class BinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Seri
 	 *
 	 * <p>
 	 * The initial capacity of the heap is
-	 * {@link BinaryHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically based
+	 * {@link BinaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically based
 	 * on the sequence of insertions and deletions.
 	 *
 	 * @param comparator
@@ -148,7 +148,7 @@ public class BinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Seri
 	 *            {@code null}, the {@linkplain Comparable natural ordering} of
 	 *            the keys will be used.
 	 */
-	public BinaryHeap(Comparator<? super K> comparator) {
+	public BinaryArrayHeap(Comparator<? super K> comparator) {
 		super(comparator, DEFAULT_HEAP_CAPACITY);
 	}
 
@@ -175,7 +175,7 @@ public class BinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Seri
 	 * @param capacity
 	 *            the initial heap capacity
 	 */
-	public BinaryHeap(Comparator<? super K> comparator, int capacity) {
+	public BinaryArrayHeap(Comparator<? super K> comparator, int capacity) {
 		super(comparator, capacity);
 	}
 
@@ -192,15 +192,15 @@ public class BinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Seri
 	 *             in case the array is null
 	 */
 	@LinearTime
-	public static <K> BinaryHeap<K> heapify(K[] array) {
+	public static <K> BinaryArrayHeap<K> heapify(K[] array) {
 		if (array == null) {
 			throw new IllegalArgumentException("Array cannot be null");
 		}
 		if (array.length == 0) {
-			return new BinaryHeap<K>();
+			return new BinaryArrayHeap<K>();
 		}
 
-		BinaryHeap<K> h = new BinaryHeap<K>(array.length);
+		BinaryArrayHeap<K> h = new BinaryArrayHeap<K>(array.length);
 
 		System.arraycopy(array, 0, h.array, 1, array.length);
 		h.size = array.length;
@@ -227,15 +227,15 @@ public class BinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Seri
 	 *             in case the array is null
 	 */
 	@LinearTime
-	public static <K> BinaryHeap<K> heapify(K[] array, Comparator<? super K> comparator) {
+	public static <K> BinaryArrayHeap<K> heapify(K[] array, Comparator<? super K> comparator) {
 		if (array == null) {
 			throw new IllegalArgumentException("Array cannot be null");
 		}
 		if (array.length == 0) {
-			return new BinaryHeap<K>(comparator);
+			return new BinaryArrayHeap<K>(comparator);
 		}
 
-		BinaryHeap<K> h = new BinaryHeap<K>(comparator, array.length);
+		BinaryArrayHeap<K> h = new BinaryArrayHeap<K>(comparator, array.length);
 
 		System.arraycopy(array, 0, h.array, 1, array.length);
 		h.size = array.length;

@@ -63,6 +63,8 @@ import org.jheaps.annotations.LogarithmicTime;
  *
  * @param <K>
  *            the type of keys maintained by this heap
+ * @param <V>
+ *            the type of values maintained by this heap
  *
  * @author Dimitrios Michail
  * 
@@ -71,7 +73,7 @@ import org.jheaps.annotations.LogarithmicTime;
  * @see Comparable
  * @see Comparator
  */
-public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Serializable {
+public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K>, Serializable {
 
 	private final static long serialVersionUID = 1;
 
@@ -135,11 +137,11 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 	 */
 	@Override
 	@LogarithmicTime(amortized = true)
-	public AddressableHeap.Handle<K> insert(K key) {
+	public AddressableHeap.Handle<K, V> insert(K key, V value) {
 		if (key == null) {
 			throw new NullPointerException("Null keys not permitted");
 		}
-		PairingHandle n = new PairingHandle(key);
+		PairingHandle n = new PairingHandle(key, value);
 		if (comparator == null) {
 			root = link(root, n);
 		} else {
@@ -153,8 +155,17 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 	 * {@inheritDoc}
 	 */
 	@Override
+	@LogarithmicTime(amortized = true)
+	public AddressableHeap.Handle<K, V> insert(K key) {
+		return insert(key, null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	@ConstantTime(amortized = true)
-	public AddressableHeap.Handle<K> findMin() {
+	public AddressableHeap.Handle<K, V> findMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
@@ -166,14 +177,14 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 	 */
 	@Override
 	@LogarithmicTime(amortized = true)
-	public AddressableHeap.Handle<K> deleteMin() {
+	public AddressableHeap.Handle<K, V> deleteMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
 		assert root.o_s == null && root.y_s == null;
 
-		Handle<K> oldRoot = root;
-		
+		Handle<K, V> oldRoot = root;
+
 		// cut all children, combine them and overwrite old root
 		root = combine(cutChildren(root));
 
@@ -225,7 +236,7 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 	@Override
 	@LogarithmicTime(amortized = true)
 	public void meld(MergeableHeap<K> other) {
-		PairingHeap<K> h = (PairingHeap<K>) other;
+		PairingHeap<K, V> h = (PairingHeap<K, V>) other;
 
 		// check same comparator
 		if (comparator != null) {
@@ -250,17 +261,19 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 	}
 
 	// --------------------------------------------------------------------
-	private class PairingHandle implements AddressableHeap.Handle<K>, Serializable {
+	private class PairingHandle implements AddressableHeap.Handle<K, V>, Serializable {
 
 		private final static long serialVersionUID = 1;
 
 		K key;
+		V value;
 		PairingHandle o_c; // older child
 		PairingHandle y_s; // younger sibling
 		PairingHandle o_s; // older sibling
 
-		PairingHandle(K key) {
+		PairingHandle(K key, V value) {
 			this.key = key;
+			this.value = value;
 			o_c = y_s = o_s = null;
 		}
 
@@ -270,6 +283,14 @@ public class PairingHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Ser
 		@Override
 		public K getKey() {
 			return key;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public V getValue() {
+			return value;
 		}
 
 		/**

@@ -13,9 +13,12 @@ import org.jheaps.annotations.ConstantTime;
  * @author Dimitrios Michail
  *
  * @param <K>
- *            the key type
+ *            the type of keys maintained by this heap
+ * @param <V>
+ *            the type of values maintained by this heap
+ * 
  */
-abstract class AbstractAddressableRadixHeap<K> implements AddressableHeap<K>, Serializable {
+abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, V>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -57,7 +60,7 @@ abstract class AbstractAddressableRadixHeap<K> implements AddressableHeap<K>, Se
 	/**
 	 * Constructor
 	 */
-	AbstractAddressableRadixHeap() {
+	AbstractRadixAddressableHeap() {
 	}
 
 	/**
@@ -65,7 +68,7 @@ abstract class AbstractAddressableRadixHeap<K> implements AddressableHeap<K>, Se
 	 */
 	@Override
 	@ConstantTime
-	public Handle<K> findMin() {
+	public Handle<K, V> findMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
@@ -86,7 +89,25 @@ abstract class AbstractAddressableRadixHeap<K> implements AddressableHeap<K>, Se
 	 */
 	@Override
 	@ConstantTime
-	public Handle<K> insert(K key) {
+	public Handle<K, V> insert(K key) {
+		return insert(key, null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the key is null
+	 * @throws IllegalArgumentException
+	 *             if the key is less than the minimum allowed key
+	 * @throws IllegalArgumentException
+	 *             if the key is more than the maximum allowed key
+	 * @throws IllegalArgumentException
+	 *             if the key is less than the current minimum
+	 */
+	@Override
+	@ConstantTime
+	public Handle<K, V> insert(K key, V value) {
 		if (key == null) {
 			throw new IllegalArgumentException("Null keys not permitted");
 		}
@@ -97,7 +118,7 @@ abstract class AbstractAddressableRadixHeap<K> implements AddressableHeap<K>, Se
 			throw new IllegalArgumentException("Key is more than the maximum allowed key");
 		}
 
-		Node p = new Node(key);
+		Node p = new Node(key, value);
 		if (size == 0) {
 			p.bucket = 0;
 			buckets[0] = p;
@@ -129,7 +150,7 @@ abstract class AbstractAddressableRadixHeap<K> implements AddressableHeap<K>, Se
 	 */
 	@Override
 	@ConstantTime(amortized = true)
-	public Handle<K> deleteMin() {
+	public Handle<K, V> deleteMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
@@ -343,17 +364,19 @@ abstract class AbstractAddressableRadixHeap<K> implements AddressableHeap<K>, Se
 	}
 
 	// list node
-	private class Node implements Handle<K>, Serializable {
+	protected class Node implements Handle<K, V>, Serializable {
 
 		private static final long serialVersionUID = 1L;
 
 		K key;
+		V value;
 		Node next;
 		Node prev;
 		int bucket;
 
-		public Node(K key) {
+		public Node(K key, V value) {
 			this.key = key;
+			this.value = value;
 			this.next = null;
 			this.prev = null;
 			this.bucket = NO_BUCKET;
@@ -362,6 +385,11 @@ abstract class AbstractAddressableRadixHeap<K> implements AddressableHeap<K>, Se
 		@Override
 		public K getKey() {
 			return key;
+		}
+
+		@Override
+		public V getValue() {
+			return value;
 		}
 
 		@Override

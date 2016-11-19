@@ -28,10 +28,12 @@ import java.util.Comparator;
  *
  * @param <K>
  *            the type of keys maintained by this heap
+ * @param <V>
+ *            the type of values maintained by this heap
  *
  * @author Dimitrios Michail
  */
-public interface AddressableHeap<K> {
+public interface AddressableHeap<K, V> {
 
 	/**
 	 * A heap element handle. Allows someone to address an element already in a
@@ -39,8 +41,10 @@ public interface AddressableHeap<K> {
 	 *
 	 * @param <K>
 	 *            the type of keys maintained by this heap
+	 * @param <V>
+	 *            the type of values maintained by this heap
 	 */
-	interface Handle<K> {
+	interface Handle<K, V> {
 
 		/**
 		 * Return the key of the element.
@@ -48,6 +52,13 @@ public interface AddressableHeap<K> {
 		 * @return the key of the element
 		 */
 		K getKey();
+
+		/**
+		 * Return the value of the element.
+		 *
+		 * @return the value of the element
+		 */
+		V getValue();
 
 		/**
 		 * Decrease the key of the element.
@@ -90,26 +101,38 @@ public interface AddressableHeap<K> {
 	 *
 	 * @param key
 	 *            the element's key
+	 * @param value
+	 *            the element's value
+	 * 
 	 * @return a handle for the newly added element
 	 */
-	AddressableHeap.Handle<K> insert(K key);
+	AddressableHeap.Handle<K, V> insert(K key, V value);
+
+	/**
+	 * Insert a new element into the heap with a null value.
+	 *
+	 * @param key
+	 *            the element's key
+	 * @return a handle for the newly added element
+	 */
+	AddressableHeap.Handle<K, V> insert(K key);
 
 	/**
 	 * Find an element with the minimum key.
 	 *
 	 * @return a handle to an element with minimum key
 	 */
-	AddressableHeap.Handle<K> findMin();
+	AddressableHeap.Handle<K, V> findMin();
 
 	/**
 	 * Delete and return an element with the minimum key. If multiple such
 	 * elements exists, only one of them will be deleted. After the element is
-	 * deleted the handle is invalidated and only method {#link
-	 * {@link Handle#getKey()} can be used.
+	 * deleted the handle is invalidated and only method {@link Handle#getKey()}
+	 * and {@link Handle#getValue() can be used.
 	 * 
 	 * @return a handle to the deleted element with minimum key
 	 */
-	AddressableHeap.Handle<K> deleteMin();
+	AddressableHeap.Handle<K, V> deleteMin();
 
 	/**
 	 * Returns {@code true} if this heap is empty.

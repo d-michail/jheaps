@@ -30,8 +30,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 import org.jheaps.Heap;
-import org.jheaps.MapHeap;
-import org.jheaps.MapHeap.Entry;
 import org.jheaps.monotone.LongRadixHeap;
 import org.junit.Test;
 
@@ -41,7 +39,7 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void test() {
-		Heap<Long> h = new LongRadixHeap<Long>(0, SIZE).asHeap();
+		Heap<Long> h = new LongRadixHeap(0, SIZE);
 
 		for (long i = 0; i < SIZE; i++) {
 			h.insert(i);
@@ -58,7 +56,7 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void testVerySmall() {
-		Heap<Long> h = new LongRadixHeap<Long>(29, 36).asHeap();
+		Heap<Long> h = new LongRadixHeap(29, 36);
 
 		h.insert(29l);
 		h.insert(30l);
@@ -91,7 +89,7 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void testSortRandomSeed1() {
-		Heap<Long> h = new LongRadixHeap<Long>(0, SIZE + 1).asHeap();
+		Heap<Long> h = new LongRadixHeap(0, SIZE + 1);
 
 		Random generator = new Random(1);
 
@@ -117,7 +115,7 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void testSort2RandomSeed1() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(0, SIZE + 1).asHeap();
+		Heap<Long> h = new LongRadixHeap(0, SIZE + 1);
 
 		Random generator = new Random(1);
 
@@ -142,7 +140,7 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void testSortRandomSeed2() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(0, SIZE + 1).asHeap();
+		Heap<Long> h = new LongRadixHeap(0, SIZE + 1);
 
 		Random generator = new Random(2);
 
@@ -168,7 +166,7 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void testSort2RandomSeed2() {
-		Heap<Long> h = new LongRadixHeap<Long>(0, SIZE + 1).asHeap();
+		Heap<Long> h = new LongRadixHeap(0, SIZE + 1);
 
 		Random generator = new Random(2);
 
@@ -192,34 +190,8 @@ public class LongRadixHeapTest {
 	}
 
 	@Test
-	public void testSort3RandomSeed1() {
-		MapHeap<Long, String> h = new LongRadixHeap<String>(0, SIZE + 1);
-
-		Random generator = new Random(1);
-
-		long[] a = new long[SIZE];
-		for (int i = 0; i < SIZE; i++) {
-			a[i] = (long) (SIZE * generator.nextDouble());
-		}
-		Arrays.sort(a);
-		for (int i = 0; i < SIZE; i++) {
-			h.insert(a[i], String.valueOf(a[i]));
-		}
-
-		Entry<Long, String> prev = null, cur;
-		while (!h.isEmpty()) {
-			cur = h.deleteMin();
-			assertEquals(String.valueOf(cur.getKey()), cur.getValue());
-			if (prev != null) {
-				assertTrue(prev.getKey().compareTo(cur.getKey()) <= 0);
-			}
-			prev = cur;
-		}
-	}
-
-	@Test
 	public void testSameMinMax() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(100, 100).asHeap();
+		Heap<Long> h = new LongRadixHeap(100, 100);
 
 		for (int i = 0; i < 15; i++) {
 			h.insert(100l);
@@ -231,10 +203,10 @@ public class LongRadixHeapTest {
 		}
 		assertEquals(0, h.size());
 	}
-	
+
 	@Test
 	public void testMaxDifference() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(0, Long.MAX_VALUE).asHeap();
+		Heap<Long> h = new LongRadixHeap(0, Long.MAX_VALUE);
 
 		h.insert(0l);
 		h.insert(Long.MAX_VALUE);
@@ -247,7 +219,7 @@ public class LongRadixHeapTest {
 
 	@Test
 	public void testClear() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(0, 15).asHeap();
+		Heap<Long> h = new LongRadixHeap(0, 15);
 
 		for (long i = 0; i < 15; i++) {
 			h.insert(i);
@@ -260,25 +232,25 @@ public class LongRadixHeapTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMonotone() {
-		Heap<Long> h = new LongRadixHeap<Boolean>(0, 1000).asHeap();
+		Heap<Long> h = new LongRadixHeap(0, 1000);
 		h.insert(100l);
 		h.insert(99l);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction() {
-		new LongRadixHeap<Long>(-1, 100);
+		new LongRadixHeap(-1, 100);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction1() {
-		new LongRadixHeap<Boolean>(100, 99);
+		new LongRadixHeap(100, 99);
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSerializable() throws IOException, ClassNotFoundException {
-		Heap<Long> h = new LongRadixHeap<Long>(0, 15).asHeap();
+		Heap<Long> h = new LongRadixHeap(0, 15);
 
 		for (long i = 0; i < 15; i++) {
 			h.insert(i);

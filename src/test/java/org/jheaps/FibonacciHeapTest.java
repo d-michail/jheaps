@@ -30,8 +30,8 @@ public class FibonacciHeapTest extends AbstractAddressableHeapTest {
 	@Test
 	public void testMeld() throws IOException, ClassNotFoundException {
 
-		FibonacciHeap<Integer> h1 = new FibonacciHeap<Integer>();
-		FibonacciHeap<Integer> h2 = new FibonacciHeap<Integer>();
+		FibonacciHeap<Integer, Void> h1 = new FibonacciHeap<Integer, Void>();
+		FibonacciHeap<Integer, Void> h2 = new FibonacciHeap<Integer, Void>();
 
 		for (int i = 0; i < SIZE; i++) {
 			if (i % 2 == 0) {
@@ -56,8 +56,8 @@ public class FibonacciHeapTest extends AbstractAddressableHeapTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testMeldWrong() throws IOException, ClassNotFoundException {
 
-		FibonacciHeap<Integer> h1 = new FibonacciHeap<Integer>();
-		FibonacciHeap<Integer> h2 = new FibonacciHeap<Integer>(comparator);
+		FibonacciHeap<Integer, Void> h1 = new FibonacciHeap<Integer, Void>();
+		FibonacciHeap<Integer, Void> h2 = new FibonacciHeap<Integer, Void>(comparator);
 
 		for (int i = 0; i < SIZE; i++) {
 			if (i % 2 == 0) {
@@ -81,12 +81,12 @@ public class FibonacciHeapTest extends AbstractAddressableHeapTest {
 	}
 
 	@Override
-	protected AddressableHeap<Integer> createHeap() {
-		return new FibonacciHeap<Integer>();
+	protected AddressableHeap<Integer, Void> createHeap() {
+		return new FibonacciHeap<Integer, Void>();
 	}
 
 	@Override
-	protected AddressableHeap<Integer> createHeap(Comparator<Integer> comparator) {
-		return new FibonacciHeap<Integer>(comparator);
+	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
+		return new FibonacciHeap<Integer, Void>(comparator);
 	}
 }

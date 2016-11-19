@@ -17,22 +17,16 @@
  */
 package org.jheaps;
 
-import java.util.Comparator;
-
 import org.junit.Test;
 
-public class Dary5HeapTest extends AbstractHeapTest {
+public class BinaryArrayHeapTest extends AbstractHeapTest {
 
 	protected Heap<Long> createHeap() {
-		return new DaryHeap<Long>(5);
-	}
-
-	protected Heap<Long> createHeap(Comparator<Long> comparator) {
-		return new DaryHeap<Long>(5, comparator);
+		return new BinaryArrayHeap<Long>();
 	}
 
 	protected Heap<Long> createHeap(int capacity) {
-		return new DaryHeap<Long>(5, capacity);
+		return new BinaryArrayHeap<Long>(capacity);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

@@ -23,19 +23,18 @@ import java.util.Comparator;
 import org.jheaps.annotations.LinearTime;
 
 /**
- * An implicit d-ary heap with a maximum number of elements. The heap is sorted
- * according to the {@linkplain Comparable natural ordering} of its keys, or by
- * a {@link Comparator} provided at heap creation time, depending on which
- * constructor is used.
+ * An implicit d-ary heap implementation of the {@link Heap} interface. The heap
+ * is sorted according to the {@linkplain Comparable natural ordering} of its
+ * keys, or by a {@link Comparator} provided at heap creation time, depending on
+ * which constructor is used.
  *
  * <p>
  * Implicit implementations of a heap use an array in order to store the
- * elements. This implementation uses a fixed size array, providing worst-case
- * O(log(n)) time for the {@code insert} and {@code deleteMin} operations.
- * Operation {@code findMin}, is a worst-case O(1) operation. {@link DaryHeap}
- * provides a more dynamic implementation in the expense of amortized complexity
- * bounds.
- *
+ * elements. This implementation automatically maintains the size of the array
+ * much like a {@link java.util.Vector} does, providing amortized O(log(n)) time
+ * cost for the {@code insert} and {@code deleteMin} operations. Operation
+ * {@code findMin}, is a worst-case O(1) operation.
+ * 
  * <p>
  * Constructing such a heap from an array of elements can be performed using the
  * method {@link #heapify(int, Object[])} or
@@ -72,13 +71,17 @@ import org.jheaps.annotations.LinearTime;
  * @see Comparator
  * @see Serializable
  */
-public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements Serializable {
+public class DaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implements Serializable {
 
 	private final static long serialVersionUID = 1;
 
 	/**
-	 * Constructs a new, empty heap, with a provided capacity using the natural
-	 * ordering of its keys.
+	 * Default initial capacity of the heap.
+	 */
+	public static final int DEFAULT_HEAP_CAPACITY = 128;
+
+	/**
+	 * Constructs a new, empty heap, using the natural ordering of its keys.
 	 *
 	 * <p>
 	 * All keys inserted into the heap must implement the {@link Comparable}
@@ -90,20 +93,51 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 	 * heap whose keys are integers), the {@code insert(Object key)} call will
 	 * throw a {@code ClassCastException}.
 	 *
+	 * <p>
+	 * The initial capacity of the heap is
+	 * {@link DaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically based on
+	 * the sequence of insertions and deletions.
+	 * 
 	 * @param d
-	 *            the children of each node in the d-ary heap
-	 * @param capacity
-	 *            the heap capacity
+	 *            the number of children of each node in the d-ary heap
 	 * @throws IllegalArgumentException
 	 *             in case the number of children per node are less than 2
 	 */
-	public FixedSizeDaryHeap(int d, int capacity) {
+	public DaryArrayHeap(int d) {
+		super(d, null, DEFAULT_HEAP_CAPACITY);
+	}
+
+	/**
+	 * Constructs a new, empty heap, with a provided initial capacity using the
+	 * natural ordering of its keys.
+	 *
+	 * <p>
+	 * All keys inserted into the heap must implement the {@link Comparable}
+	 * interface. Furthermore, all such keys must be <em>mutually
+	 * comparable</em>: {@code k1.compareTo(k2)} must not throw a
+	 * {@code ClassCastException} for any keys {@code k1} and {@code k2} in the
+	 * heap. If the user attempts to put a key into the heap that violates this
+	 * constraint (for example, the user attempts to put a string key into a
+	 * heap whose keys are integers), the {@code insert(Object key)} call will
+	 * throw a {@code ClassCastException}.
+	 *
+	 * <p>
+	 * The initial capacity of the heap is provided by the user and is adjusted
+	 * automatically based on the sequence of insertions and deletions.
+	 *
+	 * @param d
+	 *            the number of children of each node in the d-ary heap
+	 * @param capacity
+	 *            the initial heap capacity
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
+	 */
+	public DaryArrayHeap(int d, int capacity) {
 		super(d, null, capacity);
 	}
 
 	/**
-	 * Constructs a new, empty heap, with a provided capacity ordered according
-	 * to the given comparator.
+	 * Constructs a new, empty heap, ordered according to the given comparator.
 	 *
 	 * <p>
 	 * All keys inserted into the heap must be <em>mutually comparable</em> by
@@ -113,18 +147,52 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 	 * heap that violates this constraint, the {@code insert(Object key)} call
 	 * will throw a {@code ClassCastException}.
 	 *
+	 * <p>
+	 * The initial capacity of the heap is
+	 * {@link DaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically based on
+	 * the sequence of insertions and deletions.
+	 *
 	 * @param d
-	 *            the children of each node in the d-ary heap
+	 *            the number of children of each node in the d-ary heap
+	 * @param comparator
+	 *            the comparator that will be used to order this heap. If
+	 *            {@code null}, the {@linkplain Comparable natural ordering} of
+	 *            the keys will be used.
+	 * @throws IllegalArgumentException
+	 *             in case the number of children per node are less than 2
+	 */
+	public DaryArrayHeap(int d, Comparator<? super K> comparator) {
+		super(d, comparator, DEFAULT_HEAP_CAPACITY);
+	}
+
+	/**
+	 * Constructs a new, empty heap, with a provided initial capacity ordered
+	 * according to the given comparator.
+	 *
+	 * <p>
+	 * All keys inserted into the heap must be <em>mutually comparable</em> by
+	 * the given comparator: {@code comparator.compare(k1,
+	 * k2)} must not throw a {@code ClassCastException} for any keys {@code k1}
+	 * and {@code k2} in the heap. If the user attempts to put a key into the
+	 * heap that violates this constraint, the {@code insert(Object key)} call
+	 * will throw a {@code ClassCastException}.
+	 *
+	 * <p>
+	 * The initial capacity of the heap is provided by the user and is adjusted
+	 * automatically based on the sequence of insertions and deletions.
+	 *
+	 * @param d
+	 *            the number of children of each node in the d-ary heap
 	 * @param comparator
 	 *            the comparator that will be used to order this heap. If
 	 *            {@code null}, the {@linkplain Comparable natural ordering} of
 	 *            the keys will be used.
 	 * @param capacity
-	 *            the heap capacity
+	 *            the initial heap capacity
 	 * @throws IllegalArgumentException
 	 *             in case the number of children per node are less than 2
 	 */
-	public FixedSizeDaryHeap(int d, Comparator<? super K> comparator, int capacity) {
+	public DaryArrayHeap(int d, Comparator<? super K> comparator, int capacity) {
 		super(d, comparator, capacity);
 	}
 
@@ -145,7 +213,7 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 	 *             in case the array is null
 	 */
 	@LinearTime
-	public static <K> FixedSizeDaryHeap<K> heapify(int d, K[] array) {
+	public static <K> DaryArrayHeap<K> heapify(int d, K[] array) {
 		if (d < 2) {
 			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
 		}
@@ -153,10 +221,10 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 			throw new IllegalArgumentException("Array cannot be null");
 		}
 		if (array.length == 0) {
-			return new FixedSizeDaryHeap<K>(d, 0);
+			return new DaryArrayHeap<K>(d);
 		}
 
-		FixedSizeDaryHeap<K> h = new FixedSizeDaryHeap<K>(d, array.length);
+		DaryArrayHeap<K> h = new DaryArrayHeap<K>(d, array.length);
 
 		System.arraycopy(array, 0, h.array, 1, array.length);
 		h.size = array.length;
@@ -187,7 +255,7 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 	 *             in case the array is null
 	 */
 	@LinearTime
-	public static <K> FixedSizeDaryHeap<K> heapify(int d, K[] array, Comparator<? super K> comparator) {
+	public static <K> DaryArrayHeap<K> heapify(int d, K[] array, Comparator<? super K> comparator) {
 		if (d < 2) {
 			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
 		}
@@ -195,10 +263,10 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 			throw new IllegalArgumentException("Array cannot be null");
 		}
 		if (array.length == 0) {
-			return new FixedSizeDaryHeap<K>(d, comparator, 0);
+			return new DaryArrayHeap<K>(d, comparator);
 		}
 
-		FixedSizeDaryHeap<K> h = new FixedSizeDaryHeap<K>(d, comparator, array.length);
+		DaryArrayHeap<K> h = new DaryArrayHeap<K>(d, comparator, array.length);
 
 		System.arraycopy(array, 0, h.array, 1, array.length);
 		h.size = array.length;
@@ -217,11 +285,12 @@ public class FixedSizeDaryHeap<K> extends AbstractDaryImplicitHeap<K> implements
 	 *            the requested capacity
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void ensureCapacity(int capacity) {
 		checkCapacity(capacity);
-		if (capacity >= array.length) {
-			throw new IllegalStateException("Data structure has no extra space");
-		}
+		K[] newArray = (K[]) new Object[capacity];
+		System.arraycopy(array, 1, newArray, 1, size);
+		array = newArray;
 	}
 
 }

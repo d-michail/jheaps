@@ -54,14 +54,14 @@ public abstract class AbstractAddressableHeapTest {
 		};
 	}
 
-	protected abstract AddressableHeap<Integer> createHeap();
+	protected abstract AddressableHeap<Integer, Void> createHeap();
 
-	protected abstract AddressableHeap<Integer> createHeap(Comparator<Integer> comparator);
+	protected abstract AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator);
 
 	@Test
 	public void test() {
 
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		for (int i = 0; i < SIZE; i++) {
 			h.insert(i);
@@ -80,7 +80,7 @@ public abstract class AbstractAddressableHeapTest {
 	@Test
 	public void testOnlyInsert() {
 
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		for (int i = 0; i < SIZE; i++) {
 			h.insert(SIZE - i);
@@ -94,7 +94,7 @@ public abstract class AbstractAddressableHeapTest {
 	@Test
 	public void testComparator() {
 
-		AddressableHeap<Integer> h = createHeap(comparator);
+		AddressableHeap<Integer, Void> h = createHeap(comparator);
 		int i;
 
 		for (i = 0; i < SIZE; i++) {
@@ -114,7 +114,7 @@ public abstract class AbstractAddressableHeapTest {
 	@Test
 	public void testOnly4() {
 
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		assertTrue(h.isEmpty());
 
@@ -155,7 +155,7 @@ public abstract class AbstractAddressableHeapTest {
 
 	@Test
 	public void testOnly4Reverse() {
-		AddressableHeap<Integer> h = createHeap(comparator);
+		AddressableHeap<Integer, Void> h = createHeap(comparator);
 
 		assertTrue(h.isEmpty());
 
@@ -195,7 +195,7 @@ public abstract class AbstractAddressableHeapTest {
 
 	@Test
 	public void testSortRandomSeed1() {
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		Random generator = new Random(1);
 
@@ -216,7 +216,7 @@ public abstract class AbstractAddressableHeapTest {
 
 	@Test
 	public void testSort1RandomSeed1() {
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		Random generator = new Random(1);
 
@@ -236,7 +236,7 @@ public abstract class AbstractAddressableHeapTest {
 
 	@Test
 	public void testSortRandomSeed2() {
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		Random generator = new Random(2);
 
@@ -257,7 +257,7 @@ public abstract class AbstractAddressableHeapTest {
 
 	@Test
 	public void testSort2RandomSeed2() {
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		Random generator = new Random(2);
 
@@ -277,7 +277,7 @@ public abstract class AbstractAddressableHeapTest {
 
 	@Test
 	public void testFindMinDeleteMinSameObject() {
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		Random generator = new Random(1);
 
@@ -293,9 +293,9 @@ public abstract class AbstractAddressableHeapTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testDelete() {
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
-		AddressableHeap.Handle<Integer> array[];
+		AddressableHeap.Handle<Integer, Void> array[];
 		array = new AddressableHeap.Handle[15];
 		for (int i = 0; i < 15; i++) {
 			array[i] = h.insert(i);
@@ -337,9 +337,9 @@ public abstract class AbstractAddressableHeapTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testDelete1() {
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
-		AddressableHeap.Handle<Integer> array[];
+		AddressableHeap.Handle<Integer, Void> array[];
 		array = new AddressableHeap.Handle[8];
 		for (int i = 0; i < 8; i++) {
 			array[i] = h.insert(i);
@@ -360,9 +360,9 @@ public abstract class AbstractAddressableHeapTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testAddDelete() {
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
-		AddressableHeap.Handle<Integer> array[];
+		AddressableHeap.Handle<Integer, Void> array[];
 		array = new AddressableHeap.Handle[SIZE];
 		for (int i = 0; i < SIZE; i++) {
 			array[i] = h.insert(i);
@@ -380,9 +380,9 @@ public abstract class AbstractAddressableHeapTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testAddDeleteComparator() {
-		AddressableHeap<Integer> h = createHeap(comparator);
+		AddressableHeap<Integer, Void> h = createHeap(comparator);
 
-		AddressableHeap.Handle<Integer> array[];
+		AddressableHeap.Handle<Integer, Void> array[];
 		array = new AddressableHeap.Handle[SIZE];
 		for (int i = 0; i < SIZE; i++) {
 			array[i] = h.insert(i);
@@ -399,7 +399,7 @@ public abstract class AbstractAddressableHeapTest {
 
 	@Test
 	public void testClear() {
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		for (int i = 0; i < 15; i++) {
 			h.insert(i);
@@ -414,9 +414,9 @@ public abstract class AbstractAddressableHeapTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteTwice() {
 
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
-		AddressableHeap.Handle<Integer> array[];
+		AddressableHeap.Handle<Integer, Void> array[];
 		array = new AddressableHeap.Handle[15];
 		for (int i = 0; i < 15; i++) {
 			array[i] = h.insert(i);
@@ -443,8 +443,8 @@ public abstract class AbstractAddressableHeapTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteMinDeleteTwice() {
-		AddressableHeap<Integer> h = createHeap();
-		AddressableHeap.Handle<Integer> e1 = h.insert(50);
+		AddressableHeap<Integer, Void> h = createHeap();
+		AddressableHeap.Handle<Integer, Void> e1 = h.insert(50);
 		h.insert(100);
 		h.deleteMin();
 		e1.delete();
@@ -452,7 +452,7 @@ public abstract class AbstractAddressableHeapTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteMinDeleteTwice1() {
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		for (int i = 100; i < 200; i++) {
 			h.insert(i);
@@ -463,7 +463,7 @@ public abstract class AbstractAddressableHeapTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteMinDecreaseKey() {
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		for (int i = 100; i < 200; i++) {
 			h.insert(i);
@@ -475,9 +475,9 @@ public abstract class AbstractAddressableHeapTest {
 	@SuppressWarnings("unchecked")
 	public void testDecreaseKey() {
 
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
-		AddressableHeap.Handle<Integer> array[];
+		AddressableHeap.Handle<Integer, Void> array[];
 		array = new AddressableHeap.Handle[15];
 		for (int i = 0; i < 15; i++) {
 			array[i] = h.insert(i + 100);
@@ -502,9 +502,9 @@ public abstract class AbstractAddressableHeapTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testIncreaseKey() {
 
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
-		AddressableHeap.Handle<Integer> array[];
+		AddressableHeap.Handle<Integer, Void> array[];
 		array = new AddressableHeap.Handle[15];
 		for (int i = 0; i < 15; i++) {
 			array[i] = h.insert(i + 100);
@@ -520,7 +520,7 @@ public abstract class AbstractAddressableHeapTest {
 	@Test
 	public void testSerializable() throws IOException, ClassNotFoundException {
 
-		AddressableHeap<Integer> h = createHeap();
+		AddressableHeap<Integer, Void> h = createHeap();
 
 		for (int i = 0; i < 15; i++) {
 			h.insert(i);
@@ -539,7 +539,7 @@ public abstract class AbstractAddressableHeapTest {
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object o = ois.readObject();
 		ois.close();
-		h = (AddressableHeap<Integer>) o;
+		h = (AddressableHeap<Integer, Void>) o;
 
 		for (int i = 0; i < 15; i++) {
 			assertEquals(15 - i, h.size());

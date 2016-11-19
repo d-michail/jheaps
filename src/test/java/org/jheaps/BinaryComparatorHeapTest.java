@@ -22,7 +22,7 @@ import java.util.Comparator;
 public class BinaryComparatorHeapTest extends AbstractComparatorHeapTest {
 
 	protected Heap<Long> createHeap(Comparator<Long> comparator) {
-		return new BinaryHeap<Long>(comparator);
+		return new BinaryArrayHeap<Long>(comparator);
 	}
 
 }

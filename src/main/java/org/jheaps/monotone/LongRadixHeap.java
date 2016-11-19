@@ -22,8 +22,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jheaps.MapHeap;
-
 /**
  * An implicit radix heap for (signed) long keys. The heap stores long keys
  * sorted according to the {@linkplain Comparable natural ordering} of its keys.
@@ -50,7 +48,7 @@ import org.jheaps.MapHeap;
  * @see MapHeap
  * @see Serializable
  */
-public class LongRadixHeap<V> extends AbstractRadixHeap<Long, V> {
+public class LongRadixHeap extends AbstractRadixHeap<Long> {
 
 	private final static long serialVersionUID = 1;
 
@@ -93,9 +91,9 @@ public class LongRadixHeap<V> extends AbstractRadixHeap<Long, V> {
 		}
 
 		// construct representation
-		this.buckets = (List<Entry<Long, V>>[]) Array.newInstance(List.class, numBuckets);
+		this.buckets = (List<Long>[]) Array.newInstance(List.class, numBuckets);
 		for (int i = 0; i < this.buckets.length; i++) {
-			buckets[i] = new ArrayList<Entry<Long, V>>();
+			buckets[i] = new ArrayList<Long>();
 		}
 		this.size = 0;
 		this.currentMin = null;

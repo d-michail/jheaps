@@ -32,7 +32,7 @@ import org.jheaps.annotations.LogarithmicTime;
  * @param <K>
  *            the type of keys maintained by this heap
  */
-abstract class AbstractImplicitHeap<K> implements Heap<K>, Serializable {
+abstract class AbstractArrayHeap<K> implements Heap<K>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -64,14 +64,14 @@ abstract class AbstractImplicitHeap<K> implements Heap<K>, Serializable {
 	 */
 	protected int size;
 
-	AbstractImplicitHeap() {
+	AbstractArrayHeap() {
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
-	public AbstractImplicitHeap(Comparator<? super K> comparator, int capacity) {
+	public AbstractArrayHeap(Comparator<? super K> comparator, int capacity) {
 		checkCapacity(capacity);
 		this.array = (K[]) new Object[capacity + 1];
 		this.size = 0;

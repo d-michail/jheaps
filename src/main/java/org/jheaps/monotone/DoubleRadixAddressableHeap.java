@@ -20,11 +20,9 @@ package org.jheaps.monotone;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * An implicit radix heap for double keys. The heap stores double keys sorted
+ * An addressable radix heap for double keys. The heap stores double keys sorted
  * according to the {@linkplain Comparable natural ordering} of its keys. A
  * radix heap is a monotone heap, especially designed for algorithms (such as
  * Dijkstra) which scan elements in order of nondecreasing keys.
@@ -37,10 +35,10 @@ import java.util.List;
  * (long in our case).
  *
  * <p>
- * Implicit implementations of a heap use arrays in order to store the elements.
- * Operations {@code insert} and {@code findMin} are worst-case constant time.
- * The cost of operation {@code deleteMin} is amortized O(logC) assuming the
- * radix-heap contains keys in the range {@literal [0, C]} or equivalently
+ * The implementation use arrays in order to store the elements. Operations
+ * {@code insert} and {@code findMin} are worst-case constant time. The cost of
+ * operation {@code deleteMin} is amortized O(logC) assuming the radix-heap
+ * contains keys in the range {@literal [0, C]} or equivalently
  * {@literal [a,a+C]}. Note, however, that C here depends on the distance of the
  * minimum and maximum value when they are translated into unsigned longs.
  * 
@@ -53,11 +51,13 @@ import java.util.List;
  * by synchronizing on some object that naturally encapsulates the heap.
  *
  * @author Dimitrios Michail
+ *
+ * @param <V>
+ *            the type of values maintained by this heap
  * 
- * @see MapHeap
  * @see Serializable
  */
-public class DoubleRadixHeap extends AbstractRadixHeap<Double> {
+public class DoubleRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<Double, V> {
 
 	private final static long serialVersionUID = 1;
 
@@ -85,7 +85,7 @@ public class DoubleRadixHeap extends AbstractRadixHeap<Double> {
 	 *             if the maximum key is less than the minimum key
 	 */
 	@SuppressWarnings("unchecked")
-	public DoubleRadixHeap(double minKey, double maxKey) {
+	public DoubleRadixAddressableHeap(double minKey, double maxKey) {
 		super();
 		if (!Double.isFinite(minKey) || minKey < 0.0) {
 			throw new IllegalArgumentException("Minimum key must be finite and non-negative");
@@ -103,10 +103,7 @@ public class DoubleRadixHeap extends AbstractRadixHeap<Double> {
 		int numBuckets = 2 + 1 + diff.bitLength();
 
 		// construct representation
-		this.buckets = (List<Double>[]) Array.newInstance(List.class, numBuckets);
-		for (int i = 0; i < this.buckets.length; i++) {
-			buckets[i] = new ArrayList<Double>();
-		}
+		this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
 		this.size = 0;
 		this.currentMin = null;
 		this.currentMinBucket = 0;

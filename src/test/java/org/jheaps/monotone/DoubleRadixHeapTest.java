@@ -33,7 +33,7 @@ public class DoubleRadixHeapTest {
 
 	@Test
 	public void testVerySmall() {
-		Heap<Double> h = new DoubleRadixHeap<Boolean>(15.0, 50.5).asHeap();
+		Heap<Double> h = new DoubleRadixHeap(15.0, 50.5);
 
 		h.insert(15.3);
 		h.insert(50.4);
@@ -66,7 +66,7 @@ public class DoubleRadixHeapTest {
 
 	@Test
 	public void test() {
-		Heap<Double> h = new DoubleRadixHeap<Boolean>(0.0, SIZE).asHeap();
+		Heap<Double> h = new DoubleRadixHeap(0.0, SIZE);
 
 		for (long i = 0; i < SIZE; i++) {
 			h.insert(Double.valueOf(i));
@@ -83,7 +83,7 @@ public class DoubleRadixHeapTest {
 
 	@Test
 	public void testSortRandomSeed1() {
-		Heap<Double> h = new DoubleRadixHeap<Boolean>(0.0, 1.0).asHeap();
+		Heap<Double> h = new DoubleRadixHeap(0.0, 1.0);
 
 		Random generator = new Random(1);
 
@@ -105,7 +105,7 @@ public class DoubleRadixHeapTest {
 
 	@Test
 	public void testSortRandomSeed2() {
-		Heap<Double> h = new DoubleRadixHeap<Boolean>(0.0, 1.0).asHeap();
+		Heap<Double> h = new DoubleRadixHeap(0.0, 1.0);
 
 		Random generator = new Random(2);
 
@@ -127,7 +127,7 @@ public class DoubleRadixHeapTest {
 
 	@Test
 	public void testSameMinMax() {
-		Heap<Double> h = new DoubleRadixHeap<Boolean>(1.0, 1.0).asHeap();
+		Heap<Double> h = new DoubleRadixHeap(1.0, 1.0);
 
 		for (int i = 0; i < 15; i++) {
 			h.insert(1.0);
@@ -142,7 +142,7 @@ public class DoubleRadixHeapTest {
 
 	@Test
 	public void testMaxDifference() {
-		Heap<Double> h = new DoubleRadixHeap<Boolean>(0.0, Double.MAX_VALUE).asHeap();
+		Heap<Double> h = new DoubleRadixHeap(0.0, Double.MAX_VALUE);
 
 		h.insert(0.0);
 		h.insert(Double.MAX_VALUE);

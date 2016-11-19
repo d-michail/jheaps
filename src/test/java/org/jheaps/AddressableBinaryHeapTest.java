@@ -22,12 +22,12 @@ import java.util.Comparator;
 public class AddressableBinaryHeapTest extends AbstractAddressableHeapTest {
 
 	@Override
-	protected AddressableHeap<Integer> createHeap() {
-		return new AddressableBinaryHeap<Integer>();
+	protected AddressableHeap<Integer, Void> createHeap() {
+		return new BinaryTreeAddressableHeap<Integer, Void>();
 	}
 
 	@Override
-	protected AddressableHeap<Integer> createHeap(Comparator<Integer> comparator) {
-		return new AddressableBinaryHeap<Integer>(comparator);
+	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
+		return new BinaryTreeAddressableHeap<Integer, Void>(comparator);
 	}
 }

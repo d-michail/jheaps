@@ -26,7 +26,7 @@ import org.jheaps.annotations.ConstantTime;
 import org.jheaps.annotations.LogarithmicTime;
 
 /**
- * An explicit binary heap implementation of the {@link AddressableHeap}
+ * An explicit binary tree implementation of the {@link AddressableHeap}
  * interface. The heap is sorted according to the {@linkplain Comparable natural
  * ordering} of its keys, or by a {@link Comparator} provided at heap creation
  * time, depending on which constructor is used.
@@ -60,6 +60,8 @@ import org.jheaps.annotations.LogarithmicTime;
  *
  * @param <K>
  *            the type of keys maintained by this heap
+ * @param <V>
+ *            the type of values maintained by this heap
  *
  * @author Dimitrios Michail
  * 
@@ -67,7 +69,7 @@ import org.jheaps.annotations.LogarithmicTime;
  * @see Comparable
  * @see Comparator
  */
-public class AddressableBinaryHeap<K> implements AddressableHeap<K>, Serializable {
+public class BinaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, Serializable {
 
 	private final static long serialVersionUID = 1;
 
@@ -102,7 +104,7 @@ public class AddressableBinaryHeap<K> implements AddressableHeap<K>, Serializabl
 	 * heap whose keys are integers), the {@code insert(Object key)} call will
 	 * throw a {@code ClassCastException}.
 	 */
-	public AddressableBinaryHeap() {
+	public BinaryTreeAddressableHeap() {
 		this(null);
 	}
 
@@ -122,7 +124,7 @@ public class AddressableBinaryHeap<K> implements AddressableHeap<K>, Serializabl
 	 *            {@code null}, the {@linkplain Comparable natural ordering} of
 	 *            the keys will be used.
 	 */
-	public AddressableBinaryHeap(Comparator<? super K> comparator) {
+	public BinaryTreeAddressableHeap(Comparator<? super K> comparator) {
 		this.comparator = comparator;
 		this.size = 0;
 		this.root = null;
@@ -133,12 +135,21 @@ public class AddressableBinaryHeap<K> implements AddressableHeap<K>, Serializabl
 	 */
 	@Override
 	@LogarithmicTime
+	public AddressableHeap.Handle<K, V> insert(K key) {
+		return insert(key, null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	@LogarithmicTime
 	@SuppressWarnings("unchecked")
-	public AddressableHeap.Handle<K> insert(K key) {
+	public AddressableHeap.Handle<K, V> insert(K key, V value) {
 		if (key == null) {
 			throw new NullPointerException("Null keys not permitted");
 		}
-		Node n = new Node(key);
+		Node n = new Node(key, value);
 
 		// easy special cases
 		if (size == 0) {
@@ -187,7 +198,7 @@ public class AddressableBinaryHeap<K> implements AddressableHeap<K>, Serializabl
 	 */
 	@Override
 	@ConstantTime
-	public AddressableHeap.Handle<K> findMin() {
+	public AddressableHeap.Handle<K, V> findMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
@@ -199,7 +210,7 @@ public class AddressableBinaryHeap<K> implements AddressableHeap<K>, Serializabl
 	 */
 	@Override
 	@LogarithmicTime
-	public AddressableHeap.Handle<K> deleteMin() {
+	public AddressableHeap.Handle<K, V> deleteMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
@@ -289,16 +300,18 @@ public class AddressableBinaryHeap<K> implements AddressableHeap<K>, Serializabl
 	}
 
 	// handle
-	private class Node implements AddressableHeap.Handle<K>, Serializable {
+	private class Node implements AddressableHeap.Handle<K, V>, Serializable {
 
 		private final static long serialVersionUID = 1;
 
 		K key;
+		V value;
 		Node o_c; // older child
 		Node y_s; // younger sibling or parent
 
-		Node(K key) {
+		Node(K key, V value) {
 			this.key = key;
+			this.value = value;
 			this.o_c = null;
 			this.y_s = null;
 		}
@@ -306,6 +319,11 @@ public class AddressableBinaryHeap<K> implements AddressableHeap<K>, Serializabl
 		@Override
 		public K getKey() {
 			return key;
+		}
+
+		@Override
+		public V getValue() {
+			return value;
 		}
 
 		@Override

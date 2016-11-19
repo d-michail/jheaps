@@ -19,10 +19,10 @@ package org.jheaps;
 
 import java.util.Comparator;
 
-public class Dary4ComparatorHeapTest extends AbstractComparatorHeapTest {
+public class Dary5ArrayComparatorHeapTest extends AbstractComparatorHeapTest {
 
 	protected Heap<Long> createHeap(Comparator<Long> comparator) {
-		return new DaryHeap<Long>(4, comparator);
+		return new DaryArrayHeap<Long>(5, comparator);
 	}
 
 }

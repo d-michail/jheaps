@@ -28,15 +28,15 @@ import java.util.Comparator;
  * @param <K>
  *            the type of keys maintained by this heap
  */
-abstract class AbstractBinaryImplicitHeap<K> extends AbstractImplicitHeap<K> implements Serializable {
+abstract class AbstractBinaryArrayHeap<K> extends AbstractArrayHeap<K> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	AbstractBinaryImplicitHeap() {
+	AbstractBinaryArrayHeap() {
 		super();
 	}
 
-	public AbstractBinaryImplicitHeap(Comparator<? super K> comparator, int capacity) {
+	public AbstractBinaryArrayHeap(Comparator<? super K> comparator, int capacity) {
 		super(comparator, capacity);
 	}
 

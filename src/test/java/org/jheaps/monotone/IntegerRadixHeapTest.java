@@ -30,8 +30,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 import org.jheaps.Heap;
-import org.jheaps.MapHeap;
-import org.jheaps.MapHeap.Entry;
 import org.jheaps.monotone.IntegerRadixHeap;
 import org.junit.Test;
 
@@ -41,7 +39,7 @@ public class IntegerRadixHeapTest {
 
 	@Test
 	public void test() {
-		Heap<Integer> h = new IntegerRadixHeap<Integer>(0, SIZE).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap(0, SIZE);
 
 		for (int i = 0; i < SIZE; i++) {
 			h.insert(i);
@@ -58,7 +56,7 @@ public class IntegerRadixHeapTest {
 
 	@Test
 	public void testVerySmall() {
-		Heap<Integer> h = new IntegerRadixHeap<Integer>(29, 36).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap(29, 36);
 
 		h.insert(29);
 		h.insert(30);
@@ -91,7 +89,7 @@ public class IntegerRadixHeapTest {
 
 	@Test
 	public void testSortRandomSeed1() {
-		Heap<Integer> h = new IntegerRadixHeap<Integer>(0, SIZE + 1).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap(0, SIZE + 1);
 
 		Random generator = new Random(1);
 
@@ -117,7 +115,7 @@ public class IntegerRadixHeapTest {
 
 	@Test
 	public void testSort2RandomSeed1() {
-		Heap<Integer> h = new IntegerRadixHeap<Boolean>(0, SIZE + 1).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap(0, SIZE + 1);
 
 		Random generator = new Random(1);
 
@@ -142,7 +140,7 @@ public class IntegerRadixHeapTest {
 
 	@Test
 	public void testSortRandomSeed2() {
-		Heap<Integer> h = new IntegerRadixHeap<Boolean>(0, SIZE + 1).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap(0, SIZE + 1);
 
 		Random generator = new Random(2);
 
@@ -168,7 +166,7 @@ public class IntegerRadixHeapTest {
 
 	@Test
 	public void testSort2RandomSeed2() {
-		Heap<Integer> h = new IntegerRadixHeap<Integer>(0, SIZE + 1).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap(0, SIZE + 1);
 
 		Random generator = new Random(2);
 
@@ -192,34 +190,8 @@ public class IntegerRadixHeapTest {
 	}
 
 	@Test
-	public void testSort3RandomSeed1() {
-		MapHeap<Integer, String> h = new IntegerRadixHeap<String>(0, SIZE + 1);
-
-		Random generator = new Random(1);
-
-		int[] a = new int[SIZE];
-		for (int i = 0; i < SIZE; i++) {
-			a[i] = (int) (SIZE * generator.nextDouble());
-		}
-		Arrays.sort(a);
-		for (int i = 0; i < SIZE; i++) {
-			h.insert(a[i], String.valueOf(a[i]));
-		}
-
-		Entry<Integer, String> prev = null, cur;
-		while (!h.isEmpty()) {
-			cur = h.deleteMin();
-			assertEquals(String.valueOf(cur.getKey()), cur.getValue());
-			if (prev != null) {
-				assertTrue(prev.getKey().compareTo(cur.getKey()) <= 0);
-			}
-			prev = cur;
-		}
-	}
-
-	@Test
 	public void testSameMinMax() {
-		Heap<Integer> h = new IntegerRadixHeap<Boolean>(100, 100).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap(100, 100);
 
 		for (int i = 0; i < 15; i++) {
 			h.insert(100);
@@ -234,7 +206,7 @@ public class IntegerRadixHeapTest {
 
 	@Test
 	public void testMaxDifference() {
-		Heap<Integer> h = new IntegerRadixHeap<Boolean>(0, Integer.MAX_VALUE).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap(0, Integer.MAX_VALUE);
 
 		h.insert(0);
 		h.insert(Integer.MAX_VALUE);
@@ -247,7 +219,7 @@ public class IntegerRadixHeapTest {
 
 	@Test
 	public void testClear() {
-		Heap<Integer> h = new IntegerRadixHeap<Boolean>(0, 15).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap(0, 15);
 
 		for (int i = 0; i < 15; i++) {
 			h.insert(i);
@@ -260,25 +232,25 @@ public class IntegerRadixHeapTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMonotone() {
-		Heap<Integer> h = new IntegerRadixHeap<Boolean>(0, 1000).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap(0, 1000);
 		h.insert(100);
 		h.insert(99);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction() {
-		new IntegerRadixHeap<Integer>(-1, 100);
+		new IntegerRadixHeap(-1, 100);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction1() {
-		new IntegerRadixHeap<Boolean>(100, 99);
+		new IntegerRadixHeap(100, 99);
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSerializable() throws IOException, ClassNotFoundException {
-		Heap<Integer> h = new IntegerRadixHeap<Integer>(0, 15).asHeap();
+		Heap<Integer> h = new IntegerRadixHeap(0, 15);
 
 		for (int i = 0; i < 15; i++) {
 			h.insert(i);

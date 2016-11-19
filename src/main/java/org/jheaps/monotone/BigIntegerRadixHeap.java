@@ -22,8 +22,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jheaps.MapHeap;
-
 /**
  * An implicit radix heap for {@link BigInteger} keys. The heap stores
  * {@link BigInteger} keys sorted according to the {@linkplain Comparable
@@ -51,7 +49,7 @@ import org.jheaps.MapHeap;
  * @see LongRadixHeap
  * @see MapHeap
  */
-public class BigIntegerRadixHeap<V> extends AbstractRadixHeap<BigInteger, V> {
+public class BigIntegerRadixHeap extends AbstractRadixHeap<BigInteger> {
 
 	private final static long serialVersionUID = 1;
 
@@ -96,9 +94,9 @@ public class BigIntegerRadixHeap<V> extends AbstractRadixHeap<BigInteger, V> {
 		int numBuckets = 2 + 1 + diff.bitLength();
 
 		// construct representation
-		this.buckets = (List<Entry<BigInteger, V>>[]) Array.newInstance(List.class, numBuckets);
+		this.buckets = (List<BigInteger>[]) Array.newInstance(List.class, numBuckets);
 		for (int i = 0; i < this.buckets.length; i++) {
-			buckets[i] = new ArrayList<Entry<BigInteger, V>>();
+			buckets[i] = new ArrayList<BigInteger>();
 		}
 		this.size = 0;
 		this.currentMin = null;

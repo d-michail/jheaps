@@ -17,24 +17,24 @@
  */
 package org.jheaps.monotone;
 
-import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigInteger;
+
+import org.jheaps.AddressableHeap;
 
 /**
- * An implicit radix heap for (signed) integer keys. The heap stores integer
- * keys sorted according to the {@linkplain Comparable natural ordering} of its
- * keys. A radix heap is a monotone heap, especially designed for algorithms
- * (such as Dijkstra) which scan elements in order of nondecreasing keys.
+ * An addressable radix heap for {@link BigInteger} keys. The heap stores
+ * {@link BigInteger} keys sorted according to the {@linkplain Comparable
+ * natural ordering} of its keys. A radix heap is a monotone heap, especially
+ * designed for algorithms (such as Dijkstra) which scan elements in order of
+ * nondecreasing keys.
  *
  * <p>
- * Implicit implementations of a heap use arrays in order to store the elements.
- * Operations {@code insert} and {@code findMin} are worst-case constant time.
- * The cost of operation {@code deleteMin} is amortized O(logC) assuming the
- * radix-heap contains keys in the range {@literal [0, C]} or equivalently
- * {@literal [a,a+C]}. This implementation views integer values as signed
- * numbers.
+ * The implementation use arrays in order to store the elements. Operations
+ * {@code insert} and {@code findMin} are worst-case constant time. The cost of
+ * operation {@code deleteMin} is amortized O(logC) assuming the radix-heap
+ * contains keys in the range {@literal [0, C]} or equivalently
+ * {@literal [a,a+C]}.
  * 
  * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
@@ -46,10 +46,12 @@ import java.util.List;
  *
  * @author Dimitrios Michail
  * 
- * @see MapHeap
- * @see Serializable
+ * @param <V>
+ *            the type of values maintained by this heap
+ *
+ * @see AddressableHeap
  */
-public class IntegerRadixHeap extends AbstractRadixHeap<Integer> {
+public class BigIntegerRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<BigInteger, V> {
 
 	private final static long serialVersionUID = 1;
 
@@ -72,30 +74,29 @@ public class IntegerRadixHeap extends AbstractRadixHeap<Integer> {
 	 *             if the maximum key is less than the minimum key
 	 */
 	@SuppressWarnings("unchecked")
-	public IntegerRadixHeap(int minKey, int maxKey) {
+	public BigIntegerRadixAddressableHeap(BigInteger minKey, BigInteger maxKey) {
 		super();
-		if (minKey < 0) {
+		if (minKey == null) {
+			throw new IllegalArgumentException("Minimum key cannot be null");
+		}
+		if (minKey.compareTo(BigInteger.ZERO) < 0) {
 			throw new IllegalArgumentException("Minimum key must be non-negative");
 		}
 		this.minKey = minKey;
-		if (maxKey < minKey) {
+		if (maxKey == null) {
+			throw new IllegalArgumentException("Maximum key cannot be null");
+		}
+		if (maxKey.compareTo(minKey) < 0) {
 			throw new IllegalArgumentException("Maximum key cannot be less than the minimum");
 		}
 		this.maxKey = maxKey;
 
 		// compute number of buckets
-		int numBuckets;
-		if (maxKey == minKey) {
-			numBuckets = 2;
-		} else {
-			numBuckets = 2 + 1 + (int) Math.floor(Math.log(maxKey - minKey) / Math.log(2));
-		}
+		BigInteger diff = maxKey.subtract(minKey);
+		int numBuckets = 2 + 1 + diff.bitLength();
 
 		// construct representation
-		this.buckets = (List<Integer>[]) Array.newInstance(List.class, numBuckets);
-		for (int i = 0; i < this.buckets.length; i++) {
-			buckets[i] = new ArrayList<Integer>();
-		}
+		this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
 		this.size = 0;
 		this.currentMin = null;
 		this.currentMinBucket = 0;
@@ -105,32 +106,22 @@ public class IntegerRadixHeap extends AbstractRadixHeap<Integer> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected int compare(Integer o1, Integer o2) {
-		if (o1 < o2) {
-			return -1;
-		} else if (o1 > o2) {
-			return 1;
-		} else {
-			return 0;
-		}
+	protected int compare(BigInteger o1, BigInteger o2) {
+		return o1.compareTo(o2);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected int msd(Integer a, Integer b) {
-		/*
-		 * Value equal
-		 */
-		if (a.intValue() == b.intValue()) {
+	protected int msd(BigInteger a, BigInteger b) {
+		if (a.equals(b)) {
 			return -1;
 		}
 		/*
-		 * This is a fast way to compute floor(log_2(a xor b)).
+		 * return floor(log_2(a xor b)).
 		 */
-		float axorb = a ^ b;
-		return Math.getExponent(axorb);
+		return a.xor(b).bitLength() - 1;
 	}
 
 }

@@ -17,24 +17,20 @@
  */
 package org.jheaps.monotone;
 
-import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * An implicit radix heap for (signed) integer keys. The heap stores integer
- * keys sorted according to the {@linkplain Comparable natural ordering} of its
- * keys. A radix heap is a monotone heap, especially designed for algorithms
- * (such as Dijkstra) which scan elements in order of nondecreasing keys.
+ * An addressable radix heap for (signed) long keys. The heap stores long keys
+ * sorted according to the {@linkplain Comparable natural ordering} of its keys.
+ * A radix heap is a monotone heap, especially designed for algorithms (such as
+ * Dijkstra) which scan elements in order of nondecreasing keys.
  *
  * <p>
- * Implicit implementations of a heap use arrays in order to store the elements.
- * Operations {@code insert} and {@code findMin} are worst-case constant time.
- * The cost of operation {@code deleteMin} is amortized O(logC) assuming the
- * radix-heap contains keys in the range {@literal [0, C]} or equivalently
- * {@literal [a,a+C]}. This implementation views integer values as signed
- * numbers.
+ * The implementation uses arrays in order to store the elements. Operations
+ * {@code insert} and {@code findMin} are worst-case constant time. The cost of
+ * operation {@code deleteMin} is amortized O(logC) assuming the radix-heap
+ * contains keys in the range {@literal [0, C]} or equivalently
+ * {@literal [a,a+C]}. This implementation views long values as signed numbers.
  * 
  * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
@@ -45,11 +41,12 @@ import java.util.List;
  * by synchronizing on some object that naturally encapsulates the heap.
  *
  * @author Dimitrios Michail
- * 
- * @see MapHeap
- * @see Serializable
+ *
+ * @param <V>
+ *            the type of values maintained by this heap
+ *
  */
-public class IntegerRadixHeap extends AbstractRadixHeap<Integer> {
+public class LongRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<Long, V> {
 
 	private final static long serialVersionUID = 1;
 
@@ -72,7 +69,7 @@ public class IntegerRadixHeap extends AbstractRadixHeap<Integer> {
 	 *             if the maximum key is less than the minimum key
 	 */
 	@SuppressWarnings("unchecked")
-	public IntegerRadixHeap(int minKey, int maxKey) {
+	public LongRadixAddressableHeap(long minKey, long maxKey) {
 		super();
 		if (minKey < 0) {
 			throw new IllegalArgumentException("Minimum key must be non-negative");
@@ -92,10 +89,7 @@ public class IntegerRadixHeap extends AbstractRadixHeap<Integer> {
 		}
 
 		// construct representation
-		this.buckets = (List<Integer>[]) Array.newInstance(List.class, numBuckets);
-		for (int i = 0; i < this.buckets.length; i++) {
-			buckets[i] = new ArrayList<Integer>();
-		}
+		this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
 		this.size = 0;
 		this.currentMin = null;
 		this.currentMinBucket = 0;
@@ -105,7 +99,7 @@ public class IntegerRadixHeap extends AbstractRadixHeap<Integer> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected int compare(Integer o1, Integer o2) {
+	protected int compare(Long o1, Long o2) {
 		if (o1 < o2) {
 			return -1;
 		} else if (o1 > o2) {
@@ -119,17 +113,17 @@ public class IntegerRadixHeap extends AbstractRadixHeap<Integer> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected int msd(Integer a, Integer b) {
+	protected int msd(Long a, Long b) {
 		/*
 		 * Value equal
 		 */
-		if (a.intValue() == b.intValue()) {
+		if (a.longValue() == b.longValue()) {
 			return -1;
 		}
 		/*
 		 * This is a fast way to compute floor(log_2(a xor b)).
 		 */
-		float axorb = a ^ b;
+		double axorb = a ^ b;
 		return Math.getExponent(axorb);
 	}
 

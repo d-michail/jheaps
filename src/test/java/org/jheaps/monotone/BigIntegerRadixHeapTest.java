@@ -40,7 +40,7 @@ public class BigIntegerRadixHeapTest {
 
 	@Test
 	public void test() {
-		Heap<BigInteger> h = new BigIntegerRadixHeap<Long>(BigInteger.ZERO, SIZE).asHeap();
+		Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.ZERO, SIZE);
 
 		for (long i = 0; i < SIZE.longValue(); i++) {
 			h.insert(BigInteger.valueOf(i));
@@ -57,7 +57,7 @@ public class BigIntegerRadixHeapTest {
 
 	@Test
 	public void testVerySmall() {
-		Heap<BigInteger> h = new BigIntegerRadixHeap<Long>(BigInteger.valueOf(29), BigInteger.valueOf(36)).asHeap();
+		Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.valueOf(29), BigInteger.valueOf(36));
 
 		h.insert(BigInteger.valueOf(29l));
 		h.insert(BigInteger.valueOf(30l));
@@ -90,7 +90,7 @@ public class BigIntegerRadixHeapTest {
 
 	@Test
 	public void testSortRandomSeed1() {
-		Heap<BigInteger> h = new BigIntegerRadixHeap<Long>(BigInteger.valueOf(0), SIZE.add(BigInteger.ONE)).asHeap();
+		Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.valueOf(0), SIZE.add(BigInteger.ONE));
 
 		Random generator = new Random(1);
 
@@ -116,7 +116,7 @@ public class BigIntegerRadixHeapTest {
 
 	@Test
 	public void testClear() {
-		Heap<BigInteger> h = new BigIntegerRadixHeap<Boolean>(BigInteger.ZERO, BigInteger.valueOf(15)).asHeap();
+		Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.ZERO, BigInteger.valueOf(15));
 
 		for (long i = 0; i < 15; i++) {
 			h.insert(BigInteger.valueOf(i));
@@ -129,25 +129,25 @@ public class BigIntegerRadixHeapTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMonotone() {
-		Heap<BigInteger> h = new BigIntegerRadixHeap<Boolean>(BigInteger.ZERO, BigInteger.valueOf(100)).asHeap();
+		Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.ZERO, BigInteger.valueOf(100));
 		h.insert(BigInteger.valueOf(100l));
 		h.insert(BigInteger.valueOf(99l));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction() {
-		new BigIntegerRadixHeap<Long>(BigInteger.ZERO.subtract(BigInteger.ONE), BigInteger.valueOf(100));
+		new BigIntegerRadixHeap(BigInteger.ZERO.subtract(BigInteger.ONE), BigInteger.valueOf(100));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction1() {
-		new BigIntegerRadixHeap<Boolean>(BigInteger.valueOf(100), BigInteger.valueOf(99));
+		new BigIntegerRadixHeap(BigInteger.valueOf(100), BigInteger.valueOf(99));
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSerializable() throws IOException, ClassNotFoundException {
-		Heap<BigInteger> h = new BigIntegerRadixHeap<Long>(BigInteger.ZERO, BigInteger.valueOf(15)).asHeap();
+		Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.ZERO, BigInteger.valueOf(15));
 
 		for (long i = 0; i < 15; i++) {
 			h.insert(BigInteger.valueOf(i));

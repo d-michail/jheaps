@@ -19,16 +19,16 @@ package org.jheaps;
 
 import org.junit.Test;
 
-public class BinaryHeapTest extends AbstractHeapTest {
+public class Dary3ArrayHeapTest extends AbstractHeapTest {
 
 	protected Heap<Long> createHeap() {
-		return new BinaryHeap<Long>();
+		return new DaryArrayHeap<Long>(3);
 	}
 
 	protected Heap<Long> createHeap(int capacity) {
-		return new BinaryHeap<Long>(capacity);
+		return new DaryArrayHeap<Long>(3, capacity);
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalSize() {
 		Heap<Long> h = createHeap(-4);

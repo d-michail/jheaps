@@ -62,16 +62,16 @@ public class HeapifyTest {
 		@SuppressWarnings("unchecked")
 		Heap<Integer>[] h = (Heap<Integer>[]) Array.newInstance(Heap.class, 10);
 
-		h[0] = BinaryHeap.heapify(a);
-		h[1] = FixedSizeBinaryHeap.heapify(a);
-		h[2] = DaryHeap.heapify(2, a);
-		h[3] = DaryHeap.heapify(3, a);
-		h[4] = DaryHeap.heapify(4, a);
-		h[5] = DaryHeap.heapify(5, a);
-		h[6] = FixedSizeDaryHeap.heapify(2, a);
-		h[7] = FixedSizeDaryHeap.heapify(3, a);
-		h[8] = FixedSizeDaryHeap.heapify(4, a);
-		h[9] = FixedSizeDaryHeap.heapify(5, a);
+		h[0] = BinaryArrayHeap.heapify(a);
+		h[1] = FixedSizeBinaryArrayHeap.heapify(a);
+		h[2] = DaryArrayHeap.heapify(2, a);
+		h[3] = DaryArrayHeap.heapify(3, a);
+		h[4] = DaryArrayHeap.heapify(4, a);
+		h[5] = DaryArrayHeap.heapify(5, a);
+		h[6] = FixedSizeDaryArrayHeap.heapify(2, a);
+		h[7] = FixedSizeDaryArrayHeap.heapify(3, a);
+		h[8] = FixedSizeDaryArrayHeap.heapify(4, a);
+		h[9] = FixedSizeDaryArrayHeap.heapify(5, a);
 
 		int elements = SIZE;
 		Integer prev = null, cur;
@@ -103,16 +103,16 @@ public class HeapifyTest {
 		@SuppressWarnings("unchecked")
 		Heap<Integer>[] h = (Heap<Integer>[]) Array.newInstance(Heap.class, 10);
 
-		h[0] = BinaryHeap.heapify(a, comparator);
-		h[1] = FixedSizeBinaryHeap.heapify(a, comparator);
-		h[2] = DaryHeap.heapify(2, a, comparator);
-		h[3] = DaryHeap.heapify(3, a, comparator);
-		h[4] = DaryHeap.heapify(4, a, comparator);
-		h[5] = DaryHeap.heapify(5, a, comparator);
-		h[6] = FixedSizeDaryHeap.heapify(2, a, comparator);
-		h[7] = FixedSizeDaryHeap.heapify(3, a, comparator);
-		h[8] = FixedSizeDaryHeap.heapify(4, a, comparator);
-		h[9] = FixedSizeDaryHeap.heapify(5, a, comparator);
+		h[0] = BinaryArrayHeap.heapify(a, comparator);
+		h[1] = FixedSizeBinaryArrayHeap.heapify(a, comparator);
+		h[2] = DaryArrayHeap.heapify(2, a, comparator);
+		h[3] = DaryArrayHeap.heapify(3, a, comparator);
+		h[4] = DaryArrayHeap.heapify(4, a, comparator);
+		h[5] = DaryArrayHeap.heapify(5, a, comparator);
+		h[6] = FixedSizeDaryArrayHeap.heapify(2, a, comparator);
+		h[7] = FixedSizeDaryArrayHeap.heapify(3, a, comparator);
+		h[8] = FixedSizeDaryArrayHeap.heapify(4, a, comparator);
+		h[9] = FixedSizeDaryArrayHeap.heapify(5, a, comparator);
 
 		int elements = SIZE;
 		Integer prev = null, cur;
@@ -139,16 +139,16 @@ public class HeapifyTest {
 		@SuppressWarnings("unchecked")
 		Heap<Integer>[] h = (Heap<Integer>[]) Array.newInstance(Heap.class, 10);
 
-		h[0] = BinaryHeap.heapify(a);
-		h[1] = DaryHeap.heapify(2, a);
-		h[2] = DaryHeap.heapify(3, a);
-		h[3] = DaryHeap.heapify(4, a);
-		h[4] = DaryHeap.heapify(5, a);
-		h[5] = FixedSizeBinaryHeap.heapify(a);
-		h[6] = FixedSizeDaryHeap.heapify(2, a);
-		h[7] = FixedSizeDaryHeap.heapify(3, a);
-		h[8] = FixedSizeDaryHeap.heapify(4, a);
-		h[9] = FixedSizeDaryHeap.heapify(5, a);
+		h[0] = BinaryArrayHeap.heapify(a);
+		h[1] = DaryArrayHeap.heapify(2, a);
+		h[2] = DaryArrayHeap.heapify(3, a);
+		h[3] = DaryArrayHeap.heapify(4, a);
+		h[4] = DaryArrayHeap.heapify(5, a);
+		h[5] = FixedSizeBinaryArrayHeap.heapify(a);
+		h[6] = FixedSizeDaryArrayHeap.heapify(2, a);
+		h[7] = FixedSizeDaryArrayHeap.heapify(3, a);
+		h[8] = FixedSizeDaryArrayHeap.heapify(4, a);
+		h[9] = FixedSizeDaryArrayHeap.heapify(5, a);
 
 		for (int i = 0; i < 10; i++) {
 			assertTrue(h[i].isEmpty());

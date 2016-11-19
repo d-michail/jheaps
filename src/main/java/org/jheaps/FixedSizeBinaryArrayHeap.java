@@ -33,7 +33,7 @@ import org.jheaps.annotations.LinearTime;
  * elements. This implementation uses a fixed size array which is provided
  * during construction, providing worst case O(log(n)) time for the
  * {@code insert} and {@code deleteMin} operations. Operation {@code findMin},
- * is a worst-case O(1) operation. {@link BinaryHeap} provides a more dynamic
+ * is a worst-case O(1) operation. {@link BinaryArrayHeap} provides a more dynamic
  * implementation in the expense of amortized complexity bounds.
  * 
  * <p>
@@ -73,7 +73,7 @@ import org.jheaps.annotations.LinearTime;
  * @see Comparator
  * @see Serializable
  */
-public class FixedSizeBinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implements Heap<K>, Serializable {
+public class FixedSizeBinaryArrayHeap<K> extends AbstractBinaryArrayHeap<K> implements Heap<K>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -99,7 +99,7 @@ public class FixedSizeBinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implem
 	 * @param capacity
 	 *            the maximum heap capacity
 	 */
-	public FixedSizeBinaryHeap(int capacity) {
+	public FixedSizeBinaryArrayHeap(int capacity) {
 		super(null, capacity);
 	}
 
@@ -127,7 +127,7 @@ public class FixedSizeBinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implem
 	 * @param capacity
 	 *            the maximum heap capacity
 	 */
-	public FixedSizeBinaryHeap(Comparator<? super K> comparator, int capacity) {
+	public FixedSizeBinaryArrayHeap(Comparator<? super K> comparator, int capacity) {
 		super(comparator, capacity);
 	}
 
@@ -144,15 +144,15 @@ public class FixedSizeBinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implem
 	 *             in case the array is null
 	 */
 	@LinearTime
-	public static <K> FixedSizeBinaryHeap<K> heapify(K[] array) {
+	public static <K> FixedSizeBinaryArrayHeap<K> heapify(K[] array) {
 		if (array == null) {
 			throw new IllegalArgumentException("Array cannot be null");
 		}
 		if (array.length == 0) {
-			return new FixedSizeBinaryHeap<K>(0);
+			return new FixedSizeBinaryArrayHeap<K>(0);
 		}
 
-		FixedSizeBinaryHeap<K> h = new FixedSizeBinaryHeap<K>(array.length);
+		FixedSizeBinaryArrayHeap<K> h = new FixedSizeBinaryArrayHeap<K>(array.length);
 
 		System.arraycopy(array, 0, h.array, 1, array.length);
 		h.size = array.length;
@@ -179,15 +179,15 @@ public class FixedSizeBinaryHeap<K> extends AbstractBinaryImplicitHeap<K> implem
 	 *             in case the array is null
 	 */
 	@LinearTime
-	public static <K> FixedSizeBinaryHeap<K> heapify(K[] array, Comparator<? super K> comparator) {
+	public static <K> FixedSizeBinaryArrayHeap<K> heapify(K[] array, Comparator<? super K> comparator) {
 		if (array == null) {
 			throw new IllegalArgumentException("Array cannot be null");
 		}
 		if (array.length == 0) {
-			return new FixedSizeBinaryHeap<K>(comparator, 0);
+			return new FixedSizeBinaryArrayHeap<K>(comparator, 0);
 		}
 
-		FixedSizeBinaryHeap<K> h = new FixedSizeBinaryHeap<K>(comparator, array.length);
+		FixedSizeBinaryArrayHeap<K> h = new FixedSizeBinaryArrayHeap<K>(comparator, array.length);
 
 		System.arraycopy(array, 0, h.array, 1, array.length);
 		h.size = array.length;

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.jheaps.Heap;
-import org.jheaps.MapHeap;
 import org.jheaps.annotations.ConstantTime;
 
 /**
@@ -19,7 +18,7 @@ import org.jheaps.annotations.ConstantTime;
  * @param <V>
  *            the value type
  */
-abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
+abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,7 +26,7 @@ abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
 	 * The buckets as lists. We use array-lists instead of linked-lists, to be
 	 * cache friendly.
 	 */
-	protected List<Entry<K, V>>[] buckets;
+	protected List<K>[] buckets;
 
 	/**
 	 * Number of elements
@@ -37,7 +36,7 @@ abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
 	/**
 	 * The current minimum value
 	 */
-	protected Entry<K, V> currentMin;
+	protected K currentMin;
 
 	/**
 	 * The bucket of the current minimum value
@@ -65,7 +64,7 @@ abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
 	 */
 	@Override
 	@ConstantTime
-	public Entry<K, V> findMin() {
+	public K findMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
@@ -86,7 +85,7 @@ abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
 	 */
 	@Override
 	@ConstantTime
-	public void insert(K key, V value) {
+	public void insert(K key) {
 		if (key == null) {
 			throw new IllegalArgumentException("Null keys not permitted");
 		}
@@ -97,16 +96,16 @@ abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
 			throw new IllegalArgumentException("Key is more than the maximum allowed key");
 		}
 
-		Entry<K, V> p = new DefaultMapHeapEntryImpl<K, V>(key, value);
 		if (size == 0) {
-			buckets[0].add(p);
-			currentMin = p;
+			buckets[0].add(key);
+			currentMin = key;
 			currentMinBucket = 0;
 		} else {
-			if (compare(key, currentMin.getKey()) < 0) {
+			if (compare(key, currentMin) < 0) {
 				throw new IllegalArgumentException("Invalid key. Monotone heap.");
 			}
-			buckets[computeBucket(key, currentMin.getKey())].add(p);
+			int b = computeBucket(key, currentMin);
+			buckets[b].add(key);
 		}
 		size++;
 	}
@@ -119,15 +118,15 @@ abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
 	 */
 	@Override
 	@ConstantTime(amortized = true)
-	public Entry<K, V> deleteMin() {
+	public K deleteMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
 
-		List<Entry<K, V>> b = buckets[currentMinBucket];
+		List<K> b = buckets[currentMinBucket];
 		int bSize = b.size();
 
-		Entry<K, V> result = currentMin;
+		K result = currentMin;
 		if (currentMinBucket == 0 || bSize == 1) {
 			b.remove(bSize - 1);
 			updateMin(currentMinBucket);
@@ -138,18 +137,18 @@ abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
 			 */
 			int minPos = -1;
 			int pos = 0;
-			Entry<K, V> min = null;
-			Entry<K, V> secondMin = null;
-			for (Entry<K, V> val : b) {
+			K min = null;
+			K secondMin = null;
+			for (K val : b) {
 				// track position of current minimum
 				if (currentMin == val) {
 					minPos = pos;
 				}
 				// track minimum and second minimum values
-				if (min == null || compare(val.getKey(), min.getKey()) < 0) {
+				if (min == null || compare(val, min) < 0) {
 					secondMin = min;
 					min = val;
-				} else if (secondMin == null || compare(val.getKey(), secondMin.getKey()) < 0) {
+				} else if (secondMin == null || compare(val, secondMin) < 0) {
 					secondMin = val;
 				}
 				pos++;
@@ -161,9 +160,9 @@ abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
 			 */
 			pos = 0;
 			int minNewBucket = currentMinBucket;
-			for (Entry<K, V> val : b) {
+			for (K val : b) {
 				if (pos != minPos) {
-					int newBucket = computeBucket(val.getKey(), secondMin.getKey());
+					int newBucket = computeBucket(val, secondMin);
 					if (newBucket == currentMinBucket) {
 						throw new IllegalStateException("bug! Please contact the developers");
 					}
@@ -231,14 +230,6 @@ abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Heap<K> asHeap() {
-		return new MapHeapAsHeapAdapter<K, V>(this);
-	}
-
-	/**
 	 * Compares its two arguments for order. Returns a negative integer, zero,
 	 * or a positive integer as the first argument is less than, equal to, or
 	 * greater than the second.
@@ -288,9 +279,9 @@ abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
 					if (i == 0) {
 						currentMin = buckets[i].get(buckets[i].size() - 1);
 					} else {
-						Entry<K, V> min = null;
-						for (Entry<K, V> val : buckets[i]) {
-							if (min == null || compare(val.getKey(), min.getKey()) < 0) {
+						K min = null;
+						for (K val : buckets[i]) {
+							if (min == null || compare(val, min) < 0) {
 								min = val;
 							}
 						}
@@ -312,7 +303,7 @@ abstract class AbstractRadixHeap<K, V> implements MapHeap<K, V>, Serializable {
 			}
 			sb.append('[');
 			int pos = 0;
-			for (Entry<K, V> val : buckets[i]) {
+			for (K val : buckets[i]) {
 				if (pos > 0) {
 					sb.append(',');
 				}

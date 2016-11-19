@@ -30,8 +30,8 @@ public class PairingHeapTest extends AbstractAddressableHeapTest {
 	@Test
 	public void testMeld() throws IOException, ClassNotFoundException {
 
-		PairingHeap<Integer> h1 = new PairingHeap<Integer>();
-		PairingHeap<Integer> h2 = new PairingHeap<Integer>();
+		PairingHeap<Integer, Void> h1 = new PairingHeap<Integer, Void>();
+		PairingHeap<Integer, Void> h2 = new PairingHeap<Integer, Void>();
 
 		for (int i = 0; i < SIZE; i++) {
 			if (i % 2 == 0) {
@@ -57,8 +57,8 @@ public class PairingHeapTest extends AbstractAddressableHeapTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testMeldWrong() throws IOException, ClassNotFoundException {
 
-		PairingHeap<Integer> h1 = new PairingHeap<Integer>();
-		PairingHeap<Integer> h2 = new PairingHeap<Integer>(comparator);
+		PairingHeap<Integer, Void> h1 = new PairingHeap<Integer, Void>();
+		PairingHeap<Integer, Void> h2 = new PairingHeap<Integer, Void>(comparator);
 
 		for (int i = 0; i < SIZE; i++) {
 			if (i % 2 == 0) {
@@ -82,12 +82,12 @@ public class PairingHeapTest extends AbstractAddressableHeapTest {
 	}
 
 	@Override
-	protected AddressableHeap<Integer> createHeap() {
-		return new PairingHeap<Integer>();
+	protected AddressableHeap<Integer, Void> createHeap() {
+		return new PairingHeap<Integer, Void>();
 	}
 
 	@Override
-	protected AddressableHeap<Integer> createHeap(Comparator<Integer> comparator) {
-		return new PairingHeap<Integer>(comparator);
+	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
+		return new PairingHeap<Integer, Void>(comparator);
 	}
 }

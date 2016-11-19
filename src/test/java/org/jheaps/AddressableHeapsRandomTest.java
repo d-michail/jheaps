@@ -49,34 +49,34 @@ public class AddressableHeapsRandomTest {
 
 	private void test(Random rng) {
 		@SuppressWarnings("unchecked")
-		AddressableHeap<Integer>[] h = (AddressableHeap<Integer>[]) Array.newInstance(AddressableHeap.class, 3);
-		h[0] = new PairingHeap<Integer>();
-		h[1] = new AddressableBinaryHeap<Integer>();
-		h[2] = new FibonacciHeap<Integer>();
+		AddressableHeap<Integer, Void>[] h = (AddressableHeap<Integer, Void>[]) Array.newInstance(AddressableHeap.class, 3);
+		h[0] = new PairingHeap<Integer, Void>();
+		h[1] = new BinaryTreeAddressableHeap<Integer, Void>();
+		h[2] = new FibonacciHeap<Integer, Void>();
 
 		@SuppressWarnings("unchecked")
-		List<Handle<Integer>>[] s = (List<Handle<Integer>>[]) Array.newInstance(List.class, 3);
-		s[0] = new ArrayList<Handle<Integer>>();
-		s[1] = new ArrayList<Handle<Integer>>();
-		s[2] = new ArrayList<Handle<Integer>>();
+		List<Handle<Integer, Void>>[] s = (List<Handle<Integer, Void>>[]) Array.newInstance(List.class, 3);
+		s[0] = new ArrayList<Handle<Integer, Void>>();
+		s[1] = new ArrayList<Handle<Integer, Void>>();
+		s[2] = new ArrayList<Handle<Integer, Void>>();
 
 		for (int i = 0; i < SIZE; i++) {
 			Integer k = rng.nextInt();
-			s[0].add(h[0].insert(k));
-			s[1].add(h[1].insert(k));
-			s[2].add(h[2].insert(k));
+			s[0].add(h[0].insert(k, null));
+			s[1].add(h[1].insert(k, null));
+			s[2].add(h[2].insert(k, null));
 			assertEquals(h[0].findMin().getKey().intValue(), h[1].findMin().getKey().intValue());
 			assertEquals(h[0].findMin().getKey().intValue(), h[2].findMin().getKey().intValue());
 		}
 
 		for (int i = 0; i < 10; i++) {
-			Iterator<Handle<Integer>> it0 = s[0].iterator();
-			Iterator<Handle<Integer>> it1 = s[1].iterator();
-			Iterator<Handle<Integer>> it2 = s[2].iterator();
+			Iterator<Handle<Integer, Void>> it0 = s[0].iterator();
+			Iterator<Handle<Integer, Void>> it1 = s[1].iterator();
+			Iterator<Handle<Integer, Void>> it2 = s[2].iterator();
 			while (it0.hasNext() && it1.hasNext() && it2.hasNext()) {
-				Handle<Integer> h0 = it0.next();
-				Handle<Integer> h1 = it1.next();
-				Handle<Integer> h2 = it2.next();
+				Handle<Integer, Void> h0 = it0.next();
+				Handle<Integer, Void> h1 = it1.next();
+				Handle<Integer, Void> h2 = it2.next();
 				int newKey = h0.getKey() / 2;
 				if (newKey < h0.getKey()) {
 					h0.decreaseKey(newKey);

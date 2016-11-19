@@ -28,17 +28,17 @@ import java.util.Comparator;
  * @param <K>
  *            the key type
  */
-abstract class AbstractDaryImplicitHeap<K> extends AbstractImplicitHeap<K> implements Serializable {
+abstract class AbstractDaryArrayHeap<K> extends AbstractArrayHeap<K> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	protected int d;
 
-	AbstractDaryImplicitHeap() {
+	AbstractDaryArrayHeap() {
 		super();
 	}
 
-	public AbstractDaryImplicitHeap(int d, Comparator<? super K> comparator, int capacity) {
+	public AbstractDaryArrayHeap(int d, Comparator<? super K> comparator, int capacity) {
 		super(comparator, capacity);
 		if (d < 2) {
 			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");

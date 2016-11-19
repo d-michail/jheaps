@@ -17,34 +17,16 @@
  */
 package org.jheaps;
 
-import org.junit.Test;
+import java.util.Comparator;
 
-public class Dary3HeapTest extends AbstractHeapTest {
+public class FixedSizeArrayBinaryHeapTest extends AbstractStaticHeapTest {
 
-	protected Heap<Long> createHeap() {
-		return new DaryHeap<Long>(3);
+	protected Heap<Integer> createHeap(Comparator<Integer> comparator, int capacity) {
+		return new FixedSizeBinaryArrayHeap<Integer>(comparator, capacity);
 	}
 
-	protected Heap<Long> createHeap(int capacity) {
-		return new DaryHeap<Long>(3, capacity);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize() {
-		Heap<Long> h = createHeap(-4);
-		h.insert(1l);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize1() {
-		Heap<Long> h = createHeap(-1);
-		h.insert(1l);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize2() {
-		Heap<Long> h = createHeap(Integer.MAX_VALUE - 8);
-		h.insert(1l);
+	protected Heap<Integer> createHeap(int capacity) {
+		return new FixedSizeBinaryArrayHeap<Integer>(capacity);
 	}
 
 }

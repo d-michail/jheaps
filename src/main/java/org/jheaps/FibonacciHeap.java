@@ -64,6 +64,8 @@ import org.jheaps.annotations.LogarithmicTime;
  *
  * @param <K>
  *            the type of keys maintained by this heap
+ * @param <V>
+ *            the type of values maintained by this heap
  *
  * @author Dimitrios Michail
  * 
@@ -72,7 +74,7 @@ import org.jheaps.annotations.LogarithmicTime;
  * @see Comparable
  * @see Comparator
  */
-public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, Serializable {
+public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K>, Serializable {
 
 	private final static long serialVersionUID = 1;
 
@@ -147,7 +149,7 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 		this.roots = 0;
 		this.comparator = comparator;
 		this.size = 0;
-		this.aux = (FibonacciHeap<K>.Node[]) Array.newInstance(Node.class, AUX_CONSOLIDATE_ARRAY_SIZE);
+		this.aux = (FibonacciHeap<K, V>.Node[]) Array.newInstance(Node.class, AUX_CONSOLIDATE_ARRAY_SIZE);
 	}
 
 	/**
@@ -155,11 +157,11 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 	 */
 	@Override
 	@ConstantTime(amortized = true)
-	public AddressableHeap.Handle<K> insert(K key) {
+	public AddressableHeap.Handle<K, V> insert(K key, V value) {
 		if (key == null) {
 			throw new NullPointerException("Null keys not permitted");
 		}
-		Node n = new Node(key);
+		Node n = new Node(key, value);
 		addToRootList(n);
 		size++;
 		return n;
@@ -170,7 +172,16 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 	 */
 	@Override
 	@ConstantTime(amortized = true)
-	public AddressableHeap.Handle<K> findMin() {
+	public AddressableHeap.Handle<K, V> insert(K key) {
+		return insert(key, null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	@ConstantTime(amortized = true)
+	public AddressableHeap.Handle<K, V> findMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
@@ -182,7 +193,7 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 	 */
 	@Override
 	@LogarithmicTime(amortized = true)
-	public AddressableHeap.Handle<K> deleteMin() {
+	public AddressableHeap.Handle<K, V> deleteMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
@@ -280,7 +291,7 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 	@ConstantTime(amortized = true)
 	@SuppressWarnings("unchecked")
 	public void meld(MergeableHeap<K> other) {
-		FibonacciHeap<K> h = (FibonacciHeap<K>) other;
+		FibonacciHeap<K, V> h = (FibonacciHeap<K, V>) other;
 
 		// check same comparator
 		if (comparator != null) {
@@ -321,11 +332,12 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 	}
 
 	// --------------------------------------------------------------------
-	private class Node implements AddressableHeap.Handle<K>, Serializable {
+	private class Node implements AddressableHeap.Handle<K, V>, Serializable {
 
 		private final static long serialVersionUID = 1;
 
 		K key;
+		V value;
 		Node parent; // parent
 		Node child; // any child
 		Node next; // younger sibling
@@ -333,8 +345,9 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 		int degree; // number of children
 		boolean mark; // marked or not
 
-		Node(K key) {
+		Node(K key, V value) {
 			this.key = key;
+			this.value = value;
 			this.parent = null;
 			this.child = null;
 			this.next = null;
@@ -349,6 +362,14 @@ public class FibonacciHeap<K> implements AddressableHeap<K>, MergeableHeap<K>, S
 		@Override
 		public K getKey() {
 			return key;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public V getValue() {
+			return value;
 		}
 
 		/**
