@@ -235,6 +235,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	 */
 	@Override
 	@LogarithmicTime(amortized = true)
+	@SuppressWarnings("unchecked")
 	public void meld(MergeableHeap<K> other) {
 		PairingHeap<K, V> h = (PairingHeap<K, V>) other;
 

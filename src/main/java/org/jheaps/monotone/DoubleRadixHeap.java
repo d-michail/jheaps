@@ -17,17 +17,16 @@
  */
 package org.jheaps.monotone;
 
-import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An implicit radix heap for double keys. The heap stores double keys sorted
- * according to the {@linkplain Comparable natural ordering} of its keys. A
- * radix heap is a monotone heap, especially designed for algorithms (such as
- * Dijkstra) which scan elements in order of nondecreasing keys.
+ * An radix heap for double keys. The heap stores double keys sorted according
+ * to the {@linkplain Comparable natural ordering} of its keys. A radix heap is
+ * a monotone heap, especially designed for algorithms (such as Dijkstra) which
+ * scan elements in order of nondecreasing keys.
  *
  * <p>
  * Note that this implementation uses the fact that the IEEE floating-point
@@ -37,10 +36,10 @@ import java.util.List;
  * (long in our case).
  *
  * <p>
- * Implicit implementations of a heap use arrays in order to store the elements.
- * Operations {@code insert} and {@code findMin} are worst-case constant time.
- * The cost of operation {@code deleteMin} is amortized O(logC) assuming the
- * radix-heap contains keys in the range {@literal [0, C]} or equivalently
+ * This implementation uses arrays in order to store the elements. Operations
+ * {@code insert} and {@code findMin} are worst-case constant time. The cost of
+ * operation {@code deleteMin} is amortized O(logC) assuming the radix-heap
+ * contains keys in the range {@literal [0, C]} or equivalently
  * {@literal [a,a+C]}. Note, however, that C here depends on the distance of the
  * minimum and maximum value when they are translated into unsigned longs.
  * 
@@ -53,9 +52,6 @@ import java.util.List;
  * by synchronizing on some object that naturally encapsulates the heap.
  *
  * @author Dimitrios Michail
- * 
- * @see MapHeap
- * @see Serializable
  */
 public class DoubleRadixHeap extends AbstractRadixHeap<Double> {
 

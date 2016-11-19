@@ -17,24 +17,22 @@
  */
 package org.jheaps.monotone;
 
-import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An implicit radix heap for (signed) integer keys. The heap stores integer
- * keys sorted according to the {@linkplain Comparable natural ordering} of its
- * keys. A radix heap is a monotone heap, especially designed for algorithms
- * (such as Dijkstra) which scan elements in order of nondecreasing keys.
+ * A radix heap for (signed) integer keys. The heap stores integer keys sorted
+ * according to the {@linkplain Comparable natural ordering} of its keys. A
+ * radix heap is a monotone heap, especially designed for algorithms (such as
+ * Dijkstra) which scan elements in order of nondecreasing keys.
  *
  * <p>
- * Implicit implementations of a heap use arrays in order to store the elements.
- * Operations {@code insert} and {@code findMin} are worst-case constant time.
- * The cost of operation {@code deleteMin} is amortized O(logC) assuming the
- * radix-heap contains keys in the range {@literal [0, C]} or equivalently
- * {@literal [a,a+C]}. This implementation views integer values as signed
- * numbers.
+ * This implementation uses arrays in order to store the elements. Operations
+ * {@code insert} and {@code findMin} are worst-case constant time. The cost of
+ * operation {@code deleteMin} is amortized O(logC) assuming the radix-heap
+ * contains keys in the range {@literal [0, C]} or equivalently
+ * {@literal [a,a+C]}. Integer values are viewed as signed numbers.
  * 
  * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
@@ -45,9 +43,6 @@ import java.util.List;
  * by synchronizing on some object that naturally encapsulates the heap.
  *
  * @author Dimitrios Michail
- * 
- * @see MapHeap
- * @see Serializable
  */
 public class IntegerRadixHeap extends AbstractRadixHeap<Integer> {
 

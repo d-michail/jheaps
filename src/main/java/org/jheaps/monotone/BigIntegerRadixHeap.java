@@ -23,17 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An implicit radix heap for {@link BigInteger} keys. The heap stores
- * {@link BigInteger} keys sorted according to the {@linkplain Comparable
- * natural ordering} of its keys. A radix heap is a monotone heap, especially
- * designed for algorithms (such as Dijkstra) which scan elements in order of
- * nondecreasing keys.
+ * An radix heap for {@link BigInteger} keys. The heap stores {@link BigInteger}
+ * keys sorted according to the {@linkplain Comparable natural ordering} of its
+ * keys. A radix heap is a monotone heap, especially designed for algorithms
+ * (such as Dijkstra) which scan elements in order of nondecreasing keys.
  *
  * <p>
- * Implicit implementations of a heap use arrays in order to store the elements.
- * Operations {@code insert} and {@code findMin} are worst-case constant time.
- * The cost of operation {@code deleteMin} is amortized O(logC) assuming the
- * radix-heap contains keys in the range {@literal [0, C]} or equivalently
+ * The implementation uses arrays in order to store the elements. Operations
+ * {@code insert} and {@code findMin} are worst-case constant time. The cost of
+ * operation {@code deleteMin} is amortized O(logC) assuming the radix-heap
+ * contains keys in the range {@literal [0, C]} or equivalently
  * {@literal [a,a+C]}.
  * 
  * <p>
@@ -45,9 +44,6 @@ import java.util.List;
  * by synchronizing on some object that naturally encapsulates the heap.
  *
  * @author Dimitrios Michail
- * 
- * @see LongRadixHeap
- * @see MapHeap
  */
 public class BigIntegerRadixHeap extends AbstractRadixHeap<BigInteger> {
 
