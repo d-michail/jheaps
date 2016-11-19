@@ -438,6 +438,8 @@ public abstract class AbstractAddressableHeapTest {
 		assertEquals(Integer.valueOf(4), h.findMin().getKey());
 		array[4].delete();
 		assertEquals(Integer.valueOf(6), h.findMin().getKey());
+		
+		// again
 		array[2].delete();
 	}
 

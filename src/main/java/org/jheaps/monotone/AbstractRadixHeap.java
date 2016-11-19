@@ -129,6 +129,8 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
 		K result = currentMin;
 		if (currentMinBucket == 0 || bSize == 1) {
 			b.remove(bSize - 1);
+			currentMin = null;
+			size--;
 			updateMin(currentMinBucket);
 		} else {
 			/*
@@ -178,10 +180,10 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
 			b.clear();
 
 			// find current minimum
+			currentMin = null;
+			size--;
 			updateMin(minNewBucket);
 		}
-
-		size--;
 		return result;
 	}
 

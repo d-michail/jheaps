@@ -167,6 +167,8 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 			}
 			b.next = null;
 			b.bucket = NO_BUCKET;
+			currentMin = null;
+			size--;
 			updateMin(currentMinBucket);
 		} else {
 			/*
@@ -183,6 +185,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 				} else if (secondMin == null || compare(val.getKey(), secondMin.getKey()) < 0) {
 					secondMin = val;
 				}
+				val = val.next;
 			}
 
 			/*
@@ -191,6 +194,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 			int minNewBucket = currentMinBucket;
 			val = b;
 			while (val != null) {
+				Node nextVal = val.next;
 				if (val != min) {
 					int newBucket = computeBucket(val.getKey(), secondMin.getKey());
 					if (newBucket == currentMinBucket) {
@@ -216,16 +220,18 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 					val.next = null;
 					val.prev = null;
 				}
+				val = nextVal;
 			}
 
 			// empty bucket
 			buckets[currentMinBucket] = null;
 
 			// find current minimum
+			currentMin = null;
+			size--;
 			updateMin(minNewBucket);
 		}
 
-		size--;
 		return result;
 	}
 
@@ -394,7 +400,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 
 		@Override
 		public void decreaseKey(K newKey) {
-			if (bucket == NO_BUCKET) {
+			if (bucket == NO_BUCKET || size == 0) {
 				throw new IllegalArgumentException("Invalid handle!");
 			}
 			if (compare(newKey, currentMin.getKey()) < 0) {
@@ -444,7 +450,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 
 		@Override
 		public void delete() {
-			if (bucket == NO_BUCKET) {
+			if (bucket == NO_BUCKET || size == 0) {
 				throw new IllegalArgumentException("Invalid handle!");
 			}
 			if (this == currentMin) {
@@ -461,11 +467,12 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 				prev.next = next;
 			}
 			if (head == this) {
-				prev = null;
 				buckets[bucket] = next;
 			}
+			prev = null;
+			next = null;
+			bucket = NO_BUCKET;
+			size--;
 		}
-
 	}
-
 }
