@@ -15,8 +15,6 @@ import org.jheaps.annotations.ConstantTime;
  *
  * @param <K>
  *            the key type
- * @param <V>
- *            the value type
  */
 abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
 

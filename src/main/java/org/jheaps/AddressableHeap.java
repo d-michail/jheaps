@@ -128,7 +128,7 @@ public interface AddressableHeap<K, V> {
 	 * Delete and return an element with the minimum key. If multiple such
 	 * elements exists, only one of them will be deleted. After the element is
 	 * deleted the handle is invalidated and only method {@link Handle#getKey()}
-	 * and {@link Handle#getValue() can be used.
+	 * and {@link Handle#getValue()} can be used.
 	 * 
 	 * @return a handle to the deleted element with minimum key
 	 */
