@@ -410,4 +410,21 @@ public class LongRadixAddressableHeapTest {
 
 	}
 
+	@Test
+	public void testGetValue() {
+		AddressableHeap<Long, String> h = new LongRadixAddressableHeap<String>(0, 0);
+		assertEquals("hello", h.insert(0l, "hello").getValue());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction() {
+		new LongRadixAddressableHeap<Void>(-1, 10);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction1() {
+		new LongRadixAddressableHeap<Void>(10, 9);
+	}
+
+
 }

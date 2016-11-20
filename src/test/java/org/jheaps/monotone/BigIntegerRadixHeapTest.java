@@ -144,6 +144,16 @@ public class BigIntegerRadixHeapTest {
 		new BigIntegerRadixHeap(BigInteger.valueOf(100), BigInteger.valueOf(99));
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction2() {
+		new BigIntegerRadixHeap(null, BigInteger.valueOf(99));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction3() {
+		new BigIntegerRadixHeap(BigInteger.valueOf(99), null);
+	}
+
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSerializable() throws IOException, ClassNotFoundException {

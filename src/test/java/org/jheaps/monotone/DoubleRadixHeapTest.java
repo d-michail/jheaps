@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Random;
 
 import org.jheaps.Heap;
-import org.jheaps.monotone.DoubleRadixHeap;
 import org.junit.Test;
 
 public class DoubleRadixHeapTest {
@@ -151,6 +150,26 @@ public class DoubleRadixHeapTest {
 		assertEquals(0.0, h.deleteMin(), 1e-9);
 		assertEquals(Double.MAX_VALUE, h.deleteMin(), 1e-9);
 		assertEquals(0, h.size());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction1() {
+		new DoubleRadixHeap(-1.0, Double.MAX_VALUE);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction2() {
+		new DoubleRadixHeap(Double.NEGATIVE_INFINITY, Double.MAX_VALUE);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction3() {
+		new DoubleRadixHeap(0d, Double.POSITIVE_INFINITY);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction4() {
+		new DoubleRadixHeap(15d, 14d);
 	}
 
 }

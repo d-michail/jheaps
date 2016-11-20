@@ -407,7 +407,16 @@ public class IntegerRadixAddressableHeapTest {
 			h.deleteMin();
 		}
 		assertTrue(h.isEmpty());
+	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction() {
+		new IntegerRadixAddressableHeap<Void>(-1, 10);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction1() {
+		new IntegerRadixAddressableHeap<Void>(10, 9);
 	}
 
 }

@@ -27,8 +27,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
+import org.jheaps.AddressableHeap.Handle;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -438,7 +440,7 @@ public abstract class AbstractAddressableHeapTest {
 		assertEquals(Integer.valueOf(4), h.findMin().getKey());
 		array[4].delete();
 		assertEquals(Integer.valueOf(6), h.findMin().getKey());
-		
+
 		// again
 		array[2].delete();
 	}
@@ -471,6 +473,24 @@ public abstract class AbstractAddressableHeapTest {
 			h.insert(i);
 		}
 		h.deleteMin().decreaseKey(0);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testNoElementFindMin() {
+		AddressableHeap<Integer, Void> h = createHeap();
+		h.findMin();
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testNoElementDeleteMin() {
+		AddressableHeap<Integer, Void> h = createHeap();
+		h.deleteMin();
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testInsertNull() {
+		AddressableHeap<Integer, Void> h = createHeap();
+		h.insert(null, null);
 	}
 
 	@Test
@@ -549,6 +569,106 @@ public abstract class AbstractAddressableHeapTest {
 			h.deleteMin();
 		}
 		assertTrue(h.isEmpty());
+	}
+
+	@Test
+	public void testSameKey() {
+		AddressableHeap<Integer, Void> h = createHeap();
+
+		assertTrue(h.isEmpty());
+
+		Handle<Integer, Void> handle = h.insert(780);
+		handle.decreaseKey(780);
+		assertEquals(780, h.deleteMin().getKey().intValue());
+		assertTrue(h.isEmpty());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testMeldGeneric() {
+		AddressableHeap<Integer, Void> h1 = createHeap();
+
+		if (h1 instanceof MergeableHeap) {
+			for (int i = 0; i < SIZE; i++) {
+				h1.insert(2 * i);
+			}
+
+			AddressableHeap<Integer, Void> h2 = createHeap();
+			for (int i = 0; i < SIZE; i++) {
+				h2.insert(2 * i + 1);
+			}
+
+			((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+
+			assertEquals(h1.size(), SIZE * 2);
+			assertEquals(h2.size(), 0);
+
+			Integer prev = null, cur;
+			while (!h1.isEmpty()) {
+				cur = h1.findMin().getKey();
+				h1.deleteMin();
+				if (prev != null) {
+					assertTrue(prev.compareTo(cur) <= 0);
+				}
+				prev = cur;
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testMeldGeneric1() {
+		AddressableHeap<Integer, Void> h1 = createHeap();
+
+		if (h1 instanceof MergeableHeap) {
+			AddressableHeap<Integer, Void> h2 = createHeap();
+			for (int i = 0; i < SIZE; i++) {
+				h2.insert(i);
+			}
+
+			((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+
+			assertEquals(h1.size(), SIZE);
+			assertEquals(h2.size(), 0);
+
+			Integer prev = null, cur;
+			while (!h1.isEmpty()) {
+				cur = h1.findMin().getKey();
+				h1.deleteMin();
+				if (prev != null) {
+					assertTrue(prev.compareTo(cur) <= 0);
+				}
+				prev = cur;
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testMeldGeneric2() {
+		AddressableHeap<Integer, Void> h1 = createHeap();
+
+		if (h1 instanceof MergeableHeap) {
+			AddressableHeap<Integer, Void> h2 = createHeap();
+			for (int i = 0; i < SIZE; i++) {
+				h1.insert(i);
+			}
+
+			((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+
+			assertEquals(h1.size(), SIZE);
+			assertEquals(h2.size(), 0);
+
+			Integer prev = null, cur;
+			while (!h1.isEmpty()) {
+				cur = h1.findMin().getKey();
+				h1.deleteMin();
+				if (prev != null) {
+					assertTrue(prev.compareTo(cur) <= 0);
+				}
+				prev = cur;
+			}
+		}
 
 	}
 

@@ -200,6 +200,9 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddress
 		if (keys == null) {
 			throw new IllegalArgumentException("Key array cannot be null");
 		}
+		if (values != null && keys.length != values.length) {
+			throw new IllegalArgumentException("Values array must have the same length as the keys array");
+		}
 		if (keys.length == 0) {
 			return new BinaryArrayAddressableHeap<K, V>();
 		}
@@ -245,6 +248,9 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddress
 			Comparator<? super K> comparator) {
 		if (keys == null) {
 			throw new IllegalArgumentException("Keys array cannot be null");
+		}
+		if (values != null && keys.length != values.length) {
+			throw new IllegalArgumentException("Values array must have the same length as the keys array");
 		}
 		if (keys.length == 0) {
 			return new BinaryArrayAddressableHeap<K, V>(comparator);

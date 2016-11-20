@@ -397,11 +397,6 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 			FibonacciHeap.this.forceDecreaseKeyToMinimum(this);
 			deleteMin();
 		}
-
-		@Override
-		public String toString() {
-			return String.valueOf(key);
-		}
 	}
 
 	/*

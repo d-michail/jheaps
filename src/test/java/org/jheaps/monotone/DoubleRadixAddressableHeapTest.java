@@ -283,7 +283,7 @@ public class DoubleRadixAddressableHeapTest {
 		assertEquals(Double.valueOf(4), h.findMin().getKey(), 1e-9);
 		array[4].delete();
 		assertEquals(Double.valueOf(6), h.findMin().getKey(), 1e-9);
-		
+
 		// again
 		array[2].delete();
 	}
@@ -407,7 +407,26 @@ public class DoubleRadixAddressableHeapTest {
 			h.deleteMin();
 		}
 		assertTrue(h.isEmpty());
+	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction() {
+		new DoubleRadixAddressableHeap<Void>(-1, 10);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction1() {
+		new DoubleRadixAddressableHeap<Void>(10, 9);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction2() {
+		new DoubleRadixAddressableHeap<Void>(Double.NEGATIVE_INFINITY, 9);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction3() {
+		new DoubleRadixAddressableHeap<Void>(0d, Double.POSITIVE_INFINITY);
 	}
 
 }
