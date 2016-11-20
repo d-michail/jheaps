@@ -58,11 +58,6 @@ public class DoubleRadixHeap extends AbstractRadixHeap<Double> {
 	private final static long serialVersionUID = 1;
 
 	/**
-	 * Mask for unsigned longs
-	 */
-	private static final long UNSIGNED_MASK = 0x7fffffffffffffffL;
-
-	/**
 	 * Constructs a new heap which can store values between a minimum and a
 	 * maximum key value (inclusive).
 	 * 
@@ -93,8 +88,8 @@ public class DoubleRadixHeap extends AbstractRadixHeap<Double> {
 		this.maxKey = maxKey;
 
 		// compute number of buckets
-		BigInteger minKeyAsBigInt = asUnsignedLongToBigInt(minKey);
-		BigInteger maxKeyAsBigInt = asUnsignedLongToBigInt(maxKey);
+		BigInteger minKeyAsBigInt = UnsignedUtils.unsignedLongToBigInt(Double.doubleToLongBits(minKey));
+		BigInteger maxKeyAsBigInt = UnsignedUtils.unsignedLongToBigInt(Double.doubleToLongBits(maxKey));
 		BigInteger diff = maxKeyAsBigInt.subtract(minKeyAsBigInt);
 		int numBuckets = 2 + 1 + diff.bitLength();
 
@@ -119,12 +114,6 @@ public class DoubleRadixHeap extends AbstractRadixHeap<Double> {
 		long x = Double.doubleToLongBits(o1) ^ Long.MIN_VALUE;
 		long y = Double.doubleToLongBits(o2) ^ Long.MIN_VALUE;
 
-		// assert
-		/*
-		 * if (o1.doubleValue() < o2.doubleValue()) { assert x < y; } else if
-		 * (o1.doubleValue() == o2.doubleValue()) { assert x == y; } else {
-		 * assert x > y; }
-		 */
 		return (x < y) ? -1 : ((x == y) ? 0 : 1);
 	}
 
@@ -141,28 +130,8 @@ public class DoubleRadixHeap extends AbstractRadixHeap<Double> {
 		if (ux == uy) {
 			return -1;
 		}
-		double d = unsignedLongToDouble(ux ^ uy);
+		double d = UnsignedUtils.unsignedLongToDouble(ux ^ uy);
 		return Math.getExponent(d);
-	}
-
-	private double unsignedLongToDouble(long x) {
-		double d = (double) (x & UNSIGNED_MASK);
-		if (d < 0) {
-			d += 0x1.0p63;
-		}
-		return d;
-	}
-
-	private BigInteger unsignedLongToBigInt(long x) {
-		BigInteger asBigInt = BigInteger.valueOf(x & UNSIGNED_MASK);
-		if (x < 0) {
-			asBigInt = asBigInt.setBit(Long.SIZE - 1);
-		}
-		return asBigInt;
-	}
-
-	private BigInteger asUnsignedLongToBigInt(Double a) {
-		return unsignedLongToBigInt(Double.doubleToLongBits(a));
 	}
 
 }

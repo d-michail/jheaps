@@ -29,6 +29,7 @@ import java.io.ObjectOutputStream;
 import java.util.Random;
 
 import org.jheaps.AddressableHeap;
+import org.jheaps.AddressableHeap.Handle;
 import org.junit.Test;
 
 public class IntegerRadixAddressableHeapTest {
@@ -316,6 +317,37 @@ public class IntegerRadixAddressableHeapTest {
 			h.insert(Integer.valueOf(i));
 		}
 		h.deleteMin().decreaseKey(0);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDeleteEmpty() {
+		AddressableHeap<Integer, Void> h = new IntegerRadixAddressableHeap<Void>(0, 200);
+		Handle<Integer, Void> handle = h.insert(1);
+		h.deleteMin();
+		handle.delete();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDecreaseKeyEmpty() {
+		AddressableHeap<Integer, Void> h = new IntegerRadixAddressableHeap<Void>(100, 200);
+		Handle<Integer, Void> handle = h.insert(150);
+		h.deleteMin();
+		handle.decreaseKey(120);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDecreaseKeyMore() {
+		AddressableHeap<Integer, Void> h = new IntegerRadixAddressableHeap<Void>(100, 200);
+		Handle<Integer, Void> handle = h.insert(150);
+		handle.decreaseKey(160);
+	}
+
+	@Test
+	public void testDecreaseKeySame() {
+		AddressableHeap<Integer, Void> h = new IntegerRadixAddressableHeap<Void>(100, 200);
+		Handle<Integer, Void> handle = h.insert(150);
+		handle.decreaseKey(150);
+		assertEquals(150, h.findMin().getKey().intValue());
 	}
 
 	@Test

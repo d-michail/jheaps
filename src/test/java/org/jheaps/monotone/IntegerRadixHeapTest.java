@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.jheaps.Heap;
@@ -277,7 +278,31 @@ public class IntegerRadixHeapTest {
 			h.deleteMin();
 		}
 		assertTrue(h.isEmpty());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBadInsert() {
+		new IntegerRadixHeap(0, 15).insert(null);
+	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testBadInsert1() {
+		new IntegerRadixHeap(10, 15).insert(9);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testBadInsert2() {
+		new IntegerRadixHeap(10, 15).insert(16);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testBadDeleteMin() {
+		new IntegerRadixHeap(10, 15).deleteMin();
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testBadFindMin() {
+		new IntegerRadixHeap(10, 15).findMin();
 	}
 
 }

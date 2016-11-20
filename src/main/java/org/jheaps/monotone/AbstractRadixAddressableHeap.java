@@ -197,9 +197,11 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 				Node nextVal = val.next;
 				if (val != min) {
 					int newBucket = computeBucket(val.getKey(), secondMin.getKey());
-					if (newBucket == currentMinBucket) {
-						throw new IllegalStateException("bug! Please contact the developers");
-					}
+					/*
+					 * if (newBucket == currentMinBucket) { throw new
+					 * IllegalStateException("bug! Please contact the developers"
+					 * ); }
+					 */
 					if (newBucket < minNewBucket) {
 						minNewBucket = newBucket;
 					}
@@ -346,29 +348,6 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 		}
 	}
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < this.buckets.length; i++) {
-			if (i > 0) {
-				sb.append(',');
-			}
-			sb.append('[');
-			int pos = 0;
-			Node n = buckets[i];
-			while (n != null) {
-				if (pos > 0) {
-					sb.append(',');
-				}
-				sb.append(n.getKey());
-				n = n.next;
-				pos++;
-			}
-			sb.append(']');
-		}
-		return sb.toString();
-	}
-
 	// list node
 	protected class Node implements Handle<K, V>, Serializable {
 
@@ -400,7 +379,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 
 		@Override
 		public void decreaseKey(K newKey) {
-			if (bucket == NO_BUCKET || size == 0) {
+			if (bucket == NO_BUCKET) {
 				throw new IllegalArgumentException("Invalid handle!");
 			}
 			if (compare(newKey, currentMin.getKey()) < 0) {
@@ -450,7 +429,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 
 		@Override
 		public void delete() {
-			if (bucket == NO_BUCKET || size == 0) {
+			if (bucket == NO_BUCKET) {
 				throw new IllegalArgumentException("Invalid handle!");
 			}
 			if (this == currentMin) {

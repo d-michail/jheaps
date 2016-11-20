@@ -163,9 +163,11 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
 			for (K val : b) {
 				if (pos != minPos) {
 					int newBucket = computeBucket(val, secondMin);
+					/*
 					if (newBucket == currentMinBucket) {
 						throw new IllegalStateException("bug! Please contact the developers");
 					}
+					*/
 					if (newBucket < minNewBucket) {
 						minNewBucket = newBucket;
 					}

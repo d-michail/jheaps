@@ -19,6 +19,7 @@ package org.jheaps.monotone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.jheaps.Heap;
@@ -230,6 +232,12 @@ public class LongRadixHeapTest {
 		assertTrue(h.isEmpty());
 	}
 
+	@Test
+	public void testComparator() {
+		Heap<Long> h = new LongRadixHeap(0, 15);
+		assertNull(h.comparator());
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testMonotone() {
 		Heap<Long> h = new LongRadixHeap(0, 1000);
@@ -245,6 +253,31 @@ public class LongRadixHeapTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction1() {
 		new LongRadixHeap(100, 99);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testBadInsert() {
+		new LongRadixHeap(0, 15).insert(null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testBadInsert1() {
+		new LongRadixHeap(10, 15).insert(9l);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testBadInsert2() {
+		new LongRadixHeap(10, 15).insert(16l);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testBadDeleteMin() {
+		new LongRadixHeap(10, 15).deleteMin();
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testBadFindMin() {
+		new LongRadixHeap(10, 15).findMin();
 	}
 
 	@Test
