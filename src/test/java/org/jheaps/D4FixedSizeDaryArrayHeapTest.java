@@ -19,15 +19,14 @@ package org.jheaps;
 
 import java.util.Comparator;
 
-public class AddressableBinaryHeapTest extends AbstractAddressableHeapTest {
+public class D4FixedSizeDaryArrayHeapTest extends AbstractStaticHeapTest {
 
-	@Override
-	protected AddressableHeap<Integer, Void> createHeap() {
-		return new BinaryTreeAddressableHeap<Integer, Void>();
+	protected Heap<Integer> createHeap(Comparator<Integer> comparator, int capacity) {
+		return new FixedSizeDaryArrayHeap<Integer>(4, comparator, capacity);
 	}
 
-	@Override
-	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
-		return new BinaryTreeAddressableHeap<Integer, Void>(comparator);
+	protected Heap<Integer> createHeap(int capacity) {
+		return new FixedSizeDaryArrayHeap<Integer>(4, capacity);
 	}
+
 }

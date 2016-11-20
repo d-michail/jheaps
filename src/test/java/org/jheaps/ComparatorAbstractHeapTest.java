@@ -32,7 +32,7 @@ import java.util.Comparator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public abstract class AbstractComparatorHeapTest {
+public abstract class ComparatorAbstractHeapTest {
 
 	private static final int SIZE = 100000;
 

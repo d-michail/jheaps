@@ -19,10 +19,38 @@ package org.jheaps;
 
 import java.util.Comparator;
 
-public class Dary3ArrayComparatorHeapTest extends AbstractComparatorHeapTest {
+import org.junit.Test;
 
-	protected Heap<Long> createHeap(Comparator<Long> comparator) {
-		return new DaryArrayHeap<Long>(3, comparator);
+public class D4DaryArrayHeapTest extends AbstractHeapTest {
+
+	protected Heap<Long> createHeap() {
+		return new DaryArrayHeap<Long>(4);
 	}
 
+	protected Heap<Long> createHeap(Comparator<Long> comparator) {
+		return new DaryArrayHeap<Long>(4, comparator);
+	}
+
+	protected Heap<Long> createHeap(int capacity) {
+		return new DaryArrayHeap<Long>(4, capacity);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalSize() {
+		Heap<Long> h = createHeap(-4);
+		h.insert(1l);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalSize1() {
+		Heap<Long> h = createHeap(-1);
+		h.insert(1l);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalSize2() {
+		Heap<Long> h = createHeap(Integer.MAX_VALUE - 8);
+		h.insert(1l);
+	}
+	
 }

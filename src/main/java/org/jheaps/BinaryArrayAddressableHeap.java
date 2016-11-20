@@ -38,8 +38,8 @@ import org.jheaps.annotations.LinearTime;
  * 
  * <p>
  * Constructing such a heap from an array of elements can be performed using the
- * method {@link #heapify(Object[])} or {@link #heapify(Object[], Comparator)}
- * in linear time.
+ * method {@link #heapify(Object[], Object[])} or
+ * {@link #heapify(Object[], Object[], Comparator)} in linear time.
  *
  * <p>
  * Note that the ordering maintained by a binary heap, like any heap, and
@@ -69,10 +69,6 @@ import org.jheaps.annotations.LinearTime;
  *            the type of values maintained by this heap
  *
  * @author Dimitrios Michail
- * @see Heap
- * @see Comparable
- * @see Comparator
- * @see Serializable
  */
 public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddressableHeap<K, V> implements Serializable {
 
