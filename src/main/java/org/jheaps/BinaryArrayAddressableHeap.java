@@ -18,6 +18,7 @@
 package org.jheaps;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.Comparator;
 
 import org.jheaps.annotations.LinearTime;
@@ -277,7 +278,7 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddress
 	@SuppressWarnings("unchecked")
 	protected void ensureCapacity(int capacity) {
 		checkCapacity(capacity);
-		ArrayHandle[] newArray = (ArrayHandle[]) new Object[capacity + 1];
+		ArrayHandle[] newArray = (ArrayHandle[]) Array.newInstance(ArrayHandle.class, capacity + 1);
 		System.arraycopy(array, 1, newArray, 1, size);
 		array = newArray;
 	}

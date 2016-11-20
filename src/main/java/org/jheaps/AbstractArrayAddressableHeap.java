@@ -18,6 +18,7 @@
 package org.jheaps;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
@@ -78,7 +79,7 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
 	@SuppressWarnings("unchecked")
 	public AbstractArrayAddressableHeap(Comparator<? super K> comparator, int capacity) {
 		checkCapacity(capacity);
-		this.array = (ArrayHandle[]) new Object[capacity + 1];
+		this.array = (ArrayHandle[]) Array.newInstance(ArrayHandle.class, capacity + 1);
 		this.size = 0;
 		this.comparator = comparator;
 	}

@@ -41,59 +41,72 @@ public class AddressableHeapsRandomTest {
 	public void testSeed13() {
 		test(new Random(13));
 	}
-	
+
 	@Test
 	public void testSeed37() {
 		test(new Random(37));
 	}
 
 	private void test(Random rng) {
+
+		final int classes = 4;
+
 		@SuppressWarnings("unchecked")
-		AddressableHeap<Integer, Void>[] h = (AddressableHeap<Integer, Void>[]) Array.newInstance(AddressableHeap.class, 3);
+		AddressableHeap<Integer, Void>[] h = (AddressableHeap<Integer, Void>[]) Array.newInstance(AddressableHeap.class,
+				classes);
 		h[0] = new PairingHeap<Integer, Void>();
 		h[1] = new BinaryTreeAddressableHeap<Integer, Void>();
 		h[2] = new FibonacciHeap<Integer, Void>();
+		h[3] = new BinaryArrayAddressableHeap<Integer, Void>();
 
 		@SuppressWarnings("unchecked")
-		List<Handle<Integer, Void>>[] s = (List<Handle<Integer, Void>>[]) Array.newInstance(List.class, 3);
+		List<Handle<Integer, Void>>[] s = (List<Handle<Integer, Void>>[]) Array.newInstance(List.class, classes);
 		s[0] = new ArrayList<Handle<Integer, Void>>();
 		s[1] = new ArrayList<Handle<Integer, Void>>();
 		s[2] = new ArrayList<Handle<Integer, Void>>();
+		s[3] = new ArrayList<Handle<Integer, Void>>();
 
 		for (int i = 0; i < SIZE; i++) {
 			Integer k = rng.nextInt();
-			s[0].add(h[0].insert(k, null));
-			s[1].add(h[1].insert(k, null));
-			s[2].add(h[2].insert(k, null));
-			assertEquals(h[0].findMin().getKey().intValue(), h[1].findMin().getKey().intValue());
-			assertEquals(h[0].findMin().getKey().intValue(), h[2].findMin().getKey().intValue());
+			for (int j = 0; j < classes; j++) {
+				s[j].add(h[j].insert(k, null));
+			}
+			for (int j = 1; j < classes; j++) {
+				assertEquals(h[0].findMin().getKey().intValue(), h[j].findMin().getKey().intValue());
+			}
 		}
 
 		for (int i = 0; i < 10; i++) {
 			Iterator<Handle<Integer, Void>> it0 = s[0].iterator();
 			Iterator<Handle<Integer, Void>> it1 = s[1].iterator();
 			Iterator<Handle<Integer, Void>> it2 = s[2].iterator();
-			while (it0.hasNext() && it1.hasNext() && it2.hasNext()) {
+			Iterator<Handle<Integer, Void>> it3 = s[3].iterator();
+			while (it0.hasNext() && it1.hasNext() && it2.hasNext() && it3.hasNext()) {
 				Handle<Integer, Void> h0 = it0.next();
 				Handle<Integer, Void> h1 = it1.next();
 				Handle<Integer, Void> h2 = it2.next();
+				Handle<Integer, Void> h3 = it3.next();
 				int newKey = h0.getKey() / 2;
 				if (newKey < h0.getKey()) {
 					h0.decreaseKey(newKey);
 					h1.decreaseKey(newKey);
 					h2.decreaseKey(newKey);
+					h3.decreaseKey(newKey);
 				}
 				assertEquals(h[0].findMin().getKey().intValue(), h[1].findMin().getKey().intValue());
 				assertEquals(h[0].findMin().getKey().intValue(), h[2].findMin().getKey().intValue());
+				assertEquals(h[0].findMin().getKey().intValue(), h[3].findMin().getKey().intValue());
 			}
 		}
 
 		while (!h[0].isEmpty()) {
 			assertEquals(h[0].findMin().getKey().intValue(), h[1].findMin().getKey().intValue());
 			assertEquals(h[0].findMin().getKey().intValue(), h[2].findMin().getKey().intValue());
+			assertEquals(h[0].findMin().getKey().intValue(), h[3].findMin().getKey().intValue());
 			h[0].deleteMin();
 			h[1].deleteMin();
 			h[2].deleteMin();
+			h[3].deleteMin();
 		}
 
 	}
