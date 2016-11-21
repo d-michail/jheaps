@@ -31,9 +31,9 @@ import org.jheaps.annotations.LinearTime;
  * <p>
  * The implementation uses an array in order to store the elements and
  * automatically maintains the size of the array much like a
- * {@link java.util.Vector} does, providing amortized O(log(n)) time cost for
- * the {@code insert} and {@code deleteMin} operations. Operation
- * {@code findMin}, is a worst-case O(1) operation.
+ * {@link java.util.Vector} does, providing amortized O(log_d(n)) time cost for
+ * the {@code insert} and amortized O(d log_d(n)) for the {@code deleteMin}
+ * operation. Operation {@code findMin}, is a worst-case O(1) operation.
  * 
  * <p>
  * Constructing such a heap from an array of elements can be performed using the

@@ -30,10 +30,10 @@ import org.jheaps.annotations.LinearTime;
  *
  * <p>
  * The implementation uses a fixed sized array in order to store the elements,
- * providing worst-case O(log(n)) time for the {@code insert} and
- * {@code deleteMin} operations. Operation {@code findMin}, is a worst-case O(1)
- * operation. {@link DaryArrayHeap} provides a more dynamic implementation in
- * the expense of amortized complexity bounds.
+ * providing worst-case O(log_d(n)) time for the {@code insert} and worst-case
+ * O(d log_d(n)) for the {@code deleteMin} operation. Operation {@code findMin},
+ * is a worst-case O(1) operation. {@link DaryArrayHeap} provides a more dynamic
+ * implementation in the expense of amortized complexity bounds.
  *
  * <p>
  * Constructing such a heap from an array of elements can be performed using the

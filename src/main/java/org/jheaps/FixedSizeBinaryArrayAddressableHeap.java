@@ -129,10 +129,13 @@ public class FixedSizeBinaryArrayAddressableHeap<K, V> extends AbstractBinaryArr
 	 * @param keys
 	 *            an array of keys
 	 * @param values
-	 *            an array of values
+	 *            an array of values, can be null
 	 * @return a binary heap
 	 * @throws IllegalArgumentException
-	 *             in case the array is null
+	 *             in case the keys array is null
+	 * @throws IllegalArgumentException
+	 *             in case the values array has different length than the keys
+	 *             array
 	 */
 	@LinearTime
 	public static <K, V> FixedSizeBinaryArrayAddressableHeap<K, V> heapify(K[] keys, V[] values) {
@@ -175,12 +178,15 @@ public class FixedSizeBinaryArrayAddressableHeap<K, V> extends AbstractBinaryArr
 	 * @param keys
 	 *            an array of keys
 	 * @param values
-	 *            an array of values
+	 *            an array of values, can be null
 	 * @param comparator
 	 *            the comparator to use
 	 * @return a binary heap
 	 * @throws IllegalArgumentException
-	 *             in case the array is null
+	 *             in case the keys array is null
+	 * @throws IllegalArgumentException
+	 *             in case the values array has different length than the keys
+	 *             array
 	 */
 	@LinearTime
 	public static <K, V> FixedSizeBinaryArrayAddressableHeap<K, V> heapify(K[] keys, V[] values,
