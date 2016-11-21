@@ -7,9 +7,9 @@
 	<version>0.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>jheaps</name>
-	<description>Java Heaps</description>
-	<url>https://github.com/d-michail/jheaps</url>
+	<name>JHeaps</name>
+	<description>A free, production-ready, efficient Java library containing a collection of heap data-structures.</description>
+	<url>http://www.jheaps.org</url>
 
 	<licenses>
 		<license>
@@ -29,6 +29,7 @@
 		<maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
 		<maven-jar-plugin.version>2.6</maven-jar-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 		<jacoco.version>0.7.7.201606060606</jacoco.version>
 	</properties>
 
@@ -38,9 +39,19 @@
 		<developerConnection>scm:git:git@github.com:d-michail/jheaps.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
+
 	<issueManagement>
 		<url>https://github.com/d-michail/jheaps/issues</url>
 	</issueManagement>
+
+	<developers>
+		<developer>
+			<name>Dimitrios Michail</name>
+			<email>dimitrios.michail@gmail.com</email>
+			<organization>Dimitrios Michail</organization>
+			<organizationUrl>https://github.com/d-michail</organizationUrl>
+		</developer>
+	</developers>
 
 	<dependencies>
 		<dependency>
@@ -83,8 +94,13 @@
 				<version>${maven-javadoc-plugin.version}</version>
 				<configuration>
 					<show>public</show>
-					<windowtitle>JHeaps Library</windowtitle>
+					<windowtitle>JHeaps</windowtitle>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven-source-plugin.version}</version>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
@@ -170,5 +186,65 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<show>public</show>
+							<windowtitle>JHeaps</windowtitle>
+						</configuration>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
