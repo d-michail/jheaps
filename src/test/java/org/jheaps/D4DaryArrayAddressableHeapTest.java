@@ -17,39 +17,35 @@
  */
 package org.jheaps;
 
+import java.util.Comparator;
+
 import org.junit.Test;
 
-public class D3DaryArrayHeapTest extends AbstractHeapTest {
+public class D4DaryArrayAddressableHeapTest extends AbstractAddressableHeapTest {
 
-	protected Heap<Long> createHeap() {
-		return new DaryArrayHeap<Long>(3);
+	@Override
+	protected AddressableHeap<Integer, Void> createHeap() {
+		return new DaryArrayAddressableHeap<Integer, Void>(4);
 	}
 
-	protected Heap<Long> createHeap(int capacity) {
-		return new DaryArrayHeap<Long>(3, capacity);
+	@Override
+	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
+		return new DaryArrayAddressableHeap<Integer, Void>(4, comparator);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testWrongD() {
-		new DaryArrayHeap<Long>(1);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize() {
-		Heap<Long> h = createHeap(-4);
-		h.insert(1l);
+	@Override
+	protected AddressableHeap<Integer, String> createHeapWithStringValues() {
+		return new DaryArrayAddressableHeap<Integer, String>(4);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize1() {
-		Heap<Long> h = createHeap(-1);
-		h.insert(1l);
+	public void testIllegal1() {
+		new DaryArrayAddressableHeap<Integer, String>(4, -5);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize2() {
-		Heap<Long> h = createHeap(Integer.MAX_VALUE - 8);
-		h.insert(1l);
+	public void testIllegal2() {
+		new DaryArrayAddressableHeap<Integer, String>(4, Integer.MAX_VALUE);
 	}
 
 }

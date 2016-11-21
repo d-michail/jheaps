@@ -202,33 +202,63 @@ public class HeapifyTest {
 	public void testHeapifyZeroLengthArray1() {
 		Integer[] a = new Integer[0];
 
-		AddressableHeap<Integer, String> h = BinaryArrayAddressableHeap.heapify(a, null);
+		int classes = 4;
 
-		assertTrue(h.isEmpty());
-		assertEquals(1, h.insert(1).getKey().intValue());
+		@SuppressWarnings("unchecked")
+		AddressableHeap<Integer, String>[] h = (AddressableHeap<Integer, String>[]) Array
+				.newInstance(AddressableHeap.class, classes);
+		h[0] = BinaryArrayAddressableHeap.heapify(a, null);
+		h[1] = DaryArrayAddressableHeap.heapify(3, a, null);
+		h[2] = DaryArrayAddressableHeap.heapify(4, a, null);
+		h[3] = DaryArrayAddressableHeap.heapify(5, a, null);
+
+		for (int i = 0; i < classes; i++) {
+			assertTrue(h[i].isEmpty());
+			assertEquals(1, h[i].insert(1).getKey().intValue());
+		}
 	}
 
 	@Test
 	public void testHeapifyZeroLengthArray2() {
 		Integer[] a = new Integer[0];
 
-		Heap<Integer> h = BinaryArrayHeap.heapify(a, null);
-		h.insert(1);
-		h.insert(2);
-		h.insert(3);
-		h.insert(4);
+		int classes = 4;
 
-		assertEquals(4, h.size());
+		@SuppressWarnings("unchecked")
+		AddressableHeap<Integer, String>[] h = (AddressableHeap<Integer, String>[]) Array
+				.newInstance(AddressableHeap.class, classes);
+		h[0] = BinaryArrayAddressableHeap.heapify(a, null);
+		h[1] = DaryArrayAddressableHeap.heapify(3, a, null);
+		h[2] = DaryArrayAddressableHeap.heapify(4, a, null);
+		h[3] = DaryArrayAddressableHeap.heapify(5, a, null);
+
+		for (int i = 0; i < classes; i++) {
+			h[i].insert(1);
+			h[i].insert(2);
+			h[i].insert(3);
+			h[i].insert(4);
+			assertEquals(4, h[i].size());
+		}
 	}
 
 	@Test
 	public void testHeapifyZeroLengthArrayComparator1() {
 		Integer[] a = new Integer[0];
 
-		AddressableHeap<Integer, String> h = BinaryArrayAddressableHeap.heapify(a, null, comparator);
+		int classes = 4;
 
-		assertTrue(h.isEmpty());
-		assertEquals(1, h.insert(1).getKey().intValue());
+		@SuppressWarnings("unchecked")
+		AddressableHeap<Integer, String>[] h = (AddressableHeap<Integer, String>[]) Array
+				.newInstance(AddressableHeap.class, classes);
+		h[0] = BinaryArrayAddressableHeap.heapify(a, null, comparator);
+		h[1] = DaryArrayAddressableHeap.heapify(3, a, null, comparator);
+		h[2] = DaryArrayAddressableHeap.heapify(4, a, null, comparator);
+		h[3] = DaryArrayAddressableHeap.heapify(5, a, null, comparator);
+
+		for (int i = 0; i < classes; i++) {
+			assertTrue(h[i].isEmpty());
+			assertEquals(1, h[i].insert(1).getKey().intValue());
+		}
 	}
 
 	@Test
@@ -330,10 +360,45 @@ public class HeapifyTest {
 		} catch (IllegalArgumentException e) {
 		}
 
+		try {
+			DaryArrayAddressableHeap.heapify(1, new Integer[2], new Integer[2]);
+			fail("No!");
+		} catch (IllegalArgumentException e) {
+		}
+
+		try {
+			DaryArrayAddressableHeap.heapify(3, null, new Integer[2]);
+			fail("No!");
+		} catch (IllegalArgumentException e) {
+		}
+
+		try {
+			DaryArrayAddressableHeap.heapify(3, new Integer[3], new Integer[2]);
+			fail("No!");
+		} catch (IllegalArgumentException e) {
+		}
+
+		try {
+			DaryArrayAddressableHeap.heapify(1, new Integer[2], new Integer[2], comparator);
+			fail("No!");
+		} catch (IllegalArgumentException e) {
+		}
+
+		try {
+			DaryArrayAddressableHeap.heapify(3, null, new Integer[2], comparator);
+			fail("No!");
+		} catch (IllegalArgumentException e) {
+		}
+
+		try {
+			DaryArrayAddressableHeap.heapify(3, new Integer[3], new Integer[2], comparator);
+			fail("No!");
+		} catch (IllegalArgumentException e) {
+		}
 	}
 
 	@Test
-	public void testBinaryArrayAddressableHeapifySort() {
+	public void testArrayAddressableHeapifySort() {
 		Random generator = new Random(1);
 
 		Integer[] a = new Integer[SIZE];
@@ -341,24 +406,41 @@ public class HeapifyTest {
 			a[i] = generator.nextInt();
 		}
 
-		AddressableHeap<Integer, String> h = BinaryArrayAddressableHeap.heapify(a, null);
+		int classes = 4;
+
+		@SuppressWarnings("unchecked")
+		AddressableHeap<Integer, String>[] h = (AddressableHeap<Integer, String>[]) Array
+				.newInstance(AddressableHeap.class, classes);
+		h[0] = BinaryArrayAddressableHeap.heapify(a, null);
+		h[1] = DaryArrayAddressableHeap.heapify(3, a, null);
+		h[2] = DaryArrayAddressableHeap.heapify(4, a, null);
+		h[3] = DaryArrayAddressableHeap.heapify(5, a, null);
 
 		int elements = SIZE;
-		Integer prev = null, cur;
+		Integer[] prev = new Integer[classes];
+		Integer[] cur = new Integer[classes];
 		while (elements > 0) {
-			cur = h.findMin().getKey();
-			assertEquals(cur, h.findMin().getKey());
-			h.deleteMin();
-			if (prev != null) {
-				assertTrue(prev.compareTo(cur) <= 0);
+			for (int i = 0; i < classes; i++) {
+				cur[i] = h[i].findMin().getKey();
+				if (i > 0) {
+					assertEquals(cur[0], cur[i]);
+				}
 			}
-			prev = cur;
+			for (int i = 0; i < classes; i++) {
+				h[i].deleteMin();
+			}
+			for (int i = 0; i < classes; i++) {
+				if (prev[i] != null) {
+					assertTrue(prev[i].compareTo(cur[i]) <= 0);
+				}
+				prev[i] = cur[i];
+			}
 			elements--;
 		}
 	}
 
 	@Test
-	public void testBinaryArrayAddressableHeapifySortWithValues() {
+	public void testArrayAddressableHeapifySortWithValues() {
 		Random generator = new Random(1);
 
 		Integer[] a = new Integer[SIZE];
@@ -368,25 +450,42 @@ public class HeapifyTest {
 			b[i] = a[i].toString();
 		}
 
-		AddressableHeap<Integer, String> h = BinaryArrayAddressableHeap.heapify(a, b);
+		int classes = 4;
+
+		@SuppressWarnings("unchecked")
+		AddressableHeap<Integer, String>[] h = (AddressableHeap<Integer, String>[]) Array
+				.newInstance(AddressableHeap.class, classes);
+		h[0] = BinaryArrayAddressableHeap.heapify(a, b);
+		h[1] = DaryArrayAddressableHeap.heapify(3, a, b);
+		h[2] = DaryArrayAddressableHeap.heapify(4, a, b);
+		h[3] = DaryArrayAddressableHeap.heapify(5, a, b);
 
 		int elements = SIZE;
-		Integer prev = null, cur;
+		Integer[] prev = new Integer[classes];
+		Integer[] cur = new Integer[classes];
 		while (elements > 0) {
-			cur = h.findMin().getKey();
-			assertEquals(cur, h.findMin().getKey());
-			assertEquals(h.findMin().getValue(), h.findMin().getKey().toString());
-			h.deleteMin();
-			if (prev != null) {
-				assertTrue(prev.compareTo(cur) <= 0);
+			for (int i = 0; i < classes; i++) {
+				cur[i] = h[i].findMin().getKey();
+				assertEquals(h[i].findMin().getValue(), h[i].findMin().getKey().toString());
+				if (i > 0) {
+					assertEquals(cur[0], cur[i]);
+				}
 			}
-			prev = cur;
+			for (int i = 0; i < classes; i++) {
+				h[i].deleteMin();
+			}
+			for (int i = 0; i < classes; i++) {
+				if (prev[i] != null) {
+					assertTrue(prev[i].compareTo(cur[i]) <= 0);
+				}
+				prev[i] = cur[i];
+			}
 			elements--;
 		}
 	}
 
 	@Test
-	public void testBinaryArrayAddressableHeapifySortComparator() {
+	public void testArrayAddressableHeapifySortComparator() {
 		Random generator = new Random(1);
 
 		Integer[] a = new Integer[SIZE];
@@ -394,24 +493,41 @@ public class HeapifyTest {
 			a[i] = generator.nextInt();
 		}
 
-		AddressableHeap<Integer, String> h = BinaryArrayAddressableHeap.heapify(a, null, comparator);
+		int classes = 4;
+
+		@SuppressWarnings("unchecked")
+		AddressableHeap<Integer, String>[] h = (AddressableHeap<Integer, String>[]) Array
+				.newInstance(AddressableHeap.class, classes);
+		h[0] = BinaryArrayAddressableHeap.heapify(a, null, comparator);
+		h[1] = DaryArrayAddressableHeap.heapify(3, a, null, comparator);
+		h[2] = DaryArrayAddressableHeap.heapify(4, a, null, comparator);
+		h[3] = DaryArrayAddressableHeap.heapify(5, a, null, comparator);
 
 		int elements = SIZE;
-		Integer prev = null, cur;
+		Integer[] prev = new Integer[classes];
+		Integer[] cur = new Integer[classes];
 		while (elements > 0) {
-			cur = h.findMin().getKey();
-			assertEquals(cur, h.findMin().getKey());
-			h.deleteMin();
-			if (prev != null) {
-				assertTrue(comparator.compare(prev, cur) <= 0);
+			for (int i = 0; i < classes; i++) {
+				cur[i] = h[i].findMin().getKey();
+				if (i > 0) {
+					assertEquals(cur[0], cur[i]);
+				}
 			}
-			prev = cur;
+			for (int i = 0; i < classes; i++) {
+				h[i].deleteMin();
+			}
+			for (int i = 0; i < classes; i++) {
+				if (prev[i] != null) {
+					assertTrue(comparator.compare(prev[i], cur[i]) <= 0);
+				}
+				prev[i] = cur[i];
+			}
 			elements--;
 		}
 	}
 
 	@Test
-	public void testBinaryArrayAddressableHeapifySortComparatorWithValues() {
+	public void testArrayAddressableHeapifySortComparatorWithValues() {
 		Random generator = new Random(1);
 
 		Integer[] a = new Integer[SIZE];
@@ -421,21 +537,37 @@ public class HeapifyTest {
 			b[i] = a[i].toString();
 		}
 
-		AddressableHeap<Integer, String> h = BinaryArrayAddressableHeap.heapify(a, b, comparator);
+		int classes = 4;
+
+		@SuppressWarnings("unchecked")
+		AddressableHeap<Integer, String>[] h = (AddressableHeap<Integer, String>[]) Array
+				.newInstance(AddressableHeap.class, classes);
+		h[0] = BinaryArrayAddressableHeap.heapify(a, b, comparator);
+		h[1] = DaryArrayAddressableHeap.heapify(3, a, b, comparator);
+		h[2] = DaryArrayAddressableHeap.heapify(4, a, b, comparator);
+		h[3] = DaryArrayAddressableHeap.heapify(5, a, b, comparator);
 
 		int elements = SIZE;
-		Integer prev = null, cur;
+		Integer[] prev = new Integer[classes];
+		Integer[] cur = new Integer[classes];
 		while (elements > 0) {
-			cur = h.findMin().getKey();
-			assertEquals(cur, h.findMin().getKey());
-			assertEquals(h.findMin().getValue(), h.findMin().getKey().toString());
-			h.deleteMin();
-			if (prev != null) {
-				assertTrue(comparator.compare(prev, cur) <= 0);
+			for (int i = 0; i < classes; i++) {
+				cur[i] = h[i].findMin().getKey();
+				assertEquals(h[i].findMin().getValue(), h[i].findMin().getKey().toString());
+				if (i > 0) {
+					assertEquals(cur[0], cur[i]);
+				}
 			}
-			prev = cur;
+			for (int i = 0; i < classes; i++) {
+				h[i].deleteMin();
+			}
+			for (int i = 0; i < classes; i++) {
+				if (prev[i] != null) {
+					assertTrue(comparator.compare(prev[i], cur[i]) <= 0);
+				}
+				prev[i] = cur[i];
+			}
 			elements--;
 		}
 	}
-
 }
