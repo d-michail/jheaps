@@ -24,14 +24,14 @@ import java.util.Comparator;
 import org.jheaps.annotations.LinearTime;
 
 /**
- * An array based binary heap implementation of the {@link AddressableHeap}
- * interface. The heap is sorted according to the {@linkplain Comparable natural
- * ordering} of its keys, or by a {@link Comparator} provided at heap creation
- * time, depending on which constructor is used.
+ * An array based binary addressable heap. The heap is sorted according to the
+ * {@linkplain Comparable natural ordering} of its keys, or by a
+ * {@link Comparator} provided at heap creation time, depending on which
+ * constructor is used.
  *
  * <p>
- * The implementation of a heap use an array in order to store the elements.
- * This implementation automatically maintains the size of the array much like a
+ * The implementation uses an array in order to store the elements and
+ * automatically maintains the size of the array much like a
  * {@link java.util.Vector} does, providing amortized O(log(n)) time cost for
  * the {@code insert} and {@code deleteMin} operations. Operation
  * {@code findMin}, is a worst-case O(1) operation. Operations {@code delete}

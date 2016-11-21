@@ -23,8 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marker interface used by implementations to indicate that a public API may
- * change or be removed in the future.
+ * Marker interface to indicate that a public API may change or be removed in
+ * the future.
  * 
  * @author Dimitrios Michail
  */

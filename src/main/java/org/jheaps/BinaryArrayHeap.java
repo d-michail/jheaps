@@ -23,16 +23,16 @@ import java.util.Comparator;
 import org.jheaps.annotations.LinearTime;
 
 /**
- * An implicit binary heap implementation of the {@link Heap} interface. The
- * heap is sorted according to the {@linkplain Comparable natural ordering} of
- * its keys, or by a {@link Comparator} provided at heap creation time,
- * depending on which constructor is used.
+ * An array based binary heap. The heap is sorted according to the
+ * {@linkplain Comparable natural ordering} of its keys, or by a
+ * {@link Comparator} provided at heap creation time, depending on which
+ * constructor is used.
  *
  * <p>
- * Implicit implementations of a heap use an array in order to store the
- * elements. This implementation automatically maintains the size of the array
- * much like a {@link java.util.Vector} does, providing amortized O(log(n)) time
- * cost for the {@code insert} and {@code deleteMin} operations. Operation
+ * The implementation uses an array in order to store the elements and
+ * automatically maintains the size of the array much like a
+ * {@link java.util.Vector} does, providing amortized O(log(n)) time cost for
+ * the {@code insert} and {@code deleteMin} operations. Operation
  * {@code findMin}, is a worst-case O(1) operation.
  * 
  * <p>
@@ -95,8 +95,8 @@ public class BinaryArrayHeap<K> extends AbstractBinaryArrayHeap<K> implements Se
 	 *
 	 * <p>
 	 * The initial capacity of the heap is
-	 * {@link BinaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically based
-	 * on the sequence of insertions and deletions.
+	 * {@link BinaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically
+	 * based on the sequence of insertions and deletions.
 	 */
 	public BinaryArrayHeap() {
 		super(null, DEFAULT_HEAP_CAPACITY);
@@ -140,8 +140,8 @@ public class BinaryArrayHeap<K> extends AbstractBinaryArrayHeap<K> implements Se
 	 *
 	 * <p>
 	 * The initial capacity of the heap is
-	 * {@link BinaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically based
-	 * on the sequence of insertions and deletions.
+	 * {@link BinaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically
+	 * based on the sequence of insertions and deletions.
 	 *
 	 * @param comparator
 	 *            the comparator that will be used to order this heap. If

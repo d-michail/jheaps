@@ -20,7 +20,7 @@ package org.jheaps;
 import java.util.Comparator;
 
 /**
- * A heap whose elements can be addressed.
+ * A heap whose elements can be addressed using handles.
  *
  * An insert operation returns a {@link AddressableHeap.Handle} which can later
  * be used in order to manipulate the element, such as decreasing its key, or

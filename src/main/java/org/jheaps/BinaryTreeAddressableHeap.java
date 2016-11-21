@@ -26,10 +26,10 @@ import org.jheaps.annotations.ConstantTime;
 import org.jheaps.annotations.LogarithmicTime;
 
 /**
- * An explicit binary tree implementation of the {@link AddressableHeap}
- * interface. The heap is sorted according to the {@linkplain Comparable natural
- * ordering} of its keys, or by a {@link Comparator} provided at heap creation
- * time, depending on which constructor is used.
+ * An explicit binary tree addressable heap. The heap is sorted according to the
+ * {@linkplain Comparable natural ordering} of its keys, or by a
+ * {@link Comparator} provided at heap creation time, depending on which
+ * constructor is used.
  *
  * <p>
  * The worst-case cost of {@code insert}, {@code deleteMin}, {@code delete} and

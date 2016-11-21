@@ -25,10 +25,9 @@ import org.jheaps.annotations.ConstantTime;
 import org.jheaps.annotations.LogarithmicTime;
 
 /**
- * A pairing heap implementation of the {@link AddressableHeap} interface. The
- * heap is sorted according to the {@linkplain Comparable natural ordering} of
- * its keys, or by a {@link Comparator} provided at heap creation time,
- * depending on which constructor is used.
+ * A pairing heap. The heap is sorted according to the {@linkplain Comparable
+ * natural ordering} of its keys, or by a {@link Comparator} provided at heap
+ * creation time, depending on which constructor is used.
  *
  * <p>
  * This implementation provides amortized O(log(n)) time cost for the

@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An radix heap for double keys. The heap stores double keys sorted according
- * to the {@linkplain Comparable natural ordering} of its keys. A radix heap is
- * a monotone heap, especially designed for algorithms (such as Dijkstra) which
+ * A radix heap for double keys. The heap stores double keys sorted according to
+ * the {@linkplain Comparable natural ordering} of its keys. A radix heap is a
+ * monotone heap, especially designed for algorithms (such as Dijkstra) which
  * scan elements in order of nondecreasing keys.
  *
  * <p>

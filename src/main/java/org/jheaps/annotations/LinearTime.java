@@ -23,10 +23,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marker interface used by implementations to indicate that an operation takes
- * O(n) time where n is the size of the input. The primary purpose of this
- * interface is to allow generic algorithms to alter their behavior to provide
- * good performance.
+ * Marker interface to indicate that an operation takes O(n) time where n is the
+ * size of the input. The primary purpose of this interface is to allow generic
+ * algorithms to alter their behavior to provide good performance.
  * 
  * @author Dimitrios Michail
  */

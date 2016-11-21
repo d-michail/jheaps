@@ -26,10 +26,9 @@ import org.jheaps.annotations.ConstantTime;
 import org.jheaps.annotations.LogarithmicTime;
 
 /**
- * Fibonacci heaps implementation of the {@link AddressableHeap} interface. The
- * heap is sorted according to the {@linkplain Comparable natural ordering} of
- * its keys, or by a {@link Comparator} provided at heap creation time,
- * depending on which constructor is used.
+ * Fibonacci heaps. The heap is sorted according to the {@linkplain Comparable
+ * natural ordering} of its keys, or by a {@link Comparator} provided at heap
+ * creation time, depending on which constructor is used.
  *
  * <p>
  * This implementation provides amortized O(1) time for operations that do not
