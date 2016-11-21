@@ -181,7 +181,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
-		assert root.o_s == null && root.y_s == null;
+		// assert root.o_s == null && root.y_s == null;
 
 		Handle<K, V> oldRoot = root;
 

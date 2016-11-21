@@ -95,8 +95,8 @@ public class DaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implements Serial
 	 *
 	 * <p>
 	 * The initial capacity of the heap is
-	 * {@link DaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically based on
-	 * the sequence of insertions and deletions.
+	 * {@link DaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically
+	 * based on the sequence of insertions and deletions.
 	 * 
 	 * @param d
 	 *            the number of children of each node in the d-ary heap
@@ -149,8 +149,8 @@ public class DaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implements Serial
 	 *
 	 * <p>
 	 * The initial capacity of the heap is
-	 * {@link DaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically based on
-	 * the sequence of insertions and deletions.
+	 * {@link DaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically
+	 * based on the sequence of insertions and deletions.
 	 *
 	 * @param d
 	 *            the number of children of each node in the d-ary heap
@@ -288,7 +288,7 @@ public class DaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implements Serial
 	@SuppressWarnings("unchecked")
 	protected void ensureCapacity(int capacity) {
 		checkCapacity(capacity);
-		K[] newArray = (K[]) new Object[capacity];
+		K[] newArray = (K[]) new Object[capacity + 1];
 		System.arraycopy(array, 1, newArray, 1, size);
 		array = newArray;
 	}

@@ -391,7 +391,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 		@Override
 		@LogarithmicTime(amortized = true)
 		public void delete() {
-			if (this.next == null || this.prev == null) {
+			if (this.next == null) {
 				throw new IllegalArgumentException("Invalid handle!");
 			}
 			FibonacciHeap.this.forceDecreaseKeyToMinimum(this);
@@ -413,7 +413,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 			return;
 		}
 
-		if (n.next == null || n.prev == null) {
+		if (n.next == null) {
 			throw new IllegalArgumentException("Invalid handle!");
 		}
 
@@ -443,7 +443,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 			return;
 		}
 
-		if (n.next == null || n.prev == null) {
+		if (n.next == null) {
 			throw new IllegalArgumentException("Invalid handle!");
 		}
 

@@ -40,7 +40,7 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
 	/**
 	 * Denotes that a handle is not in the array
 	 */
-	private static final int NO_INDEX = -1;
+	protected static final int NO_INDEX = -1;
 
 	/**
 	 * The maximum heap capacity.
@@ -69,9 +69,6 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
 	 * Number of elements in the heap.
 	 */
 	protected int size;
-
-	AbstractArrayAddressableHeap() {
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -184,13 +181,17 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
 		}
 
 		ArrayHandle result = array[1];
-		array[1] = array[size--];
 		result.index = NO_INDEX;
-
-		if (comparator == null) {
-			fixdown(1);
+		if (size == 1) {
+			array[1] = null;
+			size = 0;
 		} else {
-			fixdownWithComparator(1);
+			array[1] = array[size--];
+			if (comparator == null) {
+				fixdown(1);
+			} else {
+				fixdownWithComparator(1);
+			}
 		}
 
 		if (2 < array.length - 1 && 4 * size < array.length - 1) {
@@ -249,7 +250,7 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
 		@SuppressWarnings("unchecked")
 		@LogarithmicTime
 		public void decreaseKey(K newKey) {
-			if (this.index == NO_INDEX) {
+			if (index == NO_INDEX) {
 				throw new IllegalArgumentException("Invalid handle!");
 			}
 
@@ -277,7 +278,7 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
 
 		@Override
 		public void delete() {
-			if (this.index == NO_INDEX) {
+			if (index == NO_INDEX) {
 				throw new IllegalArgumentException("Invalid handle!");
 			}
 

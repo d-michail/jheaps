@@ -133,6 +133,16 @@ public class BigIntegerRadixAddressableHeapTest {
 		new BigIntegerRadixAddressableHeap<Void>(BigInteger.valueOf(100), BigInteger.valueOf(99));
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction2() {
+		new BigIntegerRadixAddressableHeap<Void>(null, BigInteger.valueOf(99));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalConstruction3() {
+		new BigIntegerRadixAddressableHeap<Void>(BigInteger.valueOf(99), null);
+	}
+
 	@Test
 	public void testSameMinMax() {
 		AddressableHeap<BigInteger, Void> h = new BigIntegerRadixAddressableHeap<Void>(BigInteger.ONE, BigInteger.ONE);

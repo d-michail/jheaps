@@ -60,6 +60,8 @@ public abstract class AbstractAddressableHeapTest {
 
 	protected abstract AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator);
 
+	protected abstract AddressableHeap<Integer, String> createHeapWithStringValues();
+
 	@Test
 	public void test() {
 
@@ -583,6 +585,16 @@ public abstract class AbstractAddressableHeapTest {
 		assertTrue(h.isEmpty());
 	}
 
+	@Test
+	public void testGetValue() {
+		AddressableHeap<Integer, String> h = createHeapWithStringValues();
+
+		assertTrue(h.isEmpty());
+
+		Handle<Integer, String> handle = h.insert(1, "1");
+		assertEquals("1", handle.getValue());
+	}
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testMeldGeneric() {
@@ -642,7 +654,7 @@ public abstract class AbstractAddressableHeapTest {
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testMeldGeneric2() {

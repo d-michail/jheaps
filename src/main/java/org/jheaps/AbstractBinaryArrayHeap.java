@@ -32,10 +32,6 @@ abstract class AbstractBinaryArrayHeap<K> extends AbstractArrayHeap<K> implement
 
 	private static final long serialVersionUID = 1L;
 
-	AbstractBinaryArrayHeap() {
-		super();
-	}
-
 	public AbstractBinaryArrayHeap(Comparator<? super K> comparator, int capacity) {
 		super(comparator, capacity);
 	}

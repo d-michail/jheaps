@@ -89,4 +89,9 @@ public class FibonacciHeapTest extends AbstractAddressableHeapTest {
 	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
 		return new FibonacciHeap<Integer, Void>(comparator);
 	}
+
+	@Override
+	protected AddressableHeap<Integer, String> createHeapWithStringValues() {
+		return new FibonacciHeap<Integer, String>();
+	}
 }

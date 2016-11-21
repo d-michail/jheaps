@@ -19,6 +19,7 @@ package org.jheaps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -26,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.junit.Test;
@@ -65,6 +67,24 @@ public abstract class AbstractHeapTest {
 			assertFalse(h.isEmpty());
 			assertEquals(h.size(), i + 1);
 		}
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testBadInsert() {
+		Heap<Long> h = createHeap();
+		h.insert(null);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testBadDeleteMin() {
+		Heap<Long> h = createHeap();
+		h.deleteMin();
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testBadFindMin() {
+		Heap<Long> h = createHeap();
+		h.findMin();
 	}
 
 	@Test
@@ -207,6 +227,17 @@ public abstract class AbstractHeapTest {
 	}
 
 	@Test
+	public void testSizeOneInitial() {
+		Heap<Long> h = createHeap(1);
+
+		for (long i = 0; i < 15; i++) {
+			h.insert(i);
+		}
+
+		assertEquals(15, h.size());
+	}
+
+	@Test
 	public void testClear() {
 		Heap<Long> h = createHeap();
 
@@ -217,6 +248,13 @@ public abstract class AbstractHeapTest {
 		h.clear();
 		assertEquals(0L, h.size());
 		assertTrue(h.isEmpty());
+	}
+
+	@Test
+	public void testComparator() {
+		Heap<Long> h = createHeap();
+
+		assertNull(h.comparator());
 	}
 
 	@SuppressWarnings("unchecked")

@@ -34,10 +34,6 @@ abstract class AbstractDaryArrayHeap<K> extends AbstractArrayHeap<K> implements 
 
 	protected int d;
 
-	AbstractDaryArrayHeap() {
-		super();
-	}
-
 	public AbstractDaryArrayHeap(int d, Comparator<? super K> comparator, int capacity) {
 		super(comparator, capacity);
 		if (d < 2) {

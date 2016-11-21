@@ -90,4 +90,9 @@ public class PairingHeapTest extends AbstractAddressableHeapTest {
 	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
 		return new PairingHeap<Integer, Void>(comparator);
 	}
+
+	@Override
+	protected AddressableHeap<Integer, String> createHeapWithStringValues() {
+		return new PairingHeap<Integer, String>();
+	}
 }

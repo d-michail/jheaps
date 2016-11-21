@@ -19,6 +19,7 @@ package org.jheaps.monotone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -26,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.jheaps.AddressableHeap;
@@ -288,6 +290,20 @@ public class LongRadixAddressableHeapTest {
 		array[2].delete();
 	}
 
+	@Test
+	public void testDeleteMinUpdate() {
+		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, Long.MAX_VALUE);
+		h.insert(0l);
+		h.insert(0l);
+		h.insert(Long.MAX_VALUE);
+		h.insert(Long.MAX_VALUE);
+		h.insert(Long.MAX_VALUE);
+		h.insert(Long.MAX_VALUE);
+		h.deleteMin();
+		h.deleteMin();
+		assertEquals(Long.MAX_VALUE, h.findMin().getKey().longValue());
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteMinDeleteTwice() {
 		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, 100);
@@ -316,6 +332,36 @@ public class LongRadixAddressableHeapTest {
 			h.insert(Long.valueOf(i));
 		}
 		h.deleteMin().decreaseKey(0l);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testBadInsert() {
+		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, 100);
+		h.insert(null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testBadInsert1() {
+		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, 100);
+		h.insert(200l);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testBadDeleteMin() {
+		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, 100);
+		h.deleteMin();
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testBadFindMin() {
+		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, 100);
+		h.findMin();
+	}
+
+	@Test
+	public void testComparator() {
+		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, 100);
+		assertNull(h.comparator());
 	}
 
 	@Test
@@ -415,16 +461,15 @@ public class LongRadixAddressableHeapTest {
 		AddressableHeap<Long, String> h = new LongRadixAddressableHeap<String>(0, 0);
 		assertEquals("hello", h.insert(0l, "hello").getValue());
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction() {
 		new LongRadixAddressableHeap<Void>(-1, 10);
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction1() {
 		new LongRadixAddressableHeap<Void>(10, 9);
 	}
-
 
 }

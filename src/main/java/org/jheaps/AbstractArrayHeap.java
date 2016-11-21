@@ -64,9 +64,6 @@ abstract class AbstractArrayHeap<K> implements Heap<K>, Serializable {
 	 */
 	protected int size;
 
-	AbstractArrayHeap() {
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -164,12 +161,16 @@ abstract class AbstractArrayHeap<K> implements Heap<K>, Serializable {
 		}
 
 		K result = array[1];
-		array[1] = array[size--];
-
-		if (comparator == null) {
-			fixdown(1);
+		if (size == 1) {
+			array[1] = null;
+			size = 0;
 		} else {
-			fixdownWithComparator(1);
+			array[1] = array[size--];
+			if (comparator == null) {
+				fixdown(1);
+			} else {
+				fixdownWithComparator(1);
+			}
 		}
 
 		if (2 < array.length - 1 && 4 * size < array.length - 1) {

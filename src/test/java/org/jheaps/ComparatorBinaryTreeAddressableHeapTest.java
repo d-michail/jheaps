@@ -19,20 +19,11 @@ package org.jheaps;
 
 import java.util.Comparator;
 
-public class BinaryTreeAddressableHeapTest extends AbstractAddressableHeapTest {
+public class ComparatorBinaryTreeAddressableHeapTest extends ComparatorAbstractAddressableHeapTest {
 
 	@Override
-	protected AddressableHeap<Integer, Void> createHeap() {
-		return new BinaryTreeAddressableHeap<Integer, Void>();
+	protected AddressableHeap<Long, Void> createHeap(Comparator<Long> comparator) {
+		return new BinaryTreeAddressableHeap<Long, Void>(comparator);
 	}
 
-	@Override
-	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
-		return new BinaryTreeAddressableHeap<Integer, Void>(comparator);
-	}
-
-	@Override
-	protected AddressableHeap<Integer, String> createHeapWithStringValues() {
-		return new BinaryTreeAddressableHeap<Integer, String>();
-	}
 }

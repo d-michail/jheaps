@@ -246,14 +246,13 @@ public class BinaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, S
 		size--;
 
 		// place it as root
-		if (root.o_c != null) {
-			if (root.o_c.y_s == root) {
-				root.o_c.y_s = lastNode;
-			} else {
-				root.o_c.y_s.y_s = lastNode;
-			}
-			lastNode.o_c = root.o_c;
+		// (assumes root.o_c exists)
+		if (root.o_c.y_s == root) {
+			root.o_c.y_s = lastNode;
+		} else {
+			root.o_c.y_s.y_s = lastNode;
 		}
+		lastNode.o_c = root.o_c;
 		root = lastNode;
 
 		// fix priorities
@@ -453,7 +452,7 @@ public class BinaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, S
 	 * @param node the node number assuming that the root node is number one
 	 */
 	private Node findParentNode(long node) {
-		//assert node > 0;
+		// assert node > 0;
 
 		// find bit representation of node
 		long[] s = { node };
@@ -475,7 +474,7 @@ public class BinaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, S
 	 * Swap a node with its parent which must be the root.
 	 */
 	private void swap(Node n, Node root) {
-		//assert this.root == root;
+		// assert this.root == root;
 
 		Node nLeftChild = n.o_c;
 		if (root.o_c == n) {

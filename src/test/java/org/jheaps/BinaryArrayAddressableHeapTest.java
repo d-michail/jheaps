@@ -19,6 +19,8 @@ package org.jheaps;
 
 import java.util.Comparator;
 
+import org.junit.Test;
+
 public class BinaryArrayAddressableHeapTest extends AbstractAddressableHeapTest {
 
 	@Override
@@ -30,4 +32,20 @@ public class BinaryArrayAddressableHeapTest extends AbstractAddressableHeapTest 
 	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
 		return new BinaryArrayAddressableHeap<Integer, Void>(comparator);
 	}
+
+	@Override
+	protected AddressableHeap<Integer, String> createHeapWithStringValues() {
+		return new BinaryArrayAddressableHeap<Integer, String>();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegal1() {
+		new BinaryArrayAddressableHeap<Integer, String>(-5);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegal2() {
+		new BinaryArrayAddressableHeap<Integer, String>(Integer.MAX_VALUE);
+	}
+
 }

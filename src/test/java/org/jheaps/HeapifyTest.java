@@ -209,6 +209,19 @@ public class HeapifyTest {
 	}
 
 	@Test
+	public void testHeapifyZeroLengthArray2() {
+		Integer[] a = new Integer[0];
+
+		Heap<Integer> h = BinaryArrayHeap.heapify(a, null);
+		h.insert(1);
+		h.insert(2);
+		h.insert(3);
+		h.insert(4);
+
+		assertEquals(4, h.size());
+	}
+
+	@Test
 	public void testHeapifyZeroLengthArrayComparator1() {
 		Integer[] a = new Integer[0];
 
