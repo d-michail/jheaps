@@ -55,21 +55,6 @@ Some heaps are meldable, that is they efficiently support the union operation:
 
 * MELD(H1,H2): add all elements of H2 into H1 and destroy H2
 
-## Pairing heaps?
-
-Pairing Heaps are addressable heaps whose performance is often faster in practice
-than array-based binary heaps and d-ary heaps, and almost always faster than other 
-pointer-based heaps, including data structures like Fibonacci heaps that are 
-theoretically more efficient. Pairing heaps are a self-adjusting variant of Fibonacci Heaps.
-
-For a detailed description see the following papers: 
-
-* Michael L. Fredman, Robert Sedjewick, Daniel D. Sleator, and Robert E. Tarjan.  The Pairing Heap: A New Form of Self-Adjusting Heap.  Algorithmica 1:111-129, 1986. [[pdf]](https://www.cs.cmu.edu/~sleator/papers/pairing-heaps.pdf)
-* John T. Stasko and Jeffrey Scott Vitter.  Pairing heaps: experiments and analysis.  Communications of the ACM, Volume 30, Issue 3, Pages 234-249, 1987.
-* Michael L. Fredman.  On the efficiency of pairing heaps and related data structures.  Journal of the ACM, Volume 46, Issue 4, Pages 473-501, 1999.
-
-The [wikipedia article](https://en.wikipedia.org/wiki/Pairing_heap) also contains a nice description. 
-
 ## Compatibility
 
 The library requires JDK v1.6 and above. 
