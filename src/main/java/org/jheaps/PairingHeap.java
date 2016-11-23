@@ -87,7 +87,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	/**
 	 * The root of the pairing heap
 	 */
-	private PairingHandle root;
+	private Node root;
 
 	/**
 	 * Size of the pairing heap
@@ -140,7 +140,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		if (key == null) {
 			throw new NullPointerException("Null keys not permitted");
 		}
-		PairingHandle n = new PairingHandle(key, value);
+		Node n = new Node(key, value);
 		if (comparator == null) {
 			root = link(root, n);
 		} else {
@@ -261,17 +261,17 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	}
 
 	// --------------------------------------------------------------------
-	private class PairingHandle implements AddressableHeap.Handle<K, V>, Serializable {
+	private class Node implements AddressableHeap.Handle<K, V>, Serializable {
 
 		private final static long serialVersionUID = 1;
 
 		K key;
 		V value;
-		PairingHandle o_c; // older child
-		PairingHandle y_s; // younger sibling
-		PairingHandle o_s; // older sibling or parent
+		Node o_c; // older child
+		Node y_s; // younger sibling
+		Node o_s; // older sibling or parent
 
-		PairingHandle(K key, V value) {
+		Node(K key, V value) {
 			this.key = key;
 			this.value = value;
 			this.o_c = null;
@@ -370,7 +370,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 			o_s = null;
 
 			// perform delete-min at tree rooted at this
-			PairingHandle t = combine(cutChildren(this));
+			Node t = combine(cutChildren(this));
 
 			// and merge with other cut tree
 			if (comparator == null) {
@@ -384,16 +384,15 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 
 	}
 
-	private class Node {
-		PairingHandle handle;
-		Node next;
-	}
-
-	// two pass pair and compute root
-	private PairingHandle combine(Node l) {
+	/*
+	 * Two pass pair and compute root.
+	 */
+	private Node combine(Node l) {
 		if (l == null) {
 			return null;
 		}
+
+		assert l.o_s == null;
 
 		// left-right pass
 		Node pairs = null;
@@ -401,95 +400,105 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		if (comparator == null) { // no comparator
 			while (it != null) {
 				p_it = it;
-				it = it.next;
+				it = it.y_s;
 
 				if (it == null) {
 					// append last node to pair list
-					p_it.next = pairs;
+					p_it.y_s = pairs;
+					p_it.o_s = null;
 					pairs = p_it;
 				} else {
+					Node n_it = it.y_s;
+
+					// disconnect both
+					p_it.y_s = null;
+					p_it.o_s = null;
+					it.y_s = null;
+					it.o_s = null;
+
 					// link trees
-					p_it.handle = link(p_it.handle, it.handle);
+					p_it = link(p_it, it);
 
 					// append to pair list
-					p_it.next = pairs;
+					p_it.y_s = pairs;
 					pairs = p_it;
 
-					it = it.next;
+					// advance
+					it = n_it;
 				}
 			}
-		} else { // comparator version
+		} else {
 			while (it != null) {
 				p_it = it;
-				it = it.next;
+				it = it.y_s;
 
 				if (it == null) {
 					// append last node to pair list
-					p_it.next = pairs;
+					p_it.y_s = pairs;
+					p_it.o_s = null;
 					pairs = p_it;
 				} else {
+					Node n_it = it.y_s;
+
+					// disconnect both
+					p_it.y_s = null;
+					p_it.o_s = null;
+					it.y_s = null;
+					it.o_s = null;
+
 					// link trees
-					p_it.handle = linkWithComparator(p_it.handle, it.handle);
+					p_it = linkWithComparator(p_it, it);
 
 					// append to pair list
-					p_it.next = pairs;
+					p_it.y_s = pairs;
 					pairs = p_it;
 
-					it = it.next;
+					// advance
+					it = n_it;
 				}
 			}
 		}
 
 		// second pass (reverse order - due to add first)
 		it = pairs;
-		PairingHandle f = null;
+		Node f = null;
 		if (comparator == null) {
 			while (it != null) {
-				f = link(f, it.handle);
-				it = it.next;
+				Node nextIt = it.y_s;
+				it.y_s = null;
+				f = link(f, it);
+				it = nextIt;
 			}
 		} else {
 			while (it != null) {
-				f = linkWithComparator(f, it.handle);
-				it = it.next;
+				Node nextIt = it.y_s;
+				it.y_s = null;
+				f = linkWithComparator(f, it);
+				it = nextIt;
 			}
 		}
 
 		return f;
 	}
 
-	private Node cutChildren(PairingHandle n) {
-		Node head = null;
-		Node tail = null;
-
-		PairingHandle child = n.o_c;
-		while (child != null) {
-			PairingHandle next = child.y_s;
-			child.y_s = null;
-			child.o_s = null;
-
-			// create new node
-			Node newNode = new Node();
-			newNode.handle = child;
-			newNode.next = null;
-
-			// append to list
-			if (tail == null) {
-				head = tail = newNode;
-			} else {
-				tail.next = newNode;
-				tail = newNode;
-			}
-
-			child = next;
-		}
+	/**
+	 * Cut the children of a node and return the list.
+	 * 
+	 * @param n
+	 *            the node
+	 * @return the first node in the children list
+	 */
+	private Node cutChildren(Node n) {
+		Node child = n.o_c;
 		n.o_c = null;
-
-		return head;
+		if (child != null) {
+			child.o_s = null;
+		}
+		return child;
 	}
 
 	@SuppressWarnings("unchecked")
-	private PairingHandle link(PairingHandle f, PairingHandle s) {
+	private Node link(Node f, Node s) {
 		if (s == null) {
 			return f;
 		} else if (f == null) {
@@ -507,7 +516,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		}
 	}
 
-	private PairingHandle linkWithComparator(PairingHandle f, PairingHandle s) {
+	private Node linkWithComparator(Node f, Node s) {
 		if (s == null) {
 			return f;
 		} else if (f == null) {
