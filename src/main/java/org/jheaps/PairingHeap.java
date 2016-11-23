@@ -82,17 +82,17 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	 *
 	 * @serial
 	 */
-	private final Comparator<? super K> comparator;
+	protected final Comparator<? super K> comparator;
 
 	/**
 	 * The root of the pairing heap
 	 */
-	private Node root;
+	protected Node root;
 
 	/**
 	 * Size of the pairing heap
 	 */
-	private long size;
+	protected long size;
 
 	/**
 	 * Constructs a new, empty pairing heap, using the natural ordering of its
@@ -163,7 +163,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	 * {@inheritDoc}
 	 */
 	@Override
-	@ConstantTime(amortized = true)
+	@ConstantTime(amortized = false)
 	public AddressableHeap.Handle<K, V> findMin() {
 		if (size == 0) {
 			throw new NoSuchElementException();
@@ -261,7 +261,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	}
 
 	// --------------------------------------------------------------------
-	private class Node implements AddressableHeap.Handle<K, V>, Serializable {
+	protected class Node implements AddressableHeap.Handle<K, V>, Serializable {
 
 		private final static long serialVersionUID = 1;
 
@@ -299,46 +299,9 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		 * {@inheritDoc}
 		 */
 		@Override
-		@SuppressWarnings("unchecked")
 		@LogarithmicTime(amortized = true)
 		public void decreaseKey(K newKey) {
-			int c;
-			if (comparator == null) {
-				c = ((Comparable<? super K>) newKey).compareTo(key);
-			} else {
-				c = comparator.compare(newKey, key);
-			}
-
-			if (c > 0) {
-				throw new IllegalArgumentException("Keys can only be decreased!");
-			}
-			key = newKey;
-			if (c == 0 || root == this) {
-				return;
-			}
-
-			if (o_s == null) {
-				throw new IllegalArgumentException("Invalid handle!");
-			}
-
-			// unlink from parent
-			if (y_s != null) {
-				y_s.o_s = o_s;
-			}
-			if (o_s.o_c == this) { // I am the oldest :(
-				o_s.o_c = y_s;
-			} else { // I have an older sibling!
-				o_s.y_s = y_s;
-			}
-			y_s = null;
-			o_s = null;
-
-			// merge with root
-			if (comparator == null) {
-				root = link(root, this);
-			} else {
-				root = linkWithComparator(root, this);
-			}
+			PairingHeap.this.decreaseKey(this, newKey);
 		}
 
 		/**
@@ -347,47 +310,99 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		@Override
 		@LogarithmicTime(amortized = true)
 		public void delete() {
-			if (root == this) {
-				deleteMin();
-				o_c = y_s = o_s = null;
-				return;
-			}
+			PairingHeap.this.delete(this);
+		}
+	}
 
-			if (o_s == null) {
-				throw new IllegalArgumentException("Invalid handle!");
-			}
-
-			// unlink from parent
-			if (y_s != null) {
-				y_s.o_s = o_s;
-			}
-			if (o_s.o_c == this) { // I am the oldest :(
-				o_s.o_c = y_s;
-			} else { // I have an older sibling!
-				o_s.y_s = y_s;
-			}
-			y_s = null;
-			o_s = null;
-
-			// perform delete-min at tree rooted at this
-			Node t = combine(cutChildren(this));
-
-			// and merge with other cut tree
-			if (comparator == null) {
-				root = link(root, t);
-			} else {
-				root = linkWithComparator(root, t);
-			}
-
-			size--;
+	/*
+	 * Decrease the key of a node.
+	 */
+	@SuppressWarnings("unchecked")
+	protected void decreaseKey(Node n, K newKey) {
+		int c;
+		if (comparator == null) {
+			c = ((Comparable<? super K>) newKey).compareTo(n.key);
+		} else {
+			c = comparator.compare(newKey, n.key);
 		}
 
+		if (c > 0) {
+			throw new IllegalArgumentException("Keys can only be decreased!");
+		}
+		n.key = newKey;
+		if (c == 0 || root == n) {
+			return;
+		}
+
+		if (n.o_s == null) {
+			throw new IllegalArgumentException("Invalid handle!");
+		}
+
+		// unlink from parent
+		if (n.y_s != null) {
+			n.y_s.o_s = n.o_s;
+		}
+		if (n.o_s.o_c == n) { // I am the oldest :(
+			n.o_s.o_c = n.y_s;
+		} else { // I have an older sibling!
+			n.o_s.y_s = n.y_s;
+		}
+		n.y_s = null;
+		n.o_s = null;
+
+		// merge with root
+		if (comparator == null) {
+			root = link(root, n);
+		} else {
+			root = linkWithComparator(root, n);
+		}
+	}
+
+	/*
+	 * Delete a node
+	 */
+	protected void delete(Node n) {
+		if (root == n) {
+			deleteMin();
+			n.o_c = null;
+			n.y_s = null;
+			n.o_s = null;
+			return;
+		}
+
+		if (n.o_s == null) {
+			throw new IllegalArgumentException("Invalid handle!");
+		}
+
+		// unlink from parent
+		if (n.y_s != null) {
+			n.y_s.o_s = n.o_s;
+		}
+		if (n.o_s.o_c == n) { // I am the oldest :(
+			n.o_s.o_c = n.y_s;
+		} else { // I have an older sibling!
+			n.o_s.y_s = n.y_s;
+		}
+		n.y_s = null;
+		n.o_s = null;
+
+		// perform delete-min at tree rooted at this
+		Node t = combine(cutChildren(n));
+
+		// and merge with other cut tree
+		if (comparator == null) {
+			root = link(root, t);
+		} else {
+			root = linkWithComparator(root, t);
+		}
+
+		size--;
 	}
 
 	/*
 	 * Two pass pair and compute root.
 	 */
-	private Node combine(Node l) {
+	protected Node combine(Node l) {
 		if (l == null) {
 			return null;
 		}
@@ -488,7 +503,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	 *            the node
 	 * @return the first node in the children list
 	 */
-	private Node cutChildren(Node n) {
+	protected Node cutChildren(Node n) {
 		Node child = n.o_c;
 		n.o_c = null;
 		if (child != null) {
@@ -498,7 +513,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	}
 
 	@SuppressWarnings("unchecked")
-	private Node link(Node f, Node s) {
+	protected Node link(Node f, Node s) {
 		if (s == null) {
 			return f;
 		} else if (f == null) {
@@ -516,7 +531,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		}
 	}
 
-	private Node linkWithComparator(Node f, Node s) {
+	protected Node linkWithComparator(Node f, Node s) {
 		if (s == null) {
 			return f;
 		} else if (f == null) {
