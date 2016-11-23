@@ -23,14 +23,14 @@ at the [issue tracker](https://github.com/d-michail/jheaps/issues).
 
 ### Latest version & Requirements
 
-The latest version of JHeaps is 0.5-SNAPSHOT. 
+The latest version of JHeaps is 0.5. 
 
 Every JHeaps release is published to the Maven Central Repository. You can add a dependency from your project as follows:
 
 ```
   <groupId>org.jheaps</groupId>
   <artifactId>jheaps</artifactId>
-  <version>0.5-SNAPSHOT</version>
+  <version>0.5</version>
 ```
 
 ### Documentation
