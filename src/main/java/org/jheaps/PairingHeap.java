@@ -269,12 +269,14 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		V value;
 		PairingHandle o_c; // older child
 		PairingHandle y_s; // younger sibling
-		PairingHandle o_s; // older sibling
+		PairingHandle o_s; // older sibling or parent
 
 		PairingHandle(K key, V value) {
 			this.key = key;
 			this.value = value;
-			o_c = y_s = o_s = null;
+			this.o_c = null;
+			this.y_s = null;
+			this.o_s = null;
 		}
 
 		/**
@@ -490,12 +492,9 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	private PairingHandle link(PairingHandle f, PairingHandle s) {
 		if (s == null) {
 			return f;
-		}
-		if (f == null) {
+		} else if (f == null) {
 			return s;
-		}
-
-		if (((Comparable<? super K>) f.key).compareTo(s.key) <= 0) {
+		} else if (((Comparable<? super K>) f.key).compareTo(s.key) <= 0) {
 			s.y_s = f.o_c;
 			s.o_s = f;
 			if (f.o_c != null) {
@@ -504,25 +503,16 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 			f.o_c = s;
 			return f;
 		} else {
-			f.y_s = s.o_c;
-			f.o_s = s;
-			if (s.o_c != null) {
-				s.o_c.o_s = f;
-			}
-			s.o_c = f;
-			return s;
+			return link(s, f);
 		}
 	}
 
 	private PairingHandle linkWithComparator(PairingHandle f, PairingHandle s) {
 		if (s == null) {
 			return f;
-		}
-		if (f == null) {
+		} else if (f == null) {
 			return s;
-		}
-
-		if (comparator.compare(f.key, s.key) <= 0) {
+		} else if (comparator.compare(f.key, s.key) <= 0) {
 			s.y_s = f.o_c;
 			s.o_s = f;
 			if (f.o_c != null) {
@@ -531,13 +521,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 			f.o_c = s;
 			return f;
 		} else {
-			f.y_s = s.o_c;
-			f.o_s = s;
-			if (s.o_c != null) {
-				s.o_c.o_s = f;
-			}
-			s.o_c = f;
-			return s;
+			return linkWithComparator(s, f);
 		}
 	}
 
