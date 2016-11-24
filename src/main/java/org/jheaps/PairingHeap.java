@@ -41,7 +41,7 @@ import org.jheaps.annotations.LogarithmicTime;
  * 
  * <p>
  * All the above bounds, however, assume that the user does not perform
- * cascading melds on heaps such as
+ * cascading melds on heaps such as:
  * 
  * <pre>
  * d.meld(e);
@@ -50,8 +50,8 @@ import org.jheaps.annotations.LogarithmicTime;
  * a.meld(b);
  * </pre>
  * 
- * Supporting efficiently such a workflow would require using some union-find
- * data structure augmented with a delete operation.
+ * The above scenario is efficiently supported by using union-find with path
+ * compression but it invalidates the claimed bounds.
  *
  * <p>
  * Note that the ordering maintained by a pairing heap, like any heap, and
@@ -187,6 +187,10 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the heap has already been used in the right hand side of a
+	 *             meld
 	 */
 	@Override
 	@LogarithmicTime(amortized = true)
@@ -297,6 +301,8 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		// clear other
 		h.size = 0;
 		h.root = null;
+
+		// take ownership
 		h.other = this;
 	}
 
@@ -357,7 +363,6 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		@Override
 		@LogarithmicTime(amortized = true)
 		public void delete() {
-			// do the actual work
 			getOwner().delete(this);
 		}
 

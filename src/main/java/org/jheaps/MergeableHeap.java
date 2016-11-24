@@ -33,7 +33,7 @@ package org.jheaps;
  * 
  * <p>
  * Note that all running time bounds on mergeable heaps are valid assuming that
- * the user does not perform cascading melds on heaps such as
+ * the user does not perform cascading melds on heaps such as:
  * 
  * <pre>
  * d.meld(e);
@@ -42,8 +42,8 @@ package org.jheaps;
  * a.meld(b);
  * </pre>
  * 
- * Supporting efficiently such a workflow would require using some union-find
- * data structure augmented with a {@literal delete()} operation.
+ * The above scenario is efficiently supported by using union-find with path
+ * compression but it invalidates the claimed bounds.
  *
  * @author Dimitrios Michail
  * @param <K>
