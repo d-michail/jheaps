@@ -37,6 +37,19 @@ import org.jheaps.annotations.LogarithmicTime;
  * and {@code delete} are amortized O(log(n)). The operation {@code meld} is
  * also amortized O(1).
  * 
+ * <p>
+ * All the above bounds, however, assume that the user does not perform
+ * cascading melds on heaps such as
+ * 
+ * <pre>
+ * d.meld(e);
+ * c.meld(d);
+ * b.meld(c);
+ * a.meld(b);
+ * </pre>
+ * 
+ * Supporting efficiently such a workflow would require using some union-find
+ * data structure augmented with a delete operation.
  *
  * <p>
  * Note that the ordering maintained by a Fibonacci heap, like any heap, and
@@ -94,7 +107,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 	/**
 	 * The root with the minimum key
 	 */
-	private Node minRoot;
+	private Node<K, V> minRoot;
 
 	/**
 	 * Number of roots in the root list
@@ -109,7 +122,19 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 	/**
 	 * Auxiliary array for consolidation
 	 */
-	private Node[] aux;
+	private Node<K, V>[] aux;
+
+	/**
+	 * Used to reference the current heap or some other heap in case of melding,
+	 * so that handles remain valid even after a meld, without having to iterate
+	 * over them.
+	 * 
+	 * In order to avoid maintaining a full-fledged union-find data structure,
+	 * we disallow a heap to be used in melding more than once. We use however,
+	 * path-compression in case a handle moves from one heap to another and then
+	 * another.
+	 */
+	protected FibonacciHeap<K, V> other;
 
 	/**
 	 * Constructs a new, empty heap, using the natural ordering of its keys. All
@@ -148,19 +173,27 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 		this.roots = 0;
 		this.comparator = comparator;
 		this.size = 0;
-		this.aux = (FibonacciHeap<K, V>.Node[]) Array.newInstance(Node.class, AUX_CONSOLIDATE_ARRAY_SIZE);
+		this.aux = (Node<K, V>[]) Array.newInstance(Node.class, AUX_CONSOLIDATE_ARRAY_SIZE);
+		this.other = this;
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the heap has already been used in the right hand side of a
+	 *             meld
 	 */
 	@Override
 	@ConstantTime(amortized = true)
 	public AddressableHeap.Handle<K, V> insert(K key, V value) {
+		if (other != this) {
+			throw new IllegalArgumentException("A heap cannot be used after a meld");
+		}
 		if (key == null) {
 			throw new NullPointerException("Null keys not permitted");
 		}
-		Node n = new Node(key, value);
+		Node<K, V> n = new Node<K, V>(this, key, value);
 		addToRootList(n);
 		size++;
 		return n;
@@ -196,12 +229,12 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 		if (size == 0) {
 			throw new NoSuchElementException();
 		}
-		Node z = minRoot;
+		Node<K, V> z = minRoot;
 
 		// move z children into root list
-		Node x = z.child;
+		Node<K, V> x = z.child;
 		while (x != null) {
-			Node nextX = (x.next == x) ? null : x.next;
+			Node<K, V> nextX = (x.next == x) ? null : x.next;
 
 			// clear parent
 			x.parent = null;
@@ -301,15 +334,19 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 			throw new IllegalArgumentException("Cannot meld heaps using different comparators!");
 		}
 
+		if (h.other != h) {
+			throw new IllegalArgumentException("A heap cannot be used after a meld.");
+		}
+
 		if (size == 0) {
 			// copy the other
 			minRoot = h.minRoot;
 		} else if (h.size != 0) {
 			// concatenate root lists
-			Node h11 = minRoot;
-			Node h12 = h11.next;
-			Node h21 = h.minRoot;
-			Node h22 = h21.next;
+			Node<K, V> h11 = minRoot;
+			Node<K, V> h12 = h11.next;
+			Node<K, V> h21 = h.minRoot;
+			Node<K, V> h22 = h21.next;
 			h11.next = h22;
 			h22.prev = h11;
 			h21.next = h12;
@@ -328,23 +365,31 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 		h.size = 0;
 		h.minRoot = null;
 		h.roots = 0;
+		h.other = this;
 	}
 
 	// --------------------------------------------------------------------
-	private class Node implements AddressableHeap.Handle<K, V>, Serializable {
+	static class Node<K, V> implements AddressableHeap.Handle<K, V>, Serializable {
 
 		private final static long serialVersionUID = 1;
 
+		/*
+		 * We maintain explicitly the belonging heap, instead of using an inner
+		 * class due to possible cascading melding.
+		 */
+		FibonacciHeap<K, V> heap;
+
 		K key;
 		V value;
-		Node parent; // parent
-		Node child; // any child
-		Node next; // younger sibling
-		Node prev; // older sibling
+		Node<K, V> parent; // parent
+		Node<K, V> child; // any child
+		Node<K, V> next; // younger sibling
+		Node<K, V> prev; // older sibling
 		int degree; // number of children
 		boolean mark; // marked or not
 
-		Node(K key, V value) {
+		Node(FibonacciHeap<K, V> heap, K key, V value) {
+			this.heap = heap;
 			this.key = key;
 			this.value = value;
 			this.parent = null;
@@ -377,10 +422,11 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 		@Override
 		@ConstantTime(amortized = true)
 		public void decreaseKey(K newKey) {
-			if (comparator == null) {
-				FibonacciHeap.this.decreaseKey(this, newKey);
+			FibonacciHeap<K, V> h = getOwner();
+			if (h.comparator == null) {
+				h.decreaseKey(this, newKey);
 			} else {
-				FibonacciHeap.this.decreaseKeyWithComparator(this, newKey);
+				h.decreaseKeyWithComparator(this, newKey);
 			}
 		}
 
@@ -393,16 +439,41 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 			if (this.next == null) {
 				throw new IllegalArgumentException("Invalid handle!");
 			}
-			FibonacciHeap.this.forceDecreaseKeyToMinimum(this);
-			deleteMin();
+			FibonacciHeap<K, V> h = getOwner();
+			h.forceDecreaseKeyToMinimum(this);
+			h.deleteMin();
 		}
+
+		/*
+		 * Get the owner heap of the handle. This is union-find with
+		 * path-compression between heaps.
+		 */
+		FibonacciHeap<K, V> getOwner() {
+			if (heap.other != heap) {
+				// find root
+				FibonacciHeap<K, V> root = heap;
+				while (root != root.other) {
+					root = root.other;
+				}
+				// path-compression
+				FibonacciHeap<K, V> cur = heap;
+				while (cur.other != root) {
+					FibonacciHeap<K, V> next = cur.other;
+					cur.other = root;
+					cur = next;
+				}
+				heap = root;
+			}
+			return heap;
+		}
+
 	}
 
 	/*
 	 * Decrease the key of a node.
 	 */
 	@SuppressWarnings("unchecked")
-	private void decreaseKey(Node n, K newKey) {
+	private void decreaseKey(Node<K, V> n, K newKey) {
 		int c = ((Comparable<? super K>) newKey).compareTo(n.key);
 		if (c > 0) {
 			throw new IllegalArgumentException("Keys can only be decreased!");
@@ -417,7 +488,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 		}
 
 		// if not root and heap order violation
-		Node y = n.parent;
+		Node<K, V> y = n.parent;
 		if (y != null && ((Comparable<? super K>) n.key).compareTo(y.key) < 0) {
 			cut(n, y);
 			cascadingCut(y);
@@ -432,7 +503,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 	/*
 	 * Decrease the key of a node.
 	 */
-	private void decreaseKeyWithComparator(Node n, K newKey) {
+	private void decreaseKeyWithComparator(Node<K, V> n, K newKey) {
 		int c = comparator.compare(newKey, n.key);
 		if (c > 0) {
 			throw new IllegalArgumentException("Keys can only be decreased!");
@@ -447,7 +518,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 		}
 
 		// if not root and heap order violation
-		Node y = n.parent;
+		Node<K, V> y = n.parent;
 		if (y != null && comparator.compare(n.key, y.key) < 0) {
 			cut(n, y);
 			cascadingCut(y);
@@ -464,9 +535,9 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 	 * a delete operation. Does not change the node's actual key, but behaves as
 	 * the key is the minimum key in the heap.
 	 */
-	private void forceDecreaseKeyToMinimum(Node n) {
+	private void forceDecreaseKeyToMinimum(Node<K, V> n) {
 		// if not root
-		Node y = n.parent;
+		Node<K, V> y = n.parent;
 		if (y != null) {
 			cut(n, y);
 			cascadingCut(y);
@@ -483,13 +554,13 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 
 		// for each node in root list
 		int numRoots = roots;
-		Node x = minRoot;
+		Node<K, V> x = minRoot;
 		while (numRoots > 0) {
-			Node nextX = x.next;
+			Node<K, V> nextX = x.next;
 			int d = x.degree;
 
 			while (true) {
-				Node y = aux[d];
+				Node<K, V> y = aux[d];
 				if (y == null) {
 					break;
 				}
@@ -502,7 +573,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 					c = comparator.compare(y.key, x.key);
 				}
 				if (c < 0) {
-					Node tmp = x;
+					Node<K, V> tmp = x;
 					x = y;
 					y = tmp;
 				}
@@ -542,7 +613,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 	 * Remove node y from the root list and make it a child of x. Degree of x
 	 * increases by 1 and y is unmarked if marked.
 	 */
-	private void link(Node y, Node x) {
+	private void link(Node<K, V> y, Node<K, V> x) {
 		// remove from root list
 		y.prev.next = y.next;
 		y.next.prev = y.prev;
@@ -557,7 +628,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 		x.degree++;
 		y.parent = x;
 
-		Node child = x.child;
+		Node<K, V> child = x.child;
 		if (child == null) {
 			x.child = y;
 			y.next = y;
@@ -573,7 +644,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 	/*
 	 * Cut the link between x and its parent y making x a root.
 	 */
-	private void cut(Node x, Node y) {
+	private void cut(Node<K, V> x, Node<K, V> y) {
 		// remove x from child list of y
 		x.prev.next = x.next;
 		x.next.prev = x.prev;
@@ -595,8 +666,8 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 	/*
 	 * Cascading cut until a root or an unmarked node is found.
 	 */
-	private void cascadingCut(Node y) {
-		Node z;
+	private void cascadingCut(Node<K, V> y) {
+		Node<K, V> z;
 		while ((z = y.parent) != null) {
 			if (!y.mark) {
 				y.mark = true;
@@ -611,7 +682,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 	 * Add a node to the root list and update the minimum.
 	 */
 	@SuppressWarnings("unchecked")
-	private void addToRootList(Node n) {
+	private void addToRootList(Node<K, V> n) {
 		if (minRoot == null) {
 			n.next = n;
 			n.prev = n;

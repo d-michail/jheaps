@@ -37,6 +37,21 @@ import org.jheaps.annotations.LogarithmicTime;
  * paper</a>. Pairing heaps are very efficient in practice, especially in
  * applications requiring the {@code decreaseKey} operation. The operation
  * {@code meld} is amortized O(log(n)).
+ * 
+ * 
+ * <p>
+ * All the above bounds, however, assume that the user does not perform
+ * cascading melds on heaps such as
+ * 
+ * <pre>
+ * d.meld(e);
+ * c.meld(d);
+ * b.meld(c);
+ * a.meld(b);
+ * </pre>
+ * 
+ * Supporting efficiently such a workflow would require using some union-find
+ * data structure augmented with a delete operation.
  *
  * <p>
  * Note that the ordering maintained by a pairing heap, like any heap, and
@@ -87,12 +102,24 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	/**
 	 * The root of the pairing heap
 	 */
-	protected Node root;
+	protected Node<K, V> root;
 
 	/**
 	 * Size of the pairing heap
 	 */
 	protected long size;
+
+	/**
+	 * Used to reference the current heap or some other pairing heap in case of
+	 * melding, so that handles remain valid even after a meld, without having
+	 * to iterate over them.
+	 * 
+	 * In order to avoid maintaining a full-fledged union-find data structure,
+	 * we disallow a heap to be used in melding more than once. We use however,
+	 * path-compression in case a handle moves from one heap to another and then
+	 * another.
+	 */
+	protected PairingHeap<K, V> other;
 
 	/**
 	 * Constructs a new, empty pairing heap, using the natural ordering of its
@@ -129,18 +156,26 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		this.root = null;
 		this.comparator = comparator;
 		this.size = 0;
+		this.other = this;
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the heap has already been used in the right hand side of a
+	 *             meld
 	 */
 	@Override
 	@LogarithmicTime(amortized = true)
 	public AddressableHeap.Handle<K, V> insert(K key, V value) {
+		if (other != this) {
+			throw new IllegalArgumentException("A heap cannot be used after a meld");
+		}
 		if (key == null) {
 			throw new NullPointerException("Null keys not permitted");
 		}
-		Node n = new Node(key, value);
+		Node<K, V> n = new Node<K, V>(this, key, value);
 		if (comparator == null) {
 			root = link(root, n);
 		} else {
@@ -223,7 +258,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	 * {@inheritDoc}
 	 */
 	@Override
-	@ConstantTime(amortized = true)
+	@ConstantTime(amortized = false)
 	public void clear() {
 		root = null;
 		size = 0;
@@ -247,6 +282,10 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 			throw new IllegalArgumentException("Cannot meld heaps using different comparators!");
 		}
 
+		if (h.other != h) {
+			throw new IllegalArgumentException("A heap cannot be used after a meld.");
+		}
+
 		// perform the meld
 		size += h.size;
 		if (comparator == null) {
@@ -258,20 +297,28 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		// clear other
 		h.size = 0;
 		h.root = null;
+		h.other = this;
 	}
 
 	// --------------------------------------------------------------------
-	protected class Node implements AddressableHeap.Handle<K, V>, Serializable {
+	static class Node<K, V> implements AddressableHeap.Handle<K, V>, Serializable {
 
 		private final static long serialVersionUID = 1;
 
+		/*
+		 * We maintain explicitly the belonging heap, instead of using an inner
+		 * class due to possible cascading melding.
+		 */
+		PairingHeap<K, V> heap;
+
 		K key;
 		V value;
-		Node o_c; // older child
-		Node y_s; // younger sibling
-		Node o_s; // older sibling or parent
+		Node<K, V> o_c; // older child
+		Node<K, V> y_s; // younger sibling
+		Node<K, V> o_s; // older sibling or parent
 
-		Node(K key, V value) {
+		Node(PairingHeap<K, V> heap, K key, V value) {
+			this.heap = heap;
 			this.key = key;
 			this.value = value;
 			this.o_c = null;
@@ -301,7 +348,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		@Override
 		@LogarithmicTime(amortized = true)
 		public void decreaseKey(K newKey) {
-			PairingHeap.this.decreaseKey(this, newKey);
+			getOwner().decreaseKey(this, newKey);
 		}
 
 		/**
@@ -310,7 +357,31 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		@Override
 		@LogarithmicTime(amortized = true)
 		public void delete() {
-			PairingHeap.this.delete(this);
+			// do the actual work
+			getOwner().delete(this);
+		}
+
+		/*
+		 * Get the owner heap of the handle. This is union-find with
+		 * path-compression between heaps.
+		 */
+		PairingHeap<K, V> getOwner() {
+			if (heap.other != heap) {
+				// find root
+				PairingHeap<K, V> root = heap;
+				while (root != root.other) {
+					root = root.other;
+				}
+				// path-compression
+				PairingHeap<K, V> cur = heap;
+				while (cur.other != root) {
+					PairingHeap<K, V> next = cur.other;
+					cur.other = root;
+					cur = next;
+				}
+				heap = root;
+			}
+			return heap;
 		}
 	}
 
@@ -318,7 +389,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	 * Decrease the key of a node.
 	 */
 	@SuppressWarnings("unchecked")
-	protected void decreaseKey(Node n, K newKey) {
+	protected void decreaseKey(Node<K, V> n, K newKey) {
 		int c;
 		if (comparator == null) {
 			c = ((Comparable<? super K>) newKey).compareTo(n.key);
@@ -361,7 +432,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	/*
 	 * Delete a node
 	 */
-	protected void delete(Node n) {
+	protected void delete(Node<K, V> n) {
 		if (root == n) {
 			deleteMin();
 			n.o_c = null;
@@ -387,7 +458,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		n.o_s = null;
 
 		// perform delete-min at tree rooted at this
-		Node t = combine(cutChildren(n));
+		Node<K, V> t = combine(cutChildren(n));
 
 		// and merge with other cut tree
 		if (comparator == null) {
@@ -402,7 +473,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	/*
 	 * Two pass pair and compute root.
 	 */
-	protected Node combine(Node l) {
+	protected Node<K, V> combine(Node<K, V> l) {
 		if (l == null) {
 			return null;
 		}
@@ -410,8 +481,8 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		assert l.o_s == null;
 
 		// left-right pass
-		Node pairs = null;
-		Node it = l, p_it;
+		Node<K, V> pairs = null;
+		Node<K, V> it = l, p_it;
 		if (comparator == null) { // no comparator
 			while (it != null) {
 				p_it = it;
@@ -423,7 +494,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 					p_it.o_s = null;
 					pairs = p_it;
 				} else {
-					Node n_it = it.y_s;
+					Node<K, V> n_it = it.y_s;
 
 					// disconnect both
 					p_it.y_s = null;
@@ -453,7 +524,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 					p_it.o_s = null;
 					pairs = p_it;
 				} else {
-					Node n_it = it.y_s;
+					Node<K, V> n_it = it.y_s;
 
 					// disconnect both
 					p_it.y_s = null;
@@ -476,17 +547,17 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 
 		// second pass (reverse order - due to add first)
 		it = pairs;
-		Node f = null;
+		Node<K, V> f = null;
 		if (comparator == null) {
 			while (it != null) {
-				Node nextIt = it.y_s;
+				Node<K, V> nextIt = it.y_s;
 				it.y_s = null;
 				f = link(f, it);
 				it = nextIt;
 			}
 		} else {
 			while (it != null) {
-				Node nextIt = it.y_s;
+				Node<K, V> nextIt = it.y_s;
 				it.y_s = null;
 				f = linkWithComparator(f, it);
 				it = nextIt;
@@ -503,8 +574,8 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	 *            the node
 	 * @return the first node in the children list
 	 */
-	protected Node cutChildren(Node n) {
-		Node child = n.o_c;
+	protected Node<K, V> cutChildren(Node<K, V> n) {
+		Node<K, V> child = n.o_c;
 		n.o_c = null;
 		if (child != null) {
 			child.o_s = null;
@@ -513,7 +584,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Node link(Node f, Node s) {
+	protected Node<K, V> link(Node<K, V> f, Node<K, V> s) {
 		if (s == null) {
 			return f;
 		} else if (f == null) {
@@ -531,7 +602,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 		}
 	}
 
-	protected Node linkWithComparator(Node f, Node s) {
+	protected Node<K, V> linkWithComparator(Node<K, V> f, Node<K, V> s) {
 		if (s == null) {
 			return f;
 		} else if (f == null) {

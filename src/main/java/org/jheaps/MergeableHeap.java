@@ -20,12 +20,30 @@ package org.jheaps;
 /**
  * A heap that allows melding with another heap.
  *
- * The second heap becomes empty after the meld operation. A
- * {@code ClassCastException} will be thrown if the two heaps are not of the
+ * <p>
+ * The second heap becomes empty and unusable after the meld operation, meaning
+ * than further insertions are not possible.
+ *
+ * <p>
+ * A {@code ClassCastException} will be thrown if the two heaps are not of the
  * same type. Moreover, the two heaps need to use the same comparators. If only
  * one of them uses a custom comparator or both use custom comparators but are
  * not the same by <em>equals</em>, an {@code IllegalArgumentException} is
  * thrown.
+ * 
+ * <p>
+ * Note that all running time bounds on mergeable heaps are valid assuming that
+ * the user does not perform cascading melds on heaps such as
+ * 
+ * <pre>
+ * d.meld(e);
+ * c.meld(d);
+ * b.meld(c);
+ * a.meld(b);
+ * </pre>
+ * 
+ * Supporting efficiently such a workflow would require using some union-find
+ * data structure augmented with a {@literal delete()} operation.
  *
  * @author Dimitrios Michail
  * @param <K>
@@ -36,7 +54,8 @@ public interface MergeableHeap<K> {
 	/**
 	 * Meld a heap into the current heap.
 	 *
-	 * After the operation the {@code other} heap will be empty.
+	 * After the operation the {@code other} heap will be empty and will not
+	 * permit further insertions.
 	 *
 	 * @param other
 	 *            a merge-able heap
