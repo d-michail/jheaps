@@ -100,9 +100,8 @@ abstract class AbstractDaryArrayAddressableHeap<K, V> extends AbstractArrayAddre
 		ArrayHandle h = array[k];
 		while ((c = d * (k - 1) + 2) <= size) {
 			int maxc = c;
-			for (int i = 1; i < d; i++) {
-				if (c + i <= size
-						&& ((Comparable<? super K>) array[maxc].getKey()).compareTo(array[c + i].getKey()) > 0) {
+			for (int i = 1; i < d && c + i <= size; i++) {
+				if (((Comparable<? super K>) array[maxc].getKey()).compareTo(array[c + i].getKey()) > 0) {
 					maxc = c + i;
 				}
 			}
@@ -122,8 +121,8 @@ abstract class AbstractDaryArrayAddressableHeap<K, V> extends AbstractArrayAddre
 		ArrayHandle h = array[k];
 		while ((c = d * (k - 1) + 2) <= size) {
 			int maxc = c;
-			for (int i = 1; i < d; i++) {
-				if (c + i <= size && comparator.compare(array[maxc].getKey(), array[c + i].getKey()) > 0) {
+			for (int i = 1; i < d && c + i <= size; i++) {
+				if (comparator.compare(array[maxc].getKey(), array[c + i].getKey()) > 0) {
 					maxc = c + i;
 				}
 			}
