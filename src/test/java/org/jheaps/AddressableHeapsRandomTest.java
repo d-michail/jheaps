@@ -18,9 +18,11 @@
 package org.jheaps;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -47,9 +49,14 @@ public class AddressableHeapsRandomTest {
 		test(new Random(37));
 	}
 
+	@Test
+	public void testRandomDeletesSeed37() {
+		testRandomDeletes(37);
+	}
+
 	private void test(Random rng) {
 
-		final int classes = 4;
+		final int classes = 5;
 
 		@SuppressWarnings("unchecked")
 		AddressableHeap<Integer, Void>[] h = (AddressableHeap<Integer, Void>[]) Array.newInstance(AddressableHeap.class,
@@ -58,6 +65,7 @@ public class AddressableHeapsRandomTest {
 		h[1] = new BinaryTreeAddressableHeap<Integer, Void>();
 		h[2] = new FibonacciHeap<Integer, Void>();
 		h[3] = new BinaryArrayAddressableHeap<Integer, Void>();
+		h[4] = new CostlessMeldPairingHeap<Integer, Void>();
 
 		@SuppressWarnings("unchecked")
 		List<Handle<Integer, Void>>[] s = (List<Handle<Integer, Void>>[]) Array.newInstance(List.class, classes);
@@ -65,6 +73,7 @@ public class AddressableHeapsRandomTest {
 		s[1] = new ArrayList<Handle<Integer, Void>>();
 		s[2] = new ArrayList<Handle<Integer, Void>>();
 		s[3] = new ArrayList<Handle<Integer, Void>>();
+		s[4] = new ArrayList<Handle<Integer, Void>>();
 
 		for (int i = 0; i < SIZE; i++) {
 			Integer k = rng.nextInt();
@@ -107,6 +116,55 @@ public class AddressableHeapsRandomTest {
 			h[1].deleteMin();
 			h[2].deleteMin();
 			h[3].deleteMin();
+		}
+
+	}
+
+	private void testRandomDeletes(long seed) {
+
+		final int classes = 5;
+
+		@SuppressWarnings("unchecked")
+		AddressableHeap<Integer, Void>[] h = (AddressableHeap<Integer, Void>[]) Array.newInstance(AddressableHeap.class,
+				classes);
+		h[0] = new PairingHeap<Integer, Void>();
+		h[1] = new BinaryTreeAddressableHeap<Integer, Void>();
+		h[2] = new FibonacciHeap<Integer, Void>();
+		h[3] = new BinaryArrayAddressableHeap<Integer, Void>();
+		h[4] = new CostlessMeldPairingHeap<Integer, Void>();
+
+		@SuppressWarnings("unchecked")
+		List<Handle<Integer, Void>>[] s = (List<Handle<Integer, Void>>[]) Array.newInstance(List.class, classes);
+		s[0] = new ArrayList<Handle<Integer, Void>>();
+		s[1] = new ArrayList<Handle<Integer, Void>>();
+		s[2] = new ArrayList<Handle<Integer, Void>>();
+		s[3] = new ArrayList<Handle<Integer, Void>>();
+		s[4] = new ArrayList<Handle<Integer, Void>>();
+
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < classes; j++) {
+				s[j].add(h[j].insert(i, null));
+			}
+			for (int j = 1; j < classes; j++) {
+				assertEquals(h[0].findMin().getKey().intValue(), h[j].findMin().getKey().intValue());
+			}
+		}
+
+		for (int j = 0; j < classes; j++) {
+			Collections.shuffle(s[j], new Random(seed));
+		}
+
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 1; j < classes; j++) {
+				assertEquals(h[0].findMin().getKey().intValue(), h[j].findMin().getKey().intValue());
+			}
+			for (int j = 0; j < classes; j++) {
+				s[j].get(i).delete();
+			}
+		}
+
+		for (int j = 0; j < classes; j++) {
+			assertTrue(h[j].isEmpty());
 		}
 
 	}

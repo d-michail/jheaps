@@ -50,8 +50,8 @@ import org.jheaps.annotations.LogarithmicTime;
  * a.meld(b);
  * </pre>
  * 
- * The above scenario is efficiently supported by using union-find with path
- * compression but it invalidates the claimed bounds.
+ * The above scenario, although efficiently supported by using union-find with
+ * path compression, invalidates the claimed bounds.
  *
  * <p>
  * Note that the ordering maintained by a pairing heap, like any heap, and
