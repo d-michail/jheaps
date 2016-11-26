@@ -69,6 +69,18 @@ public abstract class AbstractHeapTest {
 		}
 	}
 
+	@Test
+	public void testInsertFromZero() {
+		Heap<Long> h = createHeap(0);
+
+		for (long i = 0; i < SIZE; i++) {
+			h.insert(SIZE - i);
+			assertEquals(Long.valueOf(SIZE - i), h.findMin());
+			assertFalse(h.isEmpty());
+			assertEquals(h.size(), i + 1);
+		}
+	}
+
 	@Test(expected = NullPointerException.class)
 	public void testBadInsert() {
 		Heap<Long> h = createHeap();

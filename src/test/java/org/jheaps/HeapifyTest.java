@@ -517,6 +517,18 @@ public class HeapifyTest {
 			fail("No!");
 		} catch (IllegalArgumentException e) {
 		}
+
+		try {
+			BinaryFixedArrayWeakHeap.heapify(null);
+			fail("No!");
+		} catch (IllegalArgumentException e) {
+		}
+
+		try {
+			BinaryFixedArrayWeakHeap.heapify(null, comparator);
+			fail("No!");
+		} catch (IllegalArgumentException e) {
+		}
 	}
 
 	@Test
