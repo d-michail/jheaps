@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.jheaps.AddressableHeap.Handle;
+import org.jheaps.array.BinaryArrayAddressableHeap;
 import org.junit.Test;
 
 public class AddressableHeapsRandomTest {
