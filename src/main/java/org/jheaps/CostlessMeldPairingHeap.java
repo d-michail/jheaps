@@ -570,11 +570,9 @@ public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, Mer
             addPool(n, true);
 
             // if decrease pool has >= ceil(logn) trees, consolidate
-            if (size > 1) {
-                double sizeAsDouble = size;
-                if (decreasePoolSize >= Math.getExponent(sizeAsDouble) + 1) {
-                    consolidate();
-                }
+            double sizeAsDouble = size;
+            if (decreasePoolSize >= Math.getExponent(sizeAsDouble) + 1) {
+                consolidate();
             }
         }
     }
@@ -637,7 +635,7 @@ public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, Mer
         }
 
         // if decrease pool has >= ceil(logn) trees, consolidate
-        if (checkConsolidate && size > 1) {
+        if (checkConsolidate) {
             double sizeAsDouble = size;
             if (decreasePoolSize >= Math.getExponent(sizeAsDouble) + 1) {
                 consolidate();
