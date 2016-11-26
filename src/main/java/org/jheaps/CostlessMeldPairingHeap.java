@@ -28,8 +28,8 @@ import org.jheaps.annotations.LogLogTime;
 import org.jheaps.annotations.LogarithmicTime;
 
 /**
- * A costless meld pairing heap. The heap is sorted according to the
- * {@linkplain Comparable natural ordering} of its keys, or by a
+ * The costless meld variant of the pairing heaps. The heap is sorted according
+ * to the {@linkplain Comparable natural ordering} of its keys, or by a
  * {@link Comparator} provided at heap creation time, depending on which
  * constructor is used.
  *
@@ -200,7 +200,7 @@ public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, Mer
     /**
      * {@inheritDoc}
      * 
-     * @throws IllegalArgumentException
+     * @throws IllegalStateException
      *             if the heap has already been used in the right hand side of a
      *             meld
      */
@@ -208,7 +208,7 @@ public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, Mer
     @LogarithmicTime(amortized = true)
     public AddressableHeap.Handle<K, V> insert(K key, V value) {
         if (other != this) {
-            throw new IllegalArgumentException("A heap cannot be used after a meld");
+            throw new IllegalStateException("A heap cannot be used after a meld");
         }
         if (key == null) {
             throw new NullPointerException("Null keys not permitted");
@@ -226,7 +226,7 @@ public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, Mer
     /**
      * {@inheritDoc}
      * 
-     * @throws IllegalArgumentException
+     * @throws IllegalStateException
      *             if the heap has already been used in the right hand side of a
      *             meld
      */

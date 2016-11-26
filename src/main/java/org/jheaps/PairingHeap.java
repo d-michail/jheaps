@@ -25,7 +25,7 @@ import org.jheaps.annotations.ConstantTime;
 import org.jheaps.annotations.LogarithmicTime;
 
 /**
- * A pairing heap. The heap is sorted according to the {@linkplain Comparable
+ * Pairing heaps. The heap is sorted according to the {@linkplain Comparable
  * natural ordering} of its keys, or by a {@link Comparator} provided at heap
  * creation time, depending on which constructor is used.
  *
@@ -160,7 +160,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
     /**
      * {@inheritDoc}
      * 
-     * @throws IllegalArgumentException
+     * @throws IllegalStateException
      *             if the heap has already been used in the right hand side of a
      *             meld
      */
@@ -168,7 +168,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
     @LogarithmicTime(amortized = true)
     public AddressableHeap.Handle<K, V> insert(K key, V value) {
         if (other != this) {
-            throw new IllegalArgumentException("A heap cannot be used after a meld");
+            throw new IllegalStateException("A heap cannot be used after a meld");
         }
         if (key == null) {
             throw new NullPointerException("Null keys not permitted");
@@ -186,7 +186,7 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
     /**
      * {@inheritDoc}
      * 
-     * @throws IllegalArgumentException
+     * @throws IllegalStateException
      *             if the heap has already been used in the right hand side of a
      *             meld
      */

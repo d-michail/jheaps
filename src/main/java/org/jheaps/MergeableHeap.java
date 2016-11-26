@@ -22,10 +22,11 @@ package org.jheaps;
  *
  * <p>
  * The second heap becomes empty and unusable after the meld operation, meaning
- * than further insertions are not possible.
+ * than further insertions are not possible and will throw an
+ * {@link IllegalStateException}.
  *
  * <p>
- * A {@code ClassCastException} will be thrown if the two heaps are not of the
+ * A {@link ClassCastException} will be thrown if the two heaps are not of the
  * same type. Moreover, the two heaps need to use the same comparators. If only
  * one of them uses a custom comparator or both use custom comparators but are
  * not the same by <em>equals</em>, an {@code IllegalArgumentException} is
@@ -42,12 +43,13 @@ package org.jheaps;
  * a.meld(b);
  * </pre>
  * 
- * The above scenario is efficiently supported by using union-find with path
- * compression but it invalidates the claimed bounds.
+ * The above scenario, although efficiently supported by using union-find with
+ * path compression, invalidates the claimed bounds.
  *
- * @author Dimitrios Michail
  * @param <K>
  *            the type of keys maintained by this heap
+ * 
+ * @author Dimitrios Michail
  */
 public interface MergeableHeap<K> {
 

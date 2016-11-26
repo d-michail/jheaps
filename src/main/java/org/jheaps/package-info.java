@@ -17,6 +17,6 @@
  */
 
 /**
- * JHeaps main package.
+ * Main package containing interfaces and pointer based heaps
  */
 package org.jheaps;

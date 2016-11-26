@@ -178,7 +178,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
     /**
      * {@inheritDoc}
      * 
-     * @throws IllegalArgumentException
+     * @throws IllegalStateException
      *             if the heap has already been used in the right hand side of a
      *             meld
      */
@@ -186,7 +186,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
     @ConstantTime(amortized = true)
     public AddressableHeap.Handle<K, V> insert(K key, V value) {
         if (other != this) {
-            throw new IllegalArgumentException("A heap cannot be used after a meld");
+            throw new IllegalStateException("A heap cannot be used after a meld");
         }
         if (key == null) {
             throw new NullPointerException("Null keys not permitted");
@@ -200,7 +200,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
     /**
      * {@inheritDoc}
      * 
-     * @throws IllegalArgumentException
+     * @throws IllegalStateException
      *             if the heap has already been used in the right hand side of a
      *             meld
      */

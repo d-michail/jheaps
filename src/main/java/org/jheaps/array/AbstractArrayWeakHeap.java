@@ -14,7 +14,7 @@ import org.jheaps.annotations.ConstantTime;
  * @param <K>
  *            the type of keys maintained by this heap
  */
-public abstract class AbstractArrayWeakHeap<K> implements Heap<K>, Serializable {
+abstract class AbstractArrayWeakHeap<K> implements Heap<K>, Serializable {
 
     private static final long serialVersionUID = 1L;
 

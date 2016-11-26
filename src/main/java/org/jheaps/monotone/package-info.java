@@ -17,6 +17,6 @@
  */
 
 /**
- * Monotone heaps.
+ * Monotone heaps
  */
 package org.jheaps.monotone;

@@ -17,6 +17,6 @@
  */
 
 /**
- * Annotation types.
+ * Annotation types
  */
 package org.jheaps.annotations;

@@ -16,6 +16,6 @@
  * limitations under the License.
  */
 /**
- * Array based heaps
+ * Heaps using an array representation
  */
 package org.jheaps.array;
