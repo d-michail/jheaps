@@ -17,68 +17,9 @@
  */
 package org.jheaps;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
 import java.util.Comparator;
 
-import org.junit.Test;
-
 public class FibonacciHeapTest extends AbstractAddressableHeapTest {
-
-	@Test
-	public void testMeld() throws IOException, ClassNotFoundException {
-
-		FibonacciHeap<Integer, Void> h1 = new FibonacciHeap<Integer, Void>();
-		FibonacciHeap<Integer, Void> h2 = new FibonacciHeap<Integer, Void>();
-
-		for (int i = 0; i < SIZE; i++) {
-			if (i % 2 == 0) {
-				h1.insert(i);
-			} else {
-				h2.insert(i);
-			}
-		}
-
-		h1.meld(h2);
-
-		assertTrue(h2.isEmpty());
-		assertEquals(0, h2.size());
-
-		for (int i = 0; i < SIZE; i++) {
-			assertEquals(Integer.valueOf(i), h1.findMin().getKey());
-			h1.deleteMin();
-		}
-		assertTrue(h1.isEmpty());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testMeldWrong() throws IOException, ClassNotFoundException {
-
-		FibonacciHeap<Integer, Void> h1 = new FibonacciHeap<Integer, Void>();
-		FibonacciHeap<Integer, Void> h2 = new FibonacciHeap<Integer, Void>(comparator);
-
-		for (int i = 0; i < SIZE; i++) {
-			if (i % 2 == 0) {
-				h1.insert(i);
-			} else {
-				h2.insert(i);
-			}
-		}
-
-		h1.meld(h2);
-
-		assertTrue(h2.isEmpty());
-		assertEquals(0, h2.size());
-
-		for (int i = 0; i < SIZE; i++) {
-			assertEquals(Integer.valueOf(i), h1.findMin().getKey());
-			h1.deleteMin();
-		}
-		assertTrue(h1.isEmpty());
-
-	}
 
 	@Override
 	protected AddressableHeap<Integer, Void> createHeap() {
@@ -95,3 +36,5 @@ public class FibonacciHeapTest extends AbstractAddressableHeapTest {
 		return new FibonacciHeap<Integer, String>();
 	}
 }
+
+

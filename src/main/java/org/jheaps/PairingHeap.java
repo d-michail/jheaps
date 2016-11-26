@@ -81,11 +81,9 @@ import org.jheaps.annotations.LogarithmicTime;
  *            the type of values maintained by this heap
  *
  * @author Dimitrios Michail
- * 
- * @see AddressableHeap
- * @see MergeableHeap
- * @see Comparable
- * @see Comparator
+ *
+ * @see CostlessMeldPairingHeap
+ * @see FibonacciHeap
  */
 public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K>, Serializable {
 
@@ -116,16 +114,16 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	 * 
 	 * In order to avoid maintaining a full-fledged union-find data structure,
 	 * we disallow a heap to be used in melding more than once. We use however,
-	 * path-compression in case a handle moves from one heap to another and then
-	 * another.
+	 * path-compression in case of cascading melds, that it, a handle moves from
+	 * one heap to another and then another.
 	 */
 	protected PairingHeap<K, V> other;
 
 	/**
-	 * Constructs a new, empty pairing heap, using the natural ordering of its
-	 * keys. All keys inserted into the heap must implement the
-	 * {@link Comparable} interface. Furthermore, all such keys must be
-	 * <em>mutually comparable</em>: {@code k1.compareTo(k2)} must not throw a
+	 * Constructs a new, empty heap, using the natural ordering of its keys. All
+	 * keys inserted into the heap must implement the {@link Comparable}
+	 * interface. Furthermore, all such keys must be <em>mutually
+	 * comparable</em>: {@code k1.compareTo(k2)} must not throw a
 	 * {@code ClassCastException} for any keys {@code k1} and {@code k2} in the
 	 * heap. If the user attempts to put a key into the heap that violates this
 	 * constraint (for example, the user attempts to put a string key into a
@@ -138,9 +136,9 @@ public class PairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K
 	}
 
 	/**
-	 * Constructs a new, empty pairing heap, ordered according to the given
-	 * comparator. All keys inserted into the heap must be <em>mutually
-	 * comparable</em> by the given comparator: {@code comparator.compare(k1,
+	 * Constructs a new, empty heap, ordered according to the given comparator.
+	 * All keys inserted into the heap must be <em>mutually comparable</em> by
+	 * the given comparator: {@code comparator.compare(k1,
 	 * k2)} must not throw a {@code ClassCastException} for any keys {@code k1}
 	 * and {@code k2} in the heap. If the user attempts to put a key into the
 	 * heap that violates this constraint, the {@code insert(Object key)} call

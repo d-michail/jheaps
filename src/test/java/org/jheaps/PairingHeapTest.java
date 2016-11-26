@@ -17,69 +17,9 @@
  */
 package org.jheaps;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
 import java.util.Comparator;
 
-import org.junit.Test;
-
 public class PairingHeapTest extends AbstractAddressableHeapTest {
-
-	@Test
-	public void testMeld() throws IOException, ClassNotFoundException {
-
-		PairingHeap<Integer, Void> h1 = new PairingHeap<Integer, Void>();
-		PairingHeap<Integer, Void> h2 = new PairingHeap<Integer, Void>();
-
-		for (int i = 0; i < SIZE; i++) {
-			if (i % 2 == 0) {
-				h1.insert(i);
-			} else {
-				h2.insert(i);
-			}
-		}
-
-		h1.meld(h2);
-
-		assertTrue(h2.isEmpty());
-		assertEquals(0, h2.size());
-
-		for (int i = 0; i < SIZE; i++) {
-			assertEquals(Integer.valueOf(i), h1.findMin().getKey());
-			h1.deleteMin();
-		}
-		assertTrue(h1.isEmpty());
-
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testMeldWrong() throws IOException, ClassNotFoundException {
-
-		PairingHeap<Integer, Void> h1 = new PairingHeap<Integer, Void>();
-		PairingHeap<Integer, Void> h2 = new PairingHeap<Integer, Void>(comparator);
-
-		for (int i = 0; i < SIZE; i++) {
-			if (i % 2 == 0) {
-				h1.insert(i);
-			} else {
-				h2.insert(i);
-			}
-		}
-
-		h1.meld(h2);
-
-		assertTrue(h2.isEmpty());
-		assertEquals(0, h2.size());
-
-		for (int i = 0; i < SIZE; i++) {
-			assertEquals(Integer.valueOf(i), h1.findMin().getKey());
-			h1.deleteMin();
-		}
-		assertTrue(h1.isEmpty());
-
-	}
 
 	@Override
 	protected AddressableHeap<Integer, Void> createHeap() {

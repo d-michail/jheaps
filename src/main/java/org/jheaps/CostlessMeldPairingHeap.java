@@ -91,8 +91,8 @@ import org.jheaps.annotations.LogarithmicTime;
  *
  * @author Dimitrios Michail
  * 
- * @see AddressableHeap
- * @see MergeableHeap
+ * @see PairingHeap
+ * @see FibonacciHeap
  */
 public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K>, Serializable {
 
@@ -138,7 +138,8 @@ public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, Mer
 	protected byte decreasePoolMinPos;
 
 	/**
-	 * Comparator for nodes in the decrease pool
+	 * Comparator for nodes in the decrease pool. Initialized lazily and used
+	 * when sorting entries in the decrease pool.
 	 */
 	protected transient Comparator<Node<K, V>> decreasePoolComparator;
 
@@ -149,16 +150,41 @@ public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, Mer
 	 * 
 	 * In order to avoid maintaining a full-fledged union-find data structure,
 	 * we disallow a heap to be used in melding more than once. We use however,
-	 * path-compression in case a handle moves from one heap to another and then
-	 * another.
+	 * path-compression in case of cascading melds, that it, a handle moves from
+	 * one heap to another and then another.
 	 */
 	protected CostlessMeldPairingHeap<K, V> other;
 
+	/**
+	 * Constructs a new, empty heap, using the natural ordering of its keys. All
+	 * keys inserted into the heap must implement the {@link Comparable}
+	 * interface. Furthermore, all such keys must be <em>mutually
+	 * comparable</em>: {@code k1.compareTo(k2)} must not throw a
+	 * {@code ClassCastException} for any keys {@code k1} and {@code k2} in the
+	 * heap. If the user attempts to put a key into the heap that violates this
+	 * constraint (for example, the user attempts to put a string key into a
+	 * heap whose keys are integers), the {@code insert(Object key)} call will
+	 * throw a {@code ClassCastException}.
+	 */
 	@ConstantTime
 	public CostlessMeldPairingHeap() {
 		this(null);
 	}
 
+	/**
+	 * Constructs a new, empty heap, ordered according to the given comparator.
+	 * All keys inserted into the heap must be <em>mutually comparable</em> by
+	 * the given comparator: {@code comparator.compare(k1,
+	 * k2)} must not throw a {@code ClassCastException} for any keys {@code k1}
+	 * and {@code k2} in the heap. If the user attempts to put a key into the
+	 * heap that violates this constraint, the {@code insert(Object key)} call
+	 * will throw a {@code ClassCastException}.
+	 *
+	 * @param comparator
+	 *            the comparator that will be used to order this heap. If
+	 *            {@code null}, the {@linkplain Comparable natural ordering} of
+	 *            the keys will be used.
+	 */
 	@ConstantTime
 	@SuppressWarnings("unchecked")
 	public CostlessMeldPairingHeap(Comparator<? super K> comparator) {

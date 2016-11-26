@@ -80,11 +80,9 @@ import org.jheaps.annotations.LogarithmicTime;
  *            the type of values maintained by this heap
  *
  * @author Dimitrios Michail
- * 
- * @see AddressableHeap
- * @see MergeableHeap
- * @see Comparable
- * @see Comparator
+ *
+ * @see PairingHeap
+ * @see CostlessMeldPairingHeap
  */
 public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K>, Serializable {
 
@@ -131,8 +129,8 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
 	 * 
 	 * In order to avoid maintaining a full-fledged union-find data structure,
 	 * we disallow a heap to be used in melding more than once. We use however,
-	 * path-compression in case a handle moves from one heap to another and then
-	 * another.
+	 * path-compression in case of cascading melds, that it, a handle moves from
+	 * one heap to another and then another.
 	 */
 	protected FibonacciHeap<K, V> other;
 
