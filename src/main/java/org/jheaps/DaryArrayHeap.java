@@ -17,7 +17,6 @@
  */
 package org.jheaps;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.jheaps.annotations.LinearTime;
@@ -66,14 +65,10 @@ import org.jheaps.annotations.LinearTime;
  *            the type of keys maintained by this heap
  *
  * @author Dimitrios Michail
- * @see Heap
- * @see Comparable
- * @see Comparator
- * @see Serializable
  */
-public class DaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implements Serializable {
+public class DaryArrayHeap<K> extends AbstractDaryArrayHeap<K> {
 
-	private final static long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Default initial capacity of the heap.

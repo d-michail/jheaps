@@ -23,22 +23,22 @@ import java.util.Comparator;
 import org.jheaps.annotations.LinearTime;
 
 /**
- * An array based binary addressable heap with a maximum number of elements. The
- * heap is sorted according to the {@linkplain Comparable natural ordering} of
- * its keys, or by a {@link Comparator} provided at heap creation time,
- * depending on which constructor is used.
+ * An array based binary heap with a maximum number of elements. The heap is
+ * sorted according to the {@linkplain Comparable natural ordering} of its keys,
+ * or by a {@link Comparator} provided at heap creation time, depending on which
+ * constructor is used.
  *
  * <p>
  * The implementation uses a fixed size array in order to store the elements,
- * providing worst case O(log(n)) time cost for the {@code insert} and
+ * providing worst case O(log(n)) time for the {@code insert} and
  * {@code deleteMin} operations. Operation {@code findMin}, is a worst-case O(1)
- * operation. Operations {@code delete} and {@code decreaseKey} take worst-case
- * O(log(n)) time.
+ * operation. {@link BinaryArrayHeap} provides a more dynamic implementation in
+ * the expense of amortized complexity bounds.
  * 
  * <p>
  * Constructing such a heap from an array of elements can be performed using the
- * method {@link #heapify(Object[], Object[])} or
- * {@link #heapify(Object[], Object[], Comparator)} in linear time.
+ * method {@link #heapify(Object[])} or {@link #heapify(Object[], Comparator)}
+ * in linear time.
  *
  * <p>
  * Note that the ordering maintained by a binary heap, like any heap, and
@@ -64,15 +64,17 @@ import org.jheaps.annotations.LinearTime;
  *
  * @param <K>
  *            the type of keys maintained by this heap
- * @param <V>
- *            the type of values maintained by this heap
  *
  * @author Dimitrios Michail
+ * 
+ * @see Heap
+ * @see Comparable
+ * @see Comparator
+ * @see Serializable
  */
-public class FixedSizeBinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddressableHeap<K, V>
-		implements Serializable {
+public class BinaryFixedArrayHeap<K> extends AbstractBinaryArrayHeap<K> implements Heap<K>, Serializable {
 
-	private final static long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructs a new, empty heap, with a provided maximum capacity using the
@@ -88,10 +90,15 @@ public class FixedSizeBinaryArrayAddressableHeap<K, V> extends AbstractBinaryArr
 	 * heap whose keys are integers), the {@code insert(Object key)} call will
 	 * throw a {@code ClassCastException}.
 	 *
+	 * <p>
+	 * The heap has a fixed maximum capacity. If the user attempts to insert
+	 * more elements than the maximum capacity, a {@code IllegalStateException}
+	 * will be thrown.
+	 *
 	 * @param capacity
 	 *            the maximum heap capacity
 	 */
-	public FixedSizeBinaryArrayAddressableHeap(int capacity) {
+	public BinaryFixedArrayHeap(int capacity) {
 		super(null, capacity);
 	}
 
@@ -107,6 +114,11 @@ public class FixedSizeBinaryArrayAddressableHeap<K, V> extends AbstractBinaryArr
 	 * heap that violates this constraint, the {@code insert(Object key)} call
 	 * will throw a {@code ClassCastException}.
 	 *
+	 * <p>
+	 * The heap has a fixed maximum capacity. If the user attempts to insert
+	 * more elements than the maximum capacity, a {@code IllegalStateException}
+	 * will be thrown.
+	 *
 	 * @param comparator
 	 *            the comparator that will be used to order this heap. If
 	 *            {@code null}, the {@linkplain Comparable natural ordering} of
@@ -114,7 +126,7 @@ public class FixedSizeBinaryArrayAddressableHeap<K, V> extends AbstractBinaryArr
 	 * @param capacity
 	 *            the maximum heap capacity
 	 */
-	public FixedSizeBinaryArrayAddressableHeap(Comparator<? super K> comparator, int capacity) {
+	public BinaryFixedArrayHeap(Comparator<? super K> comparator, int capacity) {
 		super(comparator, capacity);
 	}
 
@@ -124,43 +136,27 @@ public class FixedSizeBinaryArrayAddressableHeap<K, V> extends AbstractBinaryArr
 	 *
 	 * @param <K>
 	 *            the type of keys maintained by the heap
-	 * @param <V>
-	 *            the type of values maintained by the heap
-	 * @param keys
-	 *            an array of keys
-	 * @param values
-	 *            an array of values, can be null
+	 * @param array
+	 *            an array of elements
 	 * @return a binary heap
 	 * @throws IllegalArgumentException
-	 *             in case the keys array is null
-	 * @throws IllegalArgumentException
-	 *             in case the values array has different length than the keys
-	 *             array
+	 *             in case the array is null
 	 */
 	@LinearTime
-	public static <K, V> FixedSizeBinaryArrayAddressableHeap<K, V> heapify(K[] keys, V[] values) {
-		if (keys == null) {
-			throw new IllegalArgumentException("Key array cannot be null");
+	public static <K> BinaryFixedArrayHeap<K> heapify(K[] array) {
+		if (array == null) {
+			throw new IllegalArgumentException("Array cannot be null");
 		}
-		if (values != null && keys.length != values.length) {
-			throw new IllegalArgumentException("Values array must have the same length as the keys array");
-		}
-		if (keys.length == 0) {
-			return new FixedSizeBinaryArrayAddressableHeap<K, V>(0);
+		if (array.length == 0) {
+			return new BinaryFixedArrayHeap<K>(0);
 		}
 
-		FixedSizeBinaryArrayAddressableHeap<K, V> h = new FixedSizeBinaryArrayAddressableHeap<K, V>(keys.length);
+		BinaryFixedArrayHeap<K> h = new BinaryFixedArrayHeap<K>(array.length);
 
-		for (int i = 0; i < keys.length; i++) {
-			K key = keys[i];
-			V value = (values == null) ? null : values[i];
-			AbstractArrayAddressableHeap<K, V>.ArrayHandle ah = h.new ArrayHandle(key, value);
-			ah.index = i + 1;
-			h.array[i + 1] = ah;
-		}
-		h.size = keys.length;
+		System.arraycopy(array, 0, h.array, 1, array.length);
+		h.size = array.length;
 
-		for (int i = keys.length / 2; i > 0; i--) {
+		for (int i = array.length / 2; i > 0; i--) {
 			h.fixdown(i);
 		}
 
@@ -173,47 +169,29 @@ public class FixedSizeBinaryArrayAddressableHeap<K, V> extends AbstractBinaryArr
 	 *
 	 * @param <K>
 	 *            the type of keys maintained by the heap
-	 * @param <V>
-	 *            the type of values maintained by the heap
-	 * @param keys
-	 *            an array of keys
-	 * @param values
-	 *            an array of values, can be null
+	 * @param array
+	 *            an array of elements
 	 * @param comparator
 	 *            the comparator to use
 	 * @return a binary heap
 	 * @throws IllegalArgumentException
-	 *             in case the keys array is null
-	 * @throws IllegalArgumentException
-	 *             in case the values array has different length than the keys
-	 *             array
+	 *             in case the array is null
 	 */
 	@LinearTime
-	public static <K, V> FixedSizeBinaryArrayAddressableHeap<K, V> heapify(K[] keys, V[] values,
-			Comparator<? super K> comparator) {
-		if (keys == null) {
-			throw new IllegalArgumentException("Keys array cannot be null");
+	public static <K> BinaryFixedArrayHeap<K> heapify(K[] array, Comparator<? super K> comparator) {
+		if (array == null) {
+			throw new IllegalArgumentException("Array cannot be null");
 		}
-		if (values != null && keys.length != values.length) {
-			throw new IllegalArgumentException("Values array must have the same length as the keys array");
-		}
-		if (keys.length == 0) {
-			return new FixedSizeBinaryArrayAddressableHeap<K, V>(comparator, 0);
+		if (array.length == 0) {
+			return new BinaryFixedArrayHeap<K>(comparator, 0);
 		}
 
-		FixedSizeBinaryArrayAddressableHeap<K, V> h = new FixedSizeBinaryArrayAddressableHeap<K, V>(comparator,
-				keys.length);
+		BinaryFixedArrayHeap<K> h = new BinaryFixedArrayHeap<K>(comparator, array.length);
 
-		for (int i = 0; i < keys.length; i++) {
-			K key = keys[i];
-			V value = (values == null) ? null : values[i];
-			AbstractArrayAddressableHeap<K, V>.ArrayHandle ah = h.new ArrayHandle(key, value);
-			ah.index = i + 1;
-			h.array[i + 1] = ah;
-		}
-		h.size = keys.length;
+		System.arraycopy(array, 0, h.array, 1, array.length);
+		h.size = array.length;
 
-		for (int i = keys.length / 2; i > 0; i--) {
+		for (int i = array.length / 2; i > 0; i--) {
 			h.fixdownWithComparator(i);
 		}
 

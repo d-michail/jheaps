@@ -19,14 +19,14 @@ package org.jheaps;
 
 import java.util.Comparator;
 
-public class FixedSizeBinaryArrayHeapTest extends AbstractStaticHeapTest {
+public class BinaryFixedArrayAddressableHeapTest extends AbstractStaticAddressableHeapTest {
 
-	protected Heap<Integer> createHeap(Comparator<Integer> comparator, int capacity) {
-		return new FixedSizeBinaryArrayHeap<Integer>(comparator, capacity);
+	protected AddressableHeap<Integer, String> createHeap(Comparator<Integer> comparator, int capacity) {
+		return new BinaryFixedArrayAddressableHeap<Integer, String>(comparator, capacity);
 	}
 
-	protected Heap<Integer> createHeap(int capacity) {
-		return new FixedSizeBinaryArrayHeap<Integer>(capacity);
+	protected AddressableHeap<Integer, String> createHeap(int capacity) {
+		return new BinaryFixedArrayAddressableHeap<Integer, String>(capacity);
 	}
 
 }

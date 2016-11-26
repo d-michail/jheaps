@@ -17,7 +17,6 @@
  */
 package org.jheaps;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.jheaps.annotations.LinearTime;
@@ -66,12 +65,8 @@ import org.jheaps.annotations.LinearTime;
  *            the type of keys maintained by this heap
  *
  * @author Dimitrios Michail
- * @see Heap
- * @see Comparable
- * @see Comparator
- * @see Serializable
  */
-public class FixedSizeDaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implements Serializable {
+public class DaryFixedArrayHeap<K> extends AbstractDaryArrayHeap<K> {
 
 	private final static long serialVersionUID = 1;
 
@@ -96,7 +91,7 @@ public class FixedSizeDaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implemen
 	 * @throws IllegalArgumentException
 	 *             in case the number of children per node are less than 2
 	 */
-	public FixedSizeDaryArrayHeap(int d, int capacity) {
+	public DaryFixedArrayHeap(int d, int capacity) {
 		super(d, null, capacity);
 	}
 
@@ -123,7 +118,7 @@ public class FixedSizeDaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implemen
 	 * @throws IllegalArgumentException
 	 *             in case the number of children per node are less than 2
 	 */
-	public FixedSizeDaryArrayHeap(int d, Comparator<? super K> comparator, int capacity) {
+	public DaryFixedArrayHeap(int d, Comparator<? super K> comparator, int capacity) {
 		super(d, comparator, capacity);
 	}
 
@@ -144,7 +139,7 @@ public class FixedSizeDaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implemen
 	 *             in case the array is null
 	 */
 	@LinearTime
-	public static <K> FixedSizeDaryArrayHeap<K> heapify(int d, K[] array) {
+	public static <K> DaryFixedArrayHeap<K> heapify(int d, K[] array) {
 		if (d < 2) {
 			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
 		}
@@ -152,10 +147,10 @@ public class FixedSizeDaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implemen
 			throw new IllegalArgumentException("Array cannot be null");
 		}
 		if (array.length == 0) {
-			return new FixedSizeDaryArrayHeap<K>(d, 0);
+			return new DaryFixedArrayHeap<K>(d, 0);
 		}
 
-		FixedSizeDaryArrayHeap<K> h = new FixedSizeDaryArrayHeap<K>(d, array.length);
+		DaryFixedArrayHeap<K> h = new DaryFixedArrayHeap<K>(d, array.length);
 
 		System.arraycopy(array, 0, h.array, 1, array.length);
 		h.size = array.length;
@@ -186,7 +181,7 @@ public class FixedSizeDaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implemen
 	 *             in case the array is null
 	 */
 	@LinearTime
-	public static <K> FixedSizeDaryArrayHeap<K> heapify(int d, K[] array, Comparator<? super K> comparator) {
+	public static <K> DaryFixedArrayHeap<K> heapify(int d, K[] array, Comparator<? super K> comparator) {
 		if (d < 2) {
 			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
 		}
@@ -194,10 +189,10 @@ public class FixedSizeDaryArrayHeap<K> extends AbstractDaryArrayHeap<K> implemen
 			throw new IllegalArgumentException("Array cannot be null");
 		}
 		if (array.length == 0) {
-			return new FixedSizeDaryArrayHeap<K>(d, comparator, 0);
+			return new DaryFixedArrayHeap<K>(d, comparator, 0);
 		}
 
-		FixedSizeDaryArrayHeap<K> h = new FixedSizeDaryArrayHeap<K>(d, comparator, array.length);
+		DaryFixedArrayHeap<K> h = new DaryFixedArrayHeap<K>(d, comparator, array.length);
 
 		System.arraycopy(array, 0, h.array, 1, array.length);
 		h.size = array.length;

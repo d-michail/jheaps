@@ -54,6 +54,11 @@ public class AddressableHeapsRandomTest {
 		testRandomDeletes(37);
 	}
 
+	@Test
+	public void testRandomDelete() {
+		testRandomDeletes(new Random().nextLong());
+	}
+
 	private void test(Random rng) {
 
 		final int classes = 5;

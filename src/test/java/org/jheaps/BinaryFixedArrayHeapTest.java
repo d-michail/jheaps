@@ -19,14 +19,14 @@ package org.jheaps;
 
 import java.util.Comparator;
 
-public class D3FixedSizeDaryArrayHeapTest extends AbstractStaticHeapTest {
+public class BinaryFixedArrayHeapTest extends AbstractStaticHeapTest {
 
 	protected Heap<Integer> createHeap(Comparator<Integer> comparator, int capacity) {
-		return new FixedSizeDaryArrayHeap<Integer>(3, comparator, capacity);
+		return new BinaryFixedArrayHeap<Integer>(comparator, capacity);
 	}
 
 	protected Heap<Integer> createHeap(int capacity) {
-		return new FixedSizeDaryArrayHeap<Integer>(3, capacity);
+		return new BinaryFixedArrayHeap<Integer>(capacity);
 	}
 
 }

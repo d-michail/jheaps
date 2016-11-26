@@ -69,7 +69,7 @@ import org.jheaps.annotations.LinearTime;
  *
  * @author Dimitrios Michail
  */
-public class FixedSizeDaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressableHeap<K, V>
+public class DaryFixedArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressableHeap<K, V>
 		implements Serializable {
 
 	private final static long serialVersionUID = 1;
@@ -95,7 +95,7 @@ public class FixedSizeDaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAd
 	 * @throws IllegalArgumentException
 	 *             in case the number of children per node are less than 2
 	 */
-	public FixedSizeDaryArrayAddressableHeap(int d, int capacity) {
+	public DaryFixedArrayAddressableHeap(int d, int capacity) {
 		super(d, null, capacity);
 	}
 
@@ -122,7 +122,7 @@ public class FixedSizeDaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAd
 	 * @throws IllegalArgumentException
 	 *             in case the number of children per node are less than 2
 	 */
-	public FixedSizeDaryArrayAddressableHeap(int d, Comparator<? super K> comparator, int capacity) {
+	public DaryFixedArrayAddressableHeap(int d, Comparator<? super K> comparator, int capacity) {
 		super(d, comparator, capacity);
 	}
 
@@ -150,7 +150,7 @@ public class FixedSizeDaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAd
 	 *             array
 	 */
 	@LinearTime
-	public static <K, V> FixedSizeDaryArrayAddressableHeap<K, V> heapify(int d, K[] keys, V[] values) {
+	public static <K, V> DaryFixedArrayAddressableHeap<K, V> heapify(int d, K[] keys, V[] values) {
 		if (d < 2) {
 			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
 		}
@@ -161,10 +161,10 @@ public class FixedSizeDaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAd
 			throw new IllegalArgumentException("Values array must have the same length as the keys array");
 		}
 		if (keys.length == 0) {
-			return new FixedSizeDaryArrayAddressableHeap<K, V>(d, 0);
+			return new DaryFixedArrayAddressableHeap<K, V>(d, 0);
 		}
 
-		FixedSizeDaryArrayAddressableHeap<K, V> h = new FixedSizeDaryArrayAddressableHeap<K, V>(d, keys.length);
+		DaryFixedArrayAddressableHeap<K, V> h = new DaryFixedArrayAddressableHeap<K, V>(d, keys.length);
 
 		for (int i = 0; i < keys.length; i++) {
 			K key = keys[i];
@@ -208,7 +208,7 @@ public class FixedSizeDaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAd
 	 *             array
 	 */
 	@LinearTime
-	public static <K, V> FixedSizeDaryArrayAddressableHeap<K, V> heapify(int d, K[] keys, V[] values,
+	public static <K, V> DaryFixedArrayAddressableHeap<K, V> heapify(int d, K[] keys, V[] values,
 			Comparator<? super K> comparator) {
 		if (d < 2) {
 			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
@@ -220,10 +220,10 @@ public class FixedSizeDaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAd
 			throw new IllegalArgumentException("Values array must have the same length as the keys array");
 		}
 		if (keys.length == 0) {
-			return new FixedSizeDaryArrayAddressableHeap<K, V>(d, comparator, 0);
+			return new DaryFixedArrayAddressableHeap<K, V>(d, comparator, 0);
 		}
 
-		FixedSizeDaryArrayAddressableHeap<K, V> h = new FixedSizeDaryArrayAddressableHeap<K, V>(d, comparator,
+		DaryFixedArrayAddressableHeap<K, V> h = new DaryFixedArrayAddressableHeap<K, V>(d, comparator,
 				keys.length);
 
 		for (int i = 0; i < keys.length; i++) {

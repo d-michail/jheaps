@@ -26,7 +26,7 @@ import java.util.Comparator;
  * @author Dimitrios Michail
  *
  * @param <K>
- *            the key type
+ *            the type of keys maintained by this heap
  */
 abstract class AbstractDaryArrayHeap<K> extends AbstractArrayHeap<K> implements Serializable {
 

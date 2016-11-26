@@ -17,7 +17,6 @@
  */
 package org.jheaps;
 
-import java.io.Serializable;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
@@ -32,47 +31,21 @@ import org.jheaps.annotations.LogarithmicTime;
  * @param <K>
  *            the type of keys maintained by this heap
  */
-abstract class AbstractArrayHeap<K> implements Heap<K>, Serializable {
+abstract class AbstractArrayHeap<K> extends AbstractArrayWeakHeap<K> {
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * The maximum heap capacity.
-	 */
-	protected static final int MAX_HEAP_CAPACITY = Integer.MAX_VALUE - 8 - 1;
-
-	/**
-	 * The minimum heap capacity.
-	 */
-	protected static final int MIN_HEAP_CAPACITY = 0;
-
-	/**
-	 * The comparator used to maintain order in this heap, or null if it uses
-	 * the natural ordering of its keys.
-	 *
-	 * @serial
-	 */
-	protected Comparator<? super K> comparator;
-
-	/**
-	 * The array use for representing the tree.
-	 */
-	protected K[] array;
-
-	/**
-	 * Number of elements in the heap.
-	 */
-	protected int size;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("unchecked")
 	public AbstractArrayHeap(Comparator<? super K> comparator, int capacity) {
-		checkCapacity(capacity);
+		super(comparator, capacity);
+	}
+
+	/**
+	 * Initialize the array representation
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	protected void initCapacity(int capacity) {
 		this.array = (K[]) new Object[capacity + 1];
-		this.size = 0;
-		this.comparator = comparator;
 	}
 
 	/**
@@ -85,41 +58,6 @@ abstract class AbstractArrayHeap<K> implements Heap<K>, Serializable {
 			throw new NoSuchElementException();
 		}
 		return array[1];
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@ConstantTime
-	public boolean isEmpty() {
-		return size == 0;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@ConstantTime
-	public long size() {
-		return size;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Comparator<? super K> comparator() {
-		return comparator;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@ConstantTime
-	public void clear() {
-		size = 0;
 	}
 
 	/**
@@ -178,24 +116,5 @@ abstract class AbstractArrayHeap<K> implements Heap<K>, Serializable {
 		}
 		return result;
 	}
-
-	protected final void checkCapacity(int capacity) {
-		if (capacity < MIN_HEAP_CAPACITY) {
-			throw new IllegalArgumentException("Heap capacity must be >= " + MIN_HEAP_CAPACITY);
-		}
-		if (capacity > MAX_HEAP_CAPACITY) {
-			throw new IllegalArgumentException("Heap capacity too large");
-		}
-	}
-
-	protected abstract void ensureCapacity(int capacity);
-
-	protected abstract void fixup(int k);
-
-	protected abstract void fixupWithComparator(int k);
-
-	protected abstract void fixdown(int k);
-
-	protected abstract void fixdownWithComparator(int k);
 
 }
