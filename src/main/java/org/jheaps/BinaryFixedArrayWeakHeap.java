@@ -23,16 +23,49 @@ import java.util.Comparator;
 import org.jheaps.annotations.LinearTime;
 
 /**
- * TODO
+ * An array based binary weak heap with a maximum number of elements. The heap
+ * is sorted according to the {@linkplain Comparable natural ordering} of its
+ * keys, or by a {@link Comparator} provided at heap creation time, depending on
+ * which constructor is used.
+ *
+ * <p>
+ * The implementation uses a fixed size array in order to store the elements,
+ * providing worst case O(log(n)) time for the {@code insert} and
+ * {@code deleteMin} operations. Operation {@code findMin}, is a worst-case O(1)
+ * operation. {@link BinaryArrayWeakHeap} provides a more dynamic implementation
+ * in the expense of amortized complexity bounds.
+ * 
+ * <p>
+ * Constructing such a heap from an array of elements can be performed using the
+ * method {@link #heapify(Object[])} or {@link #heapify(Object[], Comparator)}
+ * in linear time.
+ *
+ * <p>
+ * Note that the ordering maintained by a binary heap, like any heap, and
+ * whether or not an explicit comparator is provided, must be <em>consistent
+ * with {@code equals}</em> if this heap is to correctly implement the
+ * {@code Heap} interface. (See {@code Comparable} or {@code Comparator} for a
+ * precise definition of <em>consistent with equals</em>.) This is so because
+ * the {@code Heap} interface is defined in terms of the {@code equals}
+ * operation, but a binary heap performs all key comparisons using its
+ * {@code compareTo} (or {@code compare}) method, so two keys that are deemed
+ * equal by this method are, from the standpoint of the binary heap, equal. The
+ * behavior of a heap <em>is</em> well-defined even if its ordering is
+ * inconsistent with {@code equals}; it just fails to obey the general contract
+ * of the {@code Heap} interface.
+ *
+ * <p>
+ * <strong>Note that this implementation is not synchronized.</strong> If
+ * multiple threads access a heap concurrently, and at least one of the threads
+ * modifies the heap structurally, it <em>must</em> be synchronized externally.
+ * (A structural modification is any operation that adds or deletes one or more
+ * elements or changing the key of some element.) This is typically accomplished
+ * by synchronizing on some object that naturally encapsulates the heap.
  *
  * @param <K>
  *            the type of keys maintained by this heap
  *
  * @author Dimitrios Michail
- * @see Heap
- * @see Comparable
- * @see Comparator
- * @see Serializable
  */
 public class BinaryFixedArrayWeakHeap<K> extends AbstractBinaryArrayWeakHeap<K> implements Serializable {
 

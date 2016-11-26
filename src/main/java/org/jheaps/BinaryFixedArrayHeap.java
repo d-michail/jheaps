@@ -66,11 +66,6 @@ import org.jheaps.annotations.LinearTime;
  *            the type of keys maintained by this heap
  *
  * @author Dimitrios Michail
- * 
- * @see Heap
- * @see Comparable
- * @see Comparator
- * @see Serializable
  */
 public class BinaryFixedArrayHeap<K> extends AbstractBinaryArrayHeap<K> implements Heap<K>, Serializable {
 

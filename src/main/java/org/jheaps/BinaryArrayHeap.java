@@ -17,7 +17,6 @@
  */
 package org.jheaps;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.jheaps.annotations.LinearTime;
@@ -66,10 +65,6 @@ import org.jheaps.annotations.LinearTime;
  *            the type of keys maintained by this heap
  *
  * @author Dimitrios Michail
- * @see Heap
- * @see Comparable
- * @see Comparator
- * @see Serializable
  */
 public class BinaryArrayHeap<K> extends AbstractBinaryArrayHeap<K> {
 
