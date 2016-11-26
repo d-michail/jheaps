@@ -73,220 +73,220 @@ import org.jheaps.annotations.LinearTime;
  */
 public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddressableHeap<K, V> implements Serializable {
 
-	private final static long serialVersionUID = 1;
+    private final static long serialVersionUID = 1;
 
-	/**
-	 * Default initial capacity of the binary heap.
-	 */
-	public static final int DEFAULT_HEAP_CAPACITY = 128;
+    /**
+     * Default initial capacity of the binary heap.
+     */
+    public static final int DEFAULT_HEAP_CAPACITY = 128;
 
-	/**
-	 * Constructs a new, empty heap, using the natural ordering of its keys.
-	 *
-	 * <p>
-	 * All keys inserted into the heap must implement the {@link Comparable}
-	 * interface. Furthermore, all such keys must be <em>mutually
-	 * comparable</em>: {@code k1.compareTo(k2)} must not throw a
-	 * {@code ClassCastException} for any keys {@code k1} and {@code k2} in the
-	 * heap. If the user attempts to put a key into the heap that violates this
-	 * constraint (for example, the user attempts to put a string key into a
-	 * heap whose keys are integers), the {@code insert(Object key)} call will
-	 * throw a {@code ClassCastException}.
-	 *
-	 * <p>
-	 * The initial capacity of the heap is
-	 * {@link BinaryArrayAddressableHeap#DEFAULT_HEAP_CAPACITY} and adjusts
-	 * automatically based on the sequence of insertions and deletions.
-	 */
-	public BinaryArrayAddressableHeap() {
-		super(null, DEFAULT_HEAP_CAPACITY);
-	}
+    /**
+     * Constructs a new, empty heap, using the natural ordering of its keys.
+     *
+     * <p>
+     * All keys inserted into the heap must implement the {@link Comparable}
+     * interface. Furthermore, all such keys must be <em>mutually
+     * comparable</em>: {@code k1.compareTo(k2)} must not throw a
+     * {@code ClassCastException} for any keys {@code k1} and {@code k2} in the
+     * heap. If the user attempts to put a key into the heap that violates this
+     * constraint (for example, the user attempts to put a string key into a
+     * heap whose keys are integers), the {@code insert(Object key)} call will
+     * throw a {@code ClassCastException}.
+     *
+     * <p>
+     * The initial capacity of the heap is
+     * {@link BinaryArrayAddressableHeap#DEFAULT_HEAP_CAPACITY} and adjusts
+     * automatically based on the sequence of insertions and deletions.
+     */
+    public BinaryArrayAddressableHeap() {
+        super(null, DEFAULT_HEAP_CAPACITY);
+    }
 
-	/**
-	 * Constructs a new, empty heap, with a provided initial capacity using the
-	 * natural ordering of its keys.
-	 *
-	 * <p>
-	 * All keys inserted into the heap must implement the {@link Comparable}
-	 * interface. Furthermore, all such keys must be <em>mutually
-	 * comparable</em>: {@code k1.compareTo(k2)} must not throw a
-	 * {@code ClassCastException} for any keys {@code k1} and {@code k2} in the
-	 * heap. If the user attempts to put a key into the heap that violates this
-	 * constraint (for example, the user attempts to put a string key into a
-	 * heap whose keys are integers), the {@code insert(Object key)} call will
-	 * throw a {@code ClassCastException}.
-	 *
-	 * <p>
-	 * The initial capacity of the heap is provided by the user and is adjusted
-	 * automatically based on the sequence of insertions and deletions.
-	 *
-	 * @param capacity
-	 *            the initial heap capacity
-	 */
-	public BinaryArrayAddressableHeap(int capacity) {
-		super(null, capacity);
-	}
+    /**
+     * Constructs a new, empty heap, with a provided initial capacity using the
+     * natural ordering of its keys.
+     *
+     * <p>
+     * All keys inserted into the heap must implement the {@link Comparable}
+     * interface. Furthermore, all such keys must be <em>mutually
+     * comparable</em>: {@code k1.compareTo(k2)} must not throw a
+     * {@code ClassCastException} for any keys {@code k1} and {@code k2} in the
+     * heap. If the user attempts to put a key into the heap that violates this
+     * constraint (for example, the user attempts to put a string key into a
+     * heap whose keys are integers), the {@code insert(Object key)} call will
+     * throw a {@code ClassCastException}.
+     *
+     * <p>
+     * The initial capacity of the heap is provided by the user and is adjusted
+     * automatically based on the sequence of insertions and deletions.
+     *
+     * @param capacity
+     *            the initial heap capacity
+     */
+    public BinaryArrayAddressableHeap(int capacity) {
+        super(null, capacity);
+    }
 
-	/**
-	 * Constructs a new, empty heap, ordered according to the given comparator.
-	 *
-	 * <p>
-	 * All keys inserted into the heap must be <em>mutually comparable</em> by
-	 * the given comparator: {@code comparator.compare(k1,
-	 * k2)} must not throw a {@code ClassCastException} for any keys {@code k1}
-	 * and {@code k2} in the heap. If the user attempts to put a key into the
-	 * heap that violates this constraint, the {@code insert(Object key)} call
-	 * will throw a {@code ClassCastException}.
-	 *
-	 * <p>
-	 * The initial capacity of the heap is
-	 * {@link BinaryArrayAddressableHeap#DEFAULT_HEAP_CAPACITY} and adjusts
-	 * automatically based on the sequence of insertions and deletions.
-	 *
-	 * @param comparator
-	 *            the comparator that will be used to order this heap. If
-	 *            {@code null}, the {@linkplain Comparable natural ordering} of
-	 *            the keys will be used.
-	 */
-	public BinaryArrayAddressableHeap(Comparator<? super K> comparator) {
-		super(comparator, DEFAULT_HEAP_CAPACITY);
-	}
+    /**
+     * Constructs a new, empty heap, ordered according to the given comparator.
+     *
+     * <p>
+     * All keys inserted into the heap must be <em>mutually comparable</em> by
+     * the given comparator: {@code comparator.compare(k1,
+     * k2)} must not throw a {@code ClassCastException} for any keys {@code k1}
+     * and {@code k2} in the heap. If the user attempts to put a key into the
+     * heap that violates this constraint, the {@code insert(Object key)} call
+     * will throw a {@code ClassCastException}.
+     *
+     * <p>
+     * The initial capacity of the heap is
+     * {@link BinaryArrayAddressableHeap#DEFAULT_HEAP_CAPACITY} and adjusts
+     * automatically based on the sequence of insertions and deletions.
+     *
+     * @param comparator
+     *            the comparator that will be used to order this heap. If
+     *            {@code null}, the {@linkplain Comparable natural ordering} of
+     *            the keys will be used.
+     */
+    public BinaryArrayAddressableHeap(Comparator<? super K> comparator) {
+        super(comparator, DEFAULT_HEAP_CAPACITY);
+    }
 
-	/**
-	 * Constructs a new, empty heap, with a provided initial capacity ordered
-	 * according to the given comparator.
-	 *
-	 * <p>
-	 * All keys inserted into the heap must be <em>mutually comparable</em> by
-	 * the given comparator: {@code comparator.compare(k1,
-	 * k2)} must not throw a {@code ClassCastException} for any keys {@code k1}
-	 * and {@code k2} in the heap. If the user attempts to put a key into the
-	 * heap that violates this constraint, the {@code insert(Object key)} call
-	 * will throw a {@code ClassCastException}.
-	 *
-	 * <p>
-	 * The initial capacity of the heap is provided by the user and is adjusted
-	 * automatically based on the sequence of insertions and deletions.
-	 *
-	 * @param comparator
-	 *            the comparator that will be used to order this heap. If
-	 *            {@code null}, the {@linkplain Comparable natural ordering} of
-	 *            the keys will be used.
-	 * @param capacity
-	 *            the initial heap capacity
-	 */
-	public BinaryArrayAddressableHeap(Comparator<? super K> comparator, int capacity) {
-		super(comparator, capacity);
-	}
+    /**
+     * Constructs a new, empty heap, with a provided initial capacity ordered
+     * according to the given comparator.
+     *
+     * <p>
+     * All keys inserted into the heap must be <em>mutually comparable</em> by
+     * the given comparator: {@code comparator.compare(k1,
+     * k2)} must not throw a {@code ClassCastException} for any keys {@code k1}
+     * and {@code k2} in the heap. If the user attempts to put a key into the
+     * heap that violates this constraint, the {@code insert(Object key)} call
+     * will throw a {@code ClassCastException}.
+     *
+     * <p>
+     * The initial capacity of the heap is provided by the user and is adjusted
+     * automatically based on the sequence of insertions and deletions.
+     *
+     * @param comparator
+     *            the comparator that will be used to order this heap. If
+     *            {@code null}, the {@linkplain Comparable natural ordering} of
+     *            the keys will be used.
+     * @param capacity
+     *            the initial heap capacity
+     */
+    public BinaryArrayAddressableHeap(Comparator<? super K> comparator, int capacity) {
+        super(comparator, capacity);
+    }
 
-	/**
-	 * Create a heap from an array of elements. The elements of the array are
-	 * not destroyed. The method has linear time complexity.
-	 *
-	 * @param <K>
-	 *            the type of keys maintained by the heap
-	 * @param <V>
-	 *            the type of values maintained by the heap
-	 * @param keys
-	 *            an array of keys
-	 * @param values
-	 *            an array of values
-	 * @return a binary heap
-	 * @throws IllegalArgumentException
-	 *             in case the array is null
-	 */
-	@LinearTime
-	public static <K, V> BinaryArrayAddressableHeap<K, V> heapify(K[] keys, V[] values) {
-		if (keys == null) {
-			throw new IllegalArgumentException("Key array cannot be null");
-		}
-		if (values != null && keys.length != values.length) {
-			throw new IllegalArgumentException("Values array must have the same length as the keys array");
-		}
-		if (keys.length == 0) {
-			return new BinaryArrayAddressableHeap<K, V>();
-		}
+    /**
+     * Create a heap from an array of elements. The elements of the array are
+     * not destroyed. The method has linear time complexity.
+     *
+     * @param <K>
+     *            the type of keys maintained by the heap
+     * @param <V>
+     *            the type of values maintained by the heap
+     * @param keys
+     *            an array of keys
+     * @param values
+     *            an array of values
+     * @return a binary heap
+     * @throws IllegalArgumentException
+     *             in case the array is null
+     */
+    @LinearTime
+    public static <K, V> BinaryArrayAddressableHeap<K, V> heapify(K[] keys, V[] values) {
+        if (keys == null) {
+            throw new IllegalArgumentException("Key array cannot be null");
+        }
+        if (values != null && keys.length != values.length) {
+            throw new IllegalArgumentException("Values array must have the same length as the keys array");
+        }
+        if (keys.length == 0) {
+            return new BinaryArrayAddressableHeap<K, V>();
+        }
 
-		BinaryArrayAddressableHeap<K, V> h = new BinaryArrayAddressableHeap<K, V>(keys.length);
+        BinaryArrayAddressableHeap<K, V> h = new BinaryArrayAddressableHeap<K, V>(keys.length);
 
-		for (int i = 0; i < keys.length; i++) {
-			K key = keys[i];
-			V value = (values == null) ? null : values[i];
-			AbstractArrayAddressableHeap<K, V>.ArrayHandle ah = h.new ArrayHandle(key, value);
-			ah.index = i + 1;
-			h.array[i + 1] = ah;
-		}
-		h.size = keys.length;
+        for (int i = 0; i < keys.length; i++) {
+            K key = keys[i];
+            V value = (values == null) ? null : values[i];
+            AbstractArrayAddressableHeap<K, V>.ArrayHandle ah = h.new ArrayHandle(key, value);
+            ah.index = i + 1;
+            h.array[i + 1] = ah;
+        }
+        h.size = keys.length;
 
-		for (int i = keys.length / 2; i > 0; i--) {
-			h.fixdown(i);
-		}
+        for (int i = keys.length / 2; i > 0; i--) {
+            h.fixdown(i);
+        }
 
-		return h;
-	}
+        return h;
+    }
 
-	/**
-	 * Create a heap from an array of elements. The elements of the array are
-	 * not destroyed. The method has linear time complexity.
-	 *
-	 * @param <K>
-	 *            the type of keys maintained by the heap
-	 * @param <V>
-	 *            the type of values maintained by the heap
-	 * @param keys
-	 *            an array of keys
-	 * @param values
-	 *            an array of values
-	 * @param comparator
-	 *            the comparator to use
-	 * @return a binary heap
-	 * @throws IllegalArgumentException
-	 *             in case the array is null
-	 */
-	@LinearTime
-	public static <K, V> BinaryArrayAddressableHeap<K, V> heapify(K[] keys, V[] values,
-			Comparator<? super K> comparator) {
-		if (keys == null) {
-			throw new IllegalArgumentException("Keys array cannot be null");
-		}
-		if (values != null && keys.length != values.length) {
-			throw new IllegalArgumentException("Values array must have the same length as the keys array");
-		}
-		if (keys.length == 0) {
-			return new BinaryArrayAddressableHeap<K, V>(comparator);
-		}
+    /**
+     * Create a heap from an array of elements. The elements of the array are
+     * not destroyed. The method has linear time complexity.
+     *
+     * @param <K>
+     *            the type of keys maintained by the heap
+     * @param <V>
+     *            the type of values maintained by the heap
+     * @param keys
+     *            an array of keys
+     * @param values
+     *            an array of values
+     * @param comparator
+     *            the comparator to use
+     * @return a binary heap
+     * @throws IllegalArgumentException
+     *             in case the array is null
+     */
+    @LinearTime
+    public static <K, V> BinaryArrayAddressableHeap<K, V> heapify(K[] keys, V[] values,
+            Comparator<? super K> comparator) {
+        if (keys == null) {
+            throw new IllegalArgumentException("Keys array cannot be null");
+        }
+        if (values != null && keys.length != values.length) {
+            throw new IllegalArgumentException("Values array must have the same length as the keys array");
+        }
+        if (keys.length == 0) {
+            return new BinaryArrayAddressableHeap<K, V>(comparator);
+        }
 
-		BinaryArrayAddressableHeap<K, V> h = new BinaryArrayAddressableHeap<K, V>(comparator, keys.length);
+        BinaryArrayAddressableHeap<K, V> h = new BinaryArrayAddressableHeap<K, V>(comparator, keys.length);
 
-		for (int i = 0; i < keys.length; i++) {
-			K key = keys[i];
-			V value = (values == null) ? null : values[i];
-			AbstractArrayAddressableHeap<K, V>.ArrayHandle ah = h.new ArrayHandle(key, value);
-			ah.index = i + 1;
-			h.array[i + 1] = ah;
-		}
-		h.size = keys.length;
+        for (int i = 0; i < keys.length; i++) {
+            K key = keys[i];
+            V value = (values == null) ? null : values[i];
+            AbstractArrayAddressableHeap<K, V>.ArrayHandle ah = h.new ArrayHandle(key, value);
+            ah.index = i + 1;
+            h.array[i + 1] = ah;
+        }
+        h.size = keys.length;
 
-		for (int i = keys.length / 2; i > 0; i--) {
-			h.fixdownWithComparator(i);
-		}
+        for (int i = keys.length / 2; i > 0; i--) {
+            h.fixdownWithComparator(i);
+        }
 
-		return h;
-	}
+        return h;
+    }
 
-	/**
-	 * Ensure that the array representation has the necessary capacity.
-	 * 
-	 * @param capacity
-	 *            the requested capacity
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	protected void ensureCapacity(int capacity) {
-		checkCapacity(capacity);
-		ArrayHandle[] newArray = (ArrayHandle[]) Array.newInstance(ArrayHandle.class, capacity + 1);
-		System.arraycopy(array, 1, newArray, 1, size);
-		array = newArray;
-	}
+    /**
+     * Ensure that the array representation has the necessary capacity.
+     * 
+     * @param capacity
+     *            the requested capacity
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void ensureCapacity(int capacity) {
+        checkCapacity(capacity);
+        ArrayHandle[] newArray = (ArrayHandle[]) Array.newInstance(ArrayHandle.class, capacity + 1);
+        System.arraycopy(array, 1, newArray, 1, size);
+        array = newArray;
+    }
 
 }

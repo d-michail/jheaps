@@ -35,262 +35,262 @@ import org.jheaps.annotations.LogarithmicTime;
  */
 abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, V>, Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Denotes that a handle is not in the array
-	 */
-	protected static final int NO_INDEX = -1;
+    /**
+     * Denotes that a handle is not in the array
+     */
+    protected static final int NO_INDEX = -1;
 
-	/**
-	 * The maximum heap capacity.
-	 */
-	protected static final int MAX_HEAP_CAPACITY = Integer.MAX_VALUE - 8 - 1;
+    /**
+     * The maximum heap capacity.
+     */
+    protected static final int MAX_HEAP_CAPACITY = Integer.MAX_VALUE - 8 - 1;
 
-	/**
-	 * The minimum heap capacity.
-	 */
-	protected static final int MIN_HEAP_CAPACITY = 0;
+    /**
+     * The minimum heap capacity.
+     */
+    protected static final int MIN_HEAP_CAPACITY = 0;
 
-	/**
-	 * The comparator used to maintain order in this heap, or null if it uses
-	 * the natural ordering of its keys.
-	 *
-	 * @serial
-	 */
-	protected Comparator<? super K> comparator;
+    /**
+     * The comparator used to maintain order in this heap, or null if it uses
+     * the natural ordering of its keys.
+     *
+     * @serial
+     */
+    protected Comparator<? super K> comparator;
 
-	/**
-	 * The array use for representing the tree.
-	 */
-	protected ArrayHandle[] array;
+    /**
+     * The array use for representing the tree.
+     */
+    protected ArrayHandle[] array;
 
-	/**
-	 * Number of elements in the heap.
-	 */
-	protected int size;
+    /**
+     * Number of elements in the heap.
+     */
+    protected int size;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("unchecked")
-	public AbstractArrayAddressableHeap(Comparator<? super K> comparator, int capacity) {
-		checkCapacity(capacity);
-		this.array = (ArrayHandle[]) Array.newInstance(ArrayHandle.class, capacity + 1);
-		this.size = 0;
-		this.comparator = comparator;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    public AbstractArrayAddressableHeap(Comparator<? super K> comparator, int capacity) {
+        checkCapacity(capacity);
+        this.array = (ArrayHandle[]) Array.newInstance(ArrayHandle.class, capacity + 1);
+        this.size = 0;
+        this.comparator = comparator;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@ConstantTime
-	public Handle<K, V> findMin() {
-		if (size == 0) {
-			throw new NoSuchElementException();
-		}
-		return array[1];
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @ConstantTime
+    public Handle<K, V> findMin() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        return array[1];
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@ConstantTime
-	public boolean isEmpty() {
-		return size == 0;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @ConstantTime
+    public boolean isEmpty() {
+        return size == 0;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@ConstantTime
-	public long size() {
-		return size;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @ConstantTime
+    public long size() {
+        return size;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Comparator<? super K> comparator() {
-		return comparator;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Comparator<? super K> comparator() {
+        return comparator;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@ConstantTime
-	public void clear() {
-		size = 0;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @ConstantTime
+    public void clear() {
+        size = 0;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@LogarithmicTime(amortized = true)
-	public Handle<K, V> insert(K key) {
-		return insert(key, null);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @LogarithmicTime(amortized = true)
+    public Handle<K, V> insert(K key) {
+        return insert(key, null);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@LogarithmicTime(amortized = true)
-	public Handle<K, V> insert(K key, V value) {
-		if (key == null) {
-			throw new NullPointerException("Null keys not permitted");
-		}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @LogarithmicTime(amortized = true)
+    public Handle<K, V> insert(K key, V value) {
+        if (key == null) {
+            throw new NullPointerException("Null keys not permitted");
+        }
 
-		// make sure there is space
-		if (size == array.length - 1) {
-			if (array.length == 1) {
-				ensureCapacity(1);
-			} else {
-				ensureCapacity(2 * (array.length - 1));
-			}
-		}
+        // make sure there is space
+        if (size == array.length - 1) {
+            if (array.length == 1) {
+                ensureCapacity(1);
+            } else {
+                ensureCapacity(2 * (array.length - 1));
+            }
+        }
 
-		ArrayHandle p = new ArrayHandle(key, value);
-		size++;
-		array[size] = p;
-		p.index = size;
+        ArrayHandle p = new ArrayHandle(key, value);
+        size++;
+        array[size] = p;
+        p.index = size;
 
-		if (comparator == null) {
-			fixup(size);
-		} else {
-			fixupWithComparator(size);
-		}
+        if (comparator == null) {
+            fixup(size);
+        } else {
+            fixupWithComparator(size);
+        }
 
-		return p;
-	}
+        return p;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@LogarithmicTime(amortized = true)
-	public Handle<K, V> deleteMin() {
-		if (size == 0) {
-			throw new NoSuchElementException();
-		}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @LogarithmicTime(amortized = true)
+    public Handle<K, V> deleteMin() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
 
-		ArrayHandle result = array[1];
-		result.index = NO_INDEX;
-		if (size == 1) {
-			array[1] = null;
-			size = 0;
-		} else {
-			array[1] = array[size--];
-			if (comparator == null) {
-				fixdown(1);
-			} else {
-				fixdownWithComparator(1);
-			}
-		}
+        ArrayHandle result = array[1];
+        result.index = NO_INDEX;
+        if (size == 1) {
+            array[1] = null;
+            size = 0;
+        } else {
+            array[1] = array[size--];
+            if (comparator == null) {
+                fixdown(1);
+            } else {
+                fixdownWithComparator(1);
+            }
+        }
 
-		if (2 < array.length - 1 && 4 * size < array.length - 1) {
-			ensureCapacity((array.length - 1) / 2 + 1);
-		}
-		return result;
-	}
+        if (2 < array.length - 1 && 4 * size < array.length - 1) {
+            ensureCapacity((array.length - 1) / 2 + 1);
+        }
+        return result;
+    }
 
-	protected final void checkCapacity(int capacity) {
-		if (capacity < MIN_HEAP_CAPACITY) {
-			throw new IllegalArgumentException("Heap capacity must be >= " + MIN_HEAP_CAPACITY);
-		}
-		if (capacity > MAX_HEAP_CAPACITY) {
-			throw new IllegalArgumentException("Heap capacity too large");
-		}
-	}
+    protected final void checkCapacity(int capacity) {
+        if (capacity < MIN_HEAP_CAPACITY) {
+            throw new IllegalArgumentException("Heap capacity must be >= " + MIN_HEAP_CAPACITY);
+        }
+        if (capacity > MAX_HEAP_CAPACITY) {
+            throw new IllegalArgumentException("Heap capacity too large");
+        }
+    }
 
-	protected abstract void ensureCapacity(int capacity);
+    protected abstract void ensureCapacity(int capacity);
 
-	protected abstract void forceFixup(int k);
+    protected abstract void forceFixup(int k);
 
-	protected abstract void fixup(int k);
+    protected abstract void fixup(int k);
 
-	protected abstract void fixupWithComparator(int k);
+    protected abstract void fixupWithComparator(int k);
 
-	protected abstract void fixdown(int k);
+    protected abstract void fixdown(int k);
 
-	protected abstract void fixdownWithComparator(int k);
+    protected abstract void fixdownWithComparator(int k);
 
-	// handle
-	protected class ArrayHandle implements AddressableHeap.Handle<K, V>, Serializable {
+    // handle
+    protected class ArrayHandle implements AddressableHeap.Handle<K, V>, Serializable {
 
-		private final static long serialVersionUID = 1;
+        private final static long serialVersionUID = 1;
 
-		K key;
-		V value;
-		int index;
+        K key;
+        V value;
+        int index;
 
-		ArrayHandle(K key, V value) {
-			this.key = key;
-			this.value = value;
-			this.index = NO_INDEX;
-		}
+        ArrayHandle(K key, V value) {
+            this.key = key;
+            this.value = value;
+            this.index = NO_INDEX;
+        }
 
-		@Override
-		public K getKey() {
-			return key;
-		}
+        @Override
+        public K getKey() {
+            return key;
+        }
 
-		@Override
-		public V getValue() {
-			return value;
-		}
+        @Override
+        public V getValue() {
+            return value;
+        }
 
-		@Override
-		@SuppressWarnings("unchecked")
-		@LogarithmicTime
-		public void decreaseKey(K newKey) {
-			if (index == NO_INDEX) {
-				throw new IllegalArgumentException("Invalid handle!");
-			}
+        @Override
+        @SuppressWarnings("unchecked")
+        @LogarithmicTime
+        public void decreaseKey(K newKey) {
+            if (index == NO_INDEX) {
+                throw new IllegalArgumentException("Invalid handle!");
+            }
 
-			int c;
-			if (comparator == null) {
-				c = ((Comparable<? super K>) newKey).compareTo(key);
-			} else {
-				c = comparator.compare(newKey, key);
-			}
-			if (c > 0) {
-				throw new IllegalArgumentException("Keys can only be decreased!");
-			}
+            int c;
+            if (comparator == null) {
+                c = ((Comparable<? super K>) newKey).compareTo(key);
+            } else {
+                c = comparator.compare(newKey, key);
+            }
+            if (c > 0) {
+                throw new IllegalArgumentException("Keys can only be decreased!");
+            }
 
-			key = newKey;
-			if (c == 0 || index == 1) {
-				return;
-			}
+            key = newKey;
+            if (c == 0 || index == 1) {
+                return;
+            }
 
-			if (comparator == null) {
-				fixup(index);
-			} else {
-				fixupWithComparator(index);
-			}
-		}
+            if (comparator == null) {
+                fixup(index);
+            } else {
+                fixupWithComparator(index);
+            }
+        }
 
-		@Override
-		public void delete() {
-			if (index == NO_INDEX) {
-				throw new IllegalArgumentException("Invalid handle!");
-			}
+        @Override
+        public void delete() {
+            if (index == NO_INDEX) {
+                throw new IllegalArgumentException("Invalid handle!");
+            }
 
-			if (index == 1) {
-				deleteMin();
-				return;
-			}
+            if (index == 1) {
+                deleteMin();
+                return;
+            }
 
-			forceFixup(index);
-			deleteMin();
-		}
+            forceFixup(index);
+            deleteMin();
+        }
 
-	}
+    }
 
 }

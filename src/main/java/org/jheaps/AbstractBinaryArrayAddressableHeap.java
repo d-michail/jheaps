@@ -31,89 +31,89 @@ import java.util.Comparator;
  *            the type of values maintained by this heap
  */
 abstract class AbstractBinaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap<K, V>
-		implements Serializable {
+        implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public AbstractBinaryArrayAddressableHeap(Comparator<? super K> comparator, int capacity) {
-		super(comparator, capacity);
-	}
+    public AbstractBinaryArrayAddressableHeap(Comparator<? super K> comparator, int capacity) {
+        super(comparator, capacity);
+    }
 
-	protected void forceFixup(int k) {
-		// assert k >= 1 && k <= size;
+    protected void forceFixup(int k) {
+        // assert k >= 1 && k <= size;
 
-		ArrayHandle h = array[k];
-		while (k > 1) {
-			array[k] = array[k / 2];
-			array[k].index = k;
-			k /= 2;
-		}
-		array[k] = h;
-		h.index = k;
-	}
+        ArrayHandle h = array[k];
+        while (k > 1) {
+            array[k] = array[k / 2];
+            array[k].index = k;
+            k /= 2;
+        }
+        array[k] = h;
+        h.index = k;
+    }
 
-	@SuppressWarnings("unchecked")
-	protected void fixup(int k) {
-		// assert k >= 1 && k <= size;
+    @SuppressWarnings("unchecked")
+    protected void fixup(int k) {
+        // assert k >= 1 && k <= size;
 
-		ArrayHandle h = array[k];
-		while (k > 1 && ((Comparable<? super K>) array[k / 2].getKey()).compareTo(h.getKey()) > 0) {
-			array[k] = array[k / 2];
-			array[k].index = k;
-			k /= 2;
-		}
-		array[k] = h;
-		h.index = k;
-	}
+        ArrayHandle h = array[k];
+        while (k > 1 && ((Comparable<? super K>) array[k / 2].getKey()).compareTo(h.getKey()) > 0) {
+            array[k] = array[k / 2];
+            array[k].index = k;
+            k /= 2;
+        }
+        array[k] = h;
+        h.index = k;
+    }
 
-	protected void fixupWithComparator(int k) {
-		// assert k >= 1 && k <= size;
+    protected void fixupWithComparator(int k) {
+        // assert k >= 1 && k <= size;
 
-		ArrayHandle h = array[k];
-		while (k > 1 && comparator.compare(array[k / 2].getKey(), h.getKey()) > 0) {
-			array[k] = array[k / 2];
-			array[k].index = k;
-			k /= 2;
-		}
-		array[k] = h;
-		h.index = k;
-	}
+        ArrayHandle h = array[k];
+        while (k > 1 && comparator.compare(array[k / 2].getKey(), h.getKey()) > 0) {
+            array[k] = array[k / 2];
+            array[k].index = k;
+            k /= 2;
+        }
+        array[k] = h;
+        h.index = k;
+    }
 
-	@SuppressWarnings("unchecked")
-	protected void fixdown(int k) {
-		ArrayHandle h = array[k];
-		while (2 * k <= size) {
-			int j = 2 * k;
-			if (j < size && ((Comparable<? super K>) array[j].getKey()).compareTo(array[j + 1].getKey()) > 0) {
-				j++;
-			}
-			if (((Comparable<? super K>) h.getKey()).compareTo(array[j].getKey()) <= 0) {
-				break;
-			}
-			array[k] = array[j];
-			array[k].index = k;
-			k = j;
-		}
-		array[k] = h;
-		h.index = k;
-	}
+    @SuppressWarnings("unchecked")
+    protected void fixdown(int k) {
+        ArrayHandle h = array[k];
+        while (2 * k <= size) {
+            int j = 2 * k;
+            if (j < size && ((Comparable<? super K>) array[j].getKey()).compareTo(array[j + 1].getKey()) > 0) {
+                j++;
+            }
+            if (((Comparable<? super K>) h.getKey()).compareTo(array[j].getKey()) <= 0) {
+                break;
+            }
+            array[k] = array[j];
+            array[k].index = k;
+            k = j;
+        }
+        array[k] = h;
+        h.index = k;
+    }
 
-	protected void fixdownWithComparator(int k) {
-		ArrayHandle h = array[k];
-		while (2 * k <= size) {
-			int j = 2 * k;
-			if (j < size && comparator.compare(array[j].getKey(), array[j + 1].getKey()) > 0) {
-				j++;
-			}
-			if (comparator.compare(h.getKey(), array[j].getKey()) <= 0) {
-				break;
-			}
-			array[k] = array[j];
-			array[k].index = k;
-			k = j;
-		}
-		array[k] = h;
-		h.index = k;
-	}
+    protected void fixdownWithComparator(int k) {
+        ArrayHandle h = array[k];
+        while (2 * k <= size) {
+            int j = 2 * k;
+            if (j < size && comparator.compare(array[j].getKey(), array[j + 1].getKey()) > 0) {
+                j++;
+            }
+            if (comparator.compare(h.getKey(), array[j].getKey()) <= 0) {
+                break;
+            }
+            array[k] = array[j];
+            array[k].index = k;
+            k = j;
+        }
+        array[k] = h;
+        h.index = k;
+    }
 
 }

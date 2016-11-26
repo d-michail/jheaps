@@ -26,25 +26,25 @@ import java.math.BigInteger;
  */
 class UnsignedUtils {
 
-	UnsignedUtils() {
-	}
+    UnsignedUtils() {
+    }
 
-	private static final long UNSIGNED_MASK = 0x7fffffffffffffffL;
+    private static final long UNSIGNED_MASK = 0x7fffffffffffffffL;
 
-	static double unsignedLongToDouble(long x) {
-		double d = (double) (x & UNSIGNED_MASK);
-		if (x < 0) {
-			d += 0x1.0p63;
-		}
-		return d;
-	}
+    static double unsignedLongToDouble(long x) {
+        double d = (double) (x & UNSIGNED_MASK);
+        if (x < 0) {
+            d += 0x1.0p63;
+        }
+        return d;
+    }
 
-	static BigInteger unsignedLongToBigInt(long x) {
-		BigInteger asBigInt = BigInteger.valueOf(x & UNSIGNED_MASK);
-		if (x < 0) {
-			asBigInt = asBigInt.setBit(Long.SIZE - 1);
-		}
-		return asBigInt;
-	}
+    static BigInteger unsignedLongToBigInt(long x) {
+        BigInteger asBigInt = BigInteger.valueOf(x & UNSIGNED_MASK);
+        if (x < 0) {
+            asBigInt = asBigInt.setBit(Long.SIZE - 1);
+        }
+        return asBigInt;
+    }
 
 }

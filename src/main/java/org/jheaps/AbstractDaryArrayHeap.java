@@ -30,86 +30,86 @@ import java.util.Comparator;
  */
 abstract class AbstractDaryArrayHeap<K> extends AbstractArrayHeap<K> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected int d;
+    protected int d;
 
-	public AbstractDaryArrayHeap(int d, Comparator<? super K> comparator, int capacity) {
-		super(comparator, capacity);
-		if (d < 2) {
-			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
-		}
-		this.d = d;
-	}
+    public AbstractDaryArrayHeap(int d, Comparator<? super K> comparator, int capacity) {
+        super(comparator, capacity);
+        if (d < 2) {
+            throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
+        }
+        this.d = d;
+    }
 
-	@SuppressWarnings("unchecked")
-	protected void fixup(int k) {
-		// assert k >= 1 && k <= size;
+    @SuppressWarnings("unchecked")
+    protected void fixup(int k) {
+        // assert k >= 1 && k <= size;
 
-		K key = array[k];
-		while (k > 1) {
-			int p = (k - 2) / d + 1;
-			if (((Comparable<? super K>) array[p]).compareTo(key) <= 0) {
-				break;
-			}
-			array[k] = array[p];
-			k = p;
-		}
-		array[k] = key;
-	}
+        K key = array[k];
+        while (k > 1) {
+            int p = (k - 2) / d + 1;
+            if (((Comparable<? super K>) array[p]).compareTo(key) <= 0) {
+                break;
+            }
+            array[k] = array[p];
+            k = p;
+        }
+        array[k] = key;
+    }
 
-	protected void fixupWithComparator(int k) {
-		// assert k >= 1 && k <= size;
+    protected void fixupWithComparator(int k) {
+        // assert k >= 1 && k <= size;
 
-		K key = array[k];
-		while (k > 1) {
-			int p = (k - 2) / d + 1;
-			if (comparator.compare(array[p], key) <= 0) {
-				break;
-			}
-			array[k] = array[p];
-			k = p;
-		}
-		array[k] = key;
-	}
+        K key = array[k];
+        while (k > 1) {
+            int p = (k - 2) / d + 1;
+            if (comparator.compare(array[p], key) <= 0) {
+                break;
+            }
+            array[k] = array[p];
+            k = p;
+        }
+        array[k] = key;
+    }
 
-	@SuppressWarnings("unchecked")
-	protected void fixdown(int k) {
-		int c;
-		K key = array[k];
-		while ((c = d * (k - 1) + 2) <= size) {
-			int maxc = c;
-			for (int i = 1; i < d; i++) {
-				if (c + i <= size && ((Comparable<? super K>) array[maxc]).compareTo(array[c + i]) > 0) {
-					maxc = c + i;
-				}
-			}
-			if (((Comparable<? super K>) key).compareTo(array[maxc]) <= 0) {
-				break;
-			}
-			array[k] = array[maxc];
-			k = maxc;
-		}
-		array[k] = key;
-	}
+    @SuppressWarnings("unchecked")
+    protected void fixdown(int k) {
+        int c;
+        K key = array[k];
+        while ((c = d * (k - 1) + 2) <= size) {
+            int maxc = c;
+            for (int i = 1; i < d; i++) {
+                if (c + i <= size && ((Comparable<? super K>) array[maxc]).compareTo(array[c + i]) > 0) {
+                    maxc = c + i;
+                }
+            }
+            if (((Comparable<? super K>) key).compareTo(array[maxc]) <= 0) {
+                break;
+            }
+            array[k] = array[maxc];
+            k = maxc;
+        }
+        array[k] = key;
+    }
 
-	protected void fixdownWithComparator(int k) {
-		int c;
-		K key = array[k];
-		while ((c = d * (k - 1) + 2) <= size) {
-			int maxc = c;
-			for (int i = 1; i < d; i++) {
-				if (c + i <= size && comparator.compare(array[maxc], array[c + i]) > 0) {
-					maxc = c + i;
-				}
-			}
-			if (comparator.compare(key, array[maxc]) <= 0) {
-				break;
-			}
-			array[k] = array[maxc];
-			k = maxc;
-		}
-		array[k] = key;
-	}
+    protected void fixdownWithComparator(int k) {
+        int c;
+        K key = array[k];
+        while ((c = d * (k - 1) + 2) <= size) {
+            int maxc = c;
+            for (int i = 1; i < d; i++) {
+                if (c + i <= size && comparator.compare(array[maxc], array[c + i]) > 0) {
+                    maxc = c + i;
+                }
+            }
+            if (comparator.compare(key, array[maxc]) <= 0) {
+                break;
+            }
+            array[k] = array[maxc];
+            k = maxc;
+        }
+        array[k] = key;
+    }
 
 }

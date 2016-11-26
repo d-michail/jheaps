@@ -30,60 +30,60 @@ import java.util.NoSuchElementException;
  */
 public interface Heap<K> {
 
-	/**
-	 * Returns the comparator used to order the keys in this heap, or
-	 * {@code null} if this heap uses the {@linkplain Comparable natural
-	 * ordering} of its keys.
-	 *
-	 * @return the comparator used to order the keys in this heap, or
-	 *         {@code null} if this heap uses the natural ordering of its keys
-	 */
-	Comparator<? super K> comparator();
+    /**
+     * Returns the comparator used to order the keys in this heap, or
+     * {@code null} if this heap uses the {@linkplain Comparable natural
+     * ordering} of its keys.
+     *
+     * @return the comparator used to order the keys in this heap, or
+     *         {@code null} if this heap uses the natural ordering of its keys
+     */
+    Comparator<? super K> comparator();
 
-	/**
-	 * Insert a key into the heap.
-	 *
-	 * @param key
-	 *            the key to insert
-	 */
-	void insert(K key);
+    /**
+     * Insert a key into the heap.
+     *
+     * @param key
+     *            the key to insert
+     */
+    void insert(K key);
 
-	/**
-	 * Find an element with the minimum key.
-	 *
-	 * @return an element with the minimum key
-	 * @throws NoSuchElementException
-	 *             if the heap is empty
-	 */
-	K findMin();
+    /**
+     * Find an element with the minimum key.
+     *
+     * @return an element with the minimum key
+     * @throws NoSuchElementException
+     *             if the heap is empty
+     */
+    K findMin();
 
-	/**
-	 * Delete and return an element with the minimum key. If multiple such
-	 * elements exists, only one of them will be deleted.
-	 *
-	 * @return the deleted element with the minimum key
-	 * @throws NoSuchElementException
-	 *             if the heap is empty
-	 */
-	K deleteMin();
+    /**
+     * Delete and return an element with the minimum key. If multiple such
+     * elements exists, only one of them will be deleted.
+     *
+     * @return the deleted element with the minimum key
+     * @throws NoSuchElementException
+     *             if the heap is empty
+     */
+    K deleteMin();
 
-	/**
-	 * Returns {@code true} if this heap is empty.
-	 *
-	 * @return {@code true} if this heap is empty, {@code false} otherwise
-	 */
-	boolean isEmpty();
+    /**
+     * Returns {@code true} if this heap is empty.
+     *
+     * @return {@code true} if this heap is empty, {@code false} otherwise
+     */
+    boolean isEmpty();
 
-	/**
-	 * Returns the number of elements in this heap.
-	 *
-	 * @return the number of elements in this heap
-	 */
-	long size();
+    /**
+     * Returns the number of elements in this heap.
+     *
+     * @return the number of elements in this heap
+     */
+    long size();
 
-	/**
-	 * Clear all the elements of this heap.
-	 */
-	void clear();
+    /**
+     * Clear all the elements of this heap.
+     */
+    void clear();
 
 }

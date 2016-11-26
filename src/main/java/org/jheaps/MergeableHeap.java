@@ -51,19 +51,19 @@ package org.jheaps;
  */
 public interface MergeableHeap<K> {
 
-	/**
-	 * Meld a heap into the current heap.
-	 *
-	 * After the operation the {@code other} heap will be empty and will not
-	 * permit further insertions.
-	 *
-	 * @param other
-	 *            a merge-able heap
-	 * @throws ClassCastException
-	 *             if {@code other} is not compatible with this heap
-	 * @throws IllegalArgumentException
-	 *             if {@code other} does not have a compatible comparator
-	 */
-	void meld(MergeableHeap<K> other);
+    /**
+     * Meld a heap into the current heap.
+     *
+     * After the operation the {@code other} heap will be empty and will not
+     * permit further insertions.
+     *
+     * @param other
+     *            a merge-able heap
+     * @throws ClassCastException
+     *             if {@code other} is not compatible with this heap
+     * @throws IllegalArgumentException
+     *             if {@code other} does not have a compatible comparator
+     */
+    void meld(MergeableHeap<K> other);
 
 }

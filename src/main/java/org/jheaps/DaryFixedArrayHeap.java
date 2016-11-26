@@ -68,154 +68,154 @@ import org.jheaps.annotations.LinearTime;
  */
 public class DaryFixedArrayHeap<K> extends AbstractDaryArrayHeap<K> {
 
-	private final static long serialVersionUID = 1;
+    private final static long serialVersionUID = 1;
 
-	/**
-	 * Constructs a new, empty heap, with a provided capacity using the natural
-	 * ordering of its keys.
-	 *
-	 * <p>
-	 * All keys inserted into the heap must implement the {@link Comparable}
-	 * interface. Furthermore, all such keys must be <em>mutually
-	 * comparable</em>: {@code k1.compareTo(k2)} must not throw a
-	 * {@code ClassCastException} for any keys {@code k1} and {@code k2} in the
-	 * heap. If the user attempts to put a key into the heap that violates this
-	 * constraint (for example, the user attempts to put a string key into a
-	 * heap whose keys are integers), the {@code insert(Object key)} call will
-	 * throw a {@code ClassCastException}.
-	 *
-	 * @param d
-	 *            the children of each node in the d-ary heap
-	 * @param capacity
-	 *            the heap capacity
-	 * @throws IllegalArgumentException
-	 *             in case the number of children per node are less than 2
-	 */
-	public DaryFixedArrayHeap(int d, int capacity) {
-		super(d, null, capacity);
-	}
+    /**
+     * Constructs a new, empty heap, with a provided capacity using the natural
+     * ordering of its keys.
+     *
+     * <p>
+     * All keys inserted into the heap must implement the {@link Comparable}
+     * interface. Furthermore, all such keys must be <em>mutually
+     * comparable</em>: {@code k1.compareTo(k2)} must not throw a
+     * {@code ClassCastException} for any keys {@code k1} and {@code k2} in the
+     * heap. If the user attempts to put a key into the heap that violates this
+     * constraint (for example, the user attempts to put a string key into a
+     * heap whose keys are integers), the {@code insert(Object key)} call will
+     * throw a {@code ClassCastException}.
+     *
+     * @param d
+     *            the children of each node in the d-ary heap
+     * @param capacity
+     *            the heap capacity
+     * @throws IllegalArgumentException
+     *             in case the number of children per node are less than 2
+     */
+    public DaryFixedArrayHeap(int d, int capacity) {
+        super(d, null, capacity);
+    }
 
-	/**
-	 * Constructs a new, empty heap, with a provided capacity ordered according
-	 * to the given comparator.
-	 *
-	 * <p>
-	 * All keys inserted into the heap must be <em>mutually comparable</em> by
-	 * the given comparator: {@code comparator.compare(k1,
-	 * k2)} must not throw a {@code ClassCastException} for any keys {@code k1}
-	 * and {@code k2} in the heap. If the user attempts to put a key into the
-	 * heap that violates this constraint, the {@code insert(Object key)} call
-	 * will throw a {@code ClassCastException}.
-	 *
-	 * @param d
-	 *            the children of each node in the d-ary heap
-	 * @param comparator
-	 *            the comparator that will be used to order this heap. If
-	 *            {@code null}, the {@linkplain Comparable natural ordering} of
-	 *            the keys will be used.
-	 * @param capacity
-	 *            the heap capacity
-	 * @throws IllegalArgumentException
-	 *             in case the number of children per node are less than 2
-	 */
-	public DaryFixedArrayHeap(int d, Comparator<? super K> comparator, int capacity) {
-		super(d, comparator, capacity);
-	}
+    /**
+     * Constructs a new, empty heap, with a provided capacity ordered according
+     * to the given comparator.
+     *
+     * <p>
+     * All keys inserted into the heap must be <em>mutually comparable</em> by
+     * the given comparator: {@code comparator.compare(k1,
+     * k2)} must not throw a {@code ClassCastException} for any keys {@code k1}
+     * and {@code k2} in the heap. If the user attempts to put a key into the
+     * heap that violates this constraint, the {@code insert(Object key)} call
+     * will throw a {@code ClassCastException}.
+     *
+     * @param d
+     *            the children of each node in the d-ary heap
+     * @param comparator
+     *            the comparator that will be used to order this heap. If
+     *            {@code null}, the {@linkplain Comparable natural ordering} of
+     *            the keys will be used.
+     * @param capacity
+     *            the heap capacity
+     * @throws IllegalArgumentException
+     *             in case the number of children per node are less than 2
+     */
+    public DaryFixedArrayHeap(int d, Comparator<? super K> comparator, int capacity) {
+        super(d, comparator, capacity);
+    }
 
-	/**
-	 * Create a heap from an array of elements. The elements of the array are
-	 * not destroyed. The method has linear time complexity.
-	 *
-	 * @param <K>
-	 *            the type of keys maintained by the heap
-	 * @param d
-	 *            the number of children of the d-ary heap
-	 * @param array
-	 *            an array of elements
-	 * @return a d-ary heap
-	 * @throws IllegalArgumentException
-	 *             in case the number of children per node are less than 2
-	 * @throws IllegalArgumentException
-	 *             in case the array is null
-	 */
-	@LinearTime
-	public static <K> DaryFixedArrayHeap<K> heapify(int d, K[] array) {
-		if (d < 2) {
-			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
-		}
-		if (array == null) {
-			throw new IllegalArgumentException("Array cannot be null");
-		}
-		if (array.length == 0) {
-			return new DaryFixedArrayHeap<K>(d, 0);
-		}
+    /**
+     * Create a heap from an array of elements. The elements of the array are
+     * not destroyed. The method has linear time complexity.
+     *
+     * @param <K>
+     *            the type of keys maintained by the heap
+     * @param d
+     *            the number of children of the d-ary heap
+     * @param array
+     *            an array of elements
+     * @return a d-ary heap
+     * @throws IllegalArgumentException
+     *             in case the number of children per node are less than 2
+     * @throws IllegalArgumentException
+     *             in case the array is null
+     */
+    @LinearTime
+    public static <K> DaryFixedArrayHeap<K> heapify(int d, K[] array) {
+        if (d < 2) {
+            throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
+        }
+        if (array == null) {
+            throw new IllegalArgumentException("Array cannot be null");
+        }
+        if (array.length == 0) {
+            return new DaryFixedArrayHeap<K>(d, 0);
+        }
 
-		DaryFixedArrayHeap<K> h = new DaryFixedArrayHeap<K>(d, array.length);
+        DaryFixedArrayHeap<K> h = new DaryFixedArrayHeap<K>(d, array.length);
 
-		System.arraycopy(array, 0, h.array, 1, array.length);
-		h.size = array.length;
+        System.arraycopy(array, 0, h.array, 1, array.length);
+        h.size = array.length;
 
-		for (int i = array.length / d; i > 0; i--) {
-			h.fixdown(i);
-		}
+        for (int i = array.length / d; i > 0; i--) {
+            h.fixdown(i);
+        }
 
-		return h;
-	}
+        return h;
+    }
 
-	/**
-	 * Create a heap from an array of elements. The elements of the array are
-	 * not destroyed. The method has linear time complexity.
-	 *
-	 * @param <K>
-	 *            the type of keys maintained by the heap
-	 * @param d
-	 *            the number of children of the d-ary heap
-	 * @param array
-	 *            an array of elements
-	 * @param comparator
-	 *            the comparator to use
-	 * @return a d-ary heap
-	 * @throws IllegalArgumentException
-	 *             in case the number of children per node are less than 2
-	 * @throws IllegalArgumentException
-	 *             in case the array is null
-	 */
-	@LinearTime
-	public static <K> DaryFixedArrayHeap<K> heapify(int d, K[] array, Comparator<? super K> comparator) {
-		if (d < 2) {
-			throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
-		}
-		if (array == null) {
-			throw new IllegalArgumentException("Array cannot be null");
-		}
-		if (array.length == 0) {
-			return new DaryFixedArrayHeap<K>(d, comparator, 0);
-		}
+    /**
+     * Create a heap from an array of elements. The elements of the array are
+     * not destroyed. The method has linear time complexity.
+     *
+     * @param <K>
+     *            the type of keys maintained by the heap
+     * @param d
+     *            the number of children of the d-ary heap
+     * @param array
+     *            an array of elements
+     * @param comparator
+     *            the comparator to use
+     * @return a d-ary heap
+     * @throws IllegalArgumentException
+     *             in case the number of children per node are less than 2
+     * @throws IllegalArgumentException
+     *             in case the array is null
+     */
+    @LinearTime
+    public static <K> DaryFixedArrayHeap<K> heapify(int d, K[] array, Comparator<? super K> comparator) {
+        if (d < 2) {
+            throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
+        }
+        if (array == null) {
+            throw new IllegalArgumentException("Array cannot be null");
+        }
+        if (array.length == 0) {
+            return new DaryFixedArrayHeap<K>(d, comparator, 0);
+        }
 
-		DaryFixedArrayHeap<K> h = new DaryFixedArrayHeap<K>(d, comparator, array.length);
+        DaryFixedArrayHeap<K> h = new DaryFixedArrayHeap<K>(d, comparator, array.length);
 
-		System.arraycopy(array, 0, h.array, 1, array.length);
-		h.size = array.length;
+        System.arraycopy(array, 0, h.array, 1, array.length);
+        h.size = array.length;
 
-		for (int i = array.length / d; i > 0; i--) {
-			h.fixdownWithComparator(i);
-		}
+        for (int i = array.length / d; i > 0; i--) {
+            h.fixdownWithComparator(i);
+        }
 
-		return h;
-	}
+        return h;
+    }
 
-	/**
-	 * Ensure that the array representation has the necessary capacity.
-	 * 
-	 * @param capacity
-	 *            the requested capacity
-	 */
-	@Override
-	protected void ensureCapacity(int capacity) {
-		checkCapacity(capacity);
-		if (capacity >= array.length) {
-			throw new IllegalStateException("Data structure has no extra space");
-		}
-	}
+    /**
+     * Ensure that the array representation has the necessary capacity.
+     * 
+     * @param capacity
+     *            the requested capacity
+     */
+    @Override
+    protected void ensureCapacity(int capacity) {
+        checkCapacity(capacity);
+        if (capacity >= array.length) {
+            throw new IllegalStateException("Data structure has no extra space");
+        }
+    }
 
 }

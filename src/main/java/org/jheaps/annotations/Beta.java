@@ -30,6 +30,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(value = { ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.TYPE,
-		ElementType.ANNOTATION_TYPE })
+        ElementType.ANNOTATION_TYPE })
 public @interface Beta {
 }

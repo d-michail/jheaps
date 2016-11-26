@@ -29,23 +29,23 @@ import java.util.NoSuchElementException;
  */
 public interface DoubleEndedHeap<K> extends Heap<K> {
 
-	/**
-	 * Find an element with the maximum key.
-	 *
-	 * @return an element with the maximum key
-	 * @throws NoSuchElementException
-	 *             if the heap is empty
-	 */
-	K findMax();
+    /**
+     * Find an element with the maximum key.
+     *
+     * @return an element with the maximum key
+     * @throws NoSuchElementException
+     *             if the heap is empty
+     */
+    K findMax();
 
-	/**
-	 * Delete and return an element with the maximum key. If multiple such
-	 * elements exists, only one of them will be deleted.
-	 *
-	 * @return the deleted element with the maximum key
-	 * @throws NoSuchElementException
-	 *             if the heap is empty
-	 */
-	K deleteMax();
+    /**
+     * Delete and return an element with the maximum key. If multiple such
+     * elements exists, only one of them will be deleted.
+     *
+     * @return the deleted element with the maximum key
+     * @throws NoSuchElementException
+     *             if the heap is empty
+     */
+    K deleteMax();
 
 }

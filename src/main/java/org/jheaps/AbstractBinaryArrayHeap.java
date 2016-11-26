@@ -30,66 +30,66 @@ import java.util.Comparator;
  */
 abstract class AbstractBinaryArrayHeap<K> extends AbstractArrayHeap<K> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public AbstractBinaryArrayHeap(Comparator<? super K> comparator, int capacity) {
-		super(comparator, capacity);
-	}
+    public AbstractBinaryArrayHeap(Comparator<? super K> comparator, int capacity) {
+        super(comparator, capacity);
+    }
 
-	@SuppressWarnings("unchecked")
-	protected void fixup(int k) {
-		// assert k >= 1 && k <= size;
+    @SuppressWarnings("unchecked")
+    protected void fixup(int k) {
+        // assert k >= 1 && k <= size;
 
-		K key = array[k];
-		while (k > 1 && ((Comparable<? super K>) array[k / 2]).compareTo(key) > 0) {
-			array[k] = array[k / 2];
-			k /= 2;
-		}
-		array[k] = key;
-	}
+        K key = array[k];
+        while (k > 1 && ((Comparable<? super K>) array[k / 2]).compareTo(key) > 0) {
+            array[k] = array[k / 2];
+            k /= 2;
+        }
+        array[k] = key;
+    }
 
-	protected void fixupWithComparator(int k) {
-		// assert k >= 1 && k <= size;
+    protected void fixupWithComparator(int k) {
+        // assert k >= 1 && k <= size;
 
-		K key = array[k];
-		while (k > 1 && comparator.compare(array[k / 2], key) > 0) {
-			array[k] = array[k / 2];
-			k /= 2;
-		}
-		array[k] = key;
-	}
+        K key = array[k];
+        while (k > 1 && comparator.compare(array[k / 2], key) > 0) {
+            array[k] = array[k / 2];
+            k /= 2;
+        }
+        array[k] = key;
+    }
 
-	@SuppressWarnings("unchecked")
-	protected void fixdown(int k) {
-		K key = array[k];
-		while (2 * k <= size) {
-			int j = 2 * k;
-			if (j < size && ((Comparable<? super K>) array[j]).compareTo(array[j + 1]) > 0) {
-				j++;
-			}
-			if (((Comparable<? super K>) key).compareTo(array[j]) <= 0) {
-				break;
-			}
-			array[k] = array[j];
-			k = j;
-		}
-		array[k] = key;
-	}
+    @SuppressWarnings("unchecked")
+    protected void fixdown(int k) {
+        K key = array[k];
+        while (2 * k <= size) {
+            int j = 2 * k;
+            if (j < size && ((Comparable<? super K>) array[j]).compareTo(array[j + 1]) > 0) {
+                j++;
+            }
+            if (((Comparable<? super K>) key).compareTo(array[j]) <= 0) {
+                break;
+            }
+            array[k] = array[j];
+            k = j;
+        }
+        array[k] = key;
+    }
 
-	protected void fixdownWithComparator(int k) {
-		K key = array[k];
-		while (2 * k <= size) {
-			int j = 2 * k;
-			if (j < size && comparator.compare(array[j], array[j + 1]) > 0) {
-				j++;
-			}
-			if (comparator.compare(key, array[j]) <= 0) {
-				break;
-			}
-			array[k] = array[j];
-			k = j;
-		}
-		array[k] = key;
-	}
+    protected void fixdownWithComparator(int k) {
+        K key = array[k];
+        while (2 * k <= size) {
+            int j = 2 * k;
+            if (j < size && comparator.compare(array[j], array[j + 1]) > 0) {
+                j++;
+            }
+            if (comparator.compare(key, array[j]) <= 0) {
+                break;
+            }
+            array[k] = array[j];
+            k = j;
+        }
+        array[k] = key;
+    }
 
 }

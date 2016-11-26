@@ -48,83 +48,83 @@ import java.lang.reflect.Array;
  */
 public class LongRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<Long, V> {
 
-	private final static long serialVersionUID = 1;
+    private final static long serialVersionUID = 1;
 
-	/**
-	 * Constructs a new heap which can store values between a minimum and a
-	 * maximum key value (inclusive).
-	 * 
-	 * It is important to use the smallest key range as the heap uses O(logC)
-	 * where C=maxKey-minKey+1 buckets to store elements. Moreover, the
-	 * operation {@code deleteMin} requires amortized O(logC) time.
-	 * 
-	 * @param minKey
-	 *            the non-negative minimum key that this heap supports
-	 *            (inclusive)
-	 * @param maxKey
-	 *            the maximum key that this heap supports (inclusive)
-	 * @throws IllegalArgumentException
-	 *             if the minimum key is negative
-	 * @throws IllegalArgumentException
-	 *             if the maximum key is less than the minimum key
-	 */
-	@SuppressWarnings("unchecked")
-	public LongRadixAddressableHeap(long minKey, long maxKey) {
-		super();
-		if (minKey < 0) {
-			throw new IllegalArgumentException("Minimum key must be non-negative");
-		}
-		this.minKey = minKey;
-		if (maxKey < minKey) {
-			throw new IllegalArgumentException("Maximum key cannot be less than the minimum");
-		}
-		this.maxKey = maxKey;
+    /**
+     * Constructs a new heap which can store values between a minimum and a
+     * maximum key value (inclusive).
+     * 
+     * It is important to use the smallest key range as the heap uses O(logC)
+     * where C=maxKey-minKey+1 buckets to store elements. Moreover, the
+     * operation {@code deleteMin} requires amortized O(logC) time.
+     * 
+     * @param minKey
+     *            the non-negative minimum key that this heap supports
+     *            (inclusive)
+     * @param maxKey
+     *            the maximum key that this heap supports (inclusive)
+     * @throws IllegalArgumentException
+     *             if the minimum key is negative
+     * @throws IllegalArgumentException
+     *             if the maximum key is less than the minimum key
+     */
+    @SuppressWarnings("unchecked")
+    public LongRadixAddressableHeap(long minKey, long maxKey) {
+        super();
+        if (minKey < 0) {
+            throw new IllegalArgumentException("Minimum key must be non-negative");
+        }
+        this.minKey = minKey;
+        if (maxKey < minKey) {
+            throw new IllegalArgumentException("Maximum key cannot be less than the minimum");
+        }
+        this.maxKey = maxKey;
 
-		// compute number of buckets
-		int numBuckets;
-		if (maxKey == minKey) {
-			numBuckets = 2;
-		} else {
-			numBuckets = 2 + 1 + (int) Math.floor(Math.log(maxKey - minKey) / Math.log(2));
-		}
+        // compute number of buckets
+        int numBuckets;
+        if (maxKey == minKey) {
+            numBuckets = 2;
+        } else {
+            numBuckets = 2 + 1 + (int) Math.floor(Math.log(maxKey - minKey) / Math.log(2));
+        }
 
-		// construct representation
-		this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
-		this.size = 0;
-		this.currentMin = null;
-		this.currentMinBucket = 0;
-	}
+        // construct representation
+        this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
+        this.size = 0;
+        this.currentMin = null;
+        this.currentMinBucket = 0;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected int compare(Long o1, Long o2) {
-		if (o1 < o2) {
-			return -1;
-		} else if (o1 > o2) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int compare(Long o1, Long o2) {
+        if (o1 < o2) {
+            return -1;
+        } else if (o1 > o2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected int msd(Long a, Long b) {
-		/*
-		 * Value equal
-		 */
-		if (a.longValue() == b.longValue()) {
-			return -1;
-		}
-		/*
-		 * This is a fast way to compute floor(log_2(a xor b)).
-		 */
-		double axorb = a ^ b;
-		return Math.getExponent(axorb);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int msd(Long a, Long b) {
+        /*
+         * Value equal
+         */
+        if (a.longValue() == b.longValue()) {
+            return -1;
+        }
+        /*
+         * This is a fast way to compute floor(log_2(a xor b)).
+         */
+        double axorb = a ^ b;
+        return Math.getExponent(axorb);
+    }
 
 }

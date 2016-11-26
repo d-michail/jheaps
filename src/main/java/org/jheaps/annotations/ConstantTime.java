@@ -33,11 +33,11 @@ import java.lang.annotation.Target;
 @Target(value = { ElementType.METHOD, ElementType.CONSTRUCTOR })
 public @interface ConstantTime {
 
-	/**
-	 * Whether the running time is amortized or actual.
-	 *
-	 * @return {@code true} if amortized, {@code false} if actual
-	 */
-	public boolean amortized() default false;
+    /**
+     * Whether the running time is amortized or actual.
+     *
+     * @return {@code true} if amortized, {@code false} if actual
+     */
+    public boolean amortized() default false;
 
 }
