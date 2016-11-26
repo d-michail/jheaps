@@ -342,7 +342,9 @@ public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, Mer
 				 * Append to decrease pool without updating minimum as we are
 				 * going to consolidate anyway
 				 */
-				addPool(childrenTree, false);
+				if (childrenTree != null) {
+					addPool(childrenTree, false);
+				}
 				consolidate();
 			} else {
 				// minimum in pool is smaller
@@ -351,10 +353,18 @@ public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, Mer
 				// cut children, combine
 				Node<K, V> childrenTree = combine(cutChildren(poolMin));
 
-				// add to location of previous minimum and consolidate
+				if (childrenTree != null) {
+					// add to location of previous minimum and consolidate
+					decreasePool[decreasePoolMinPos] = childrenTree;
+					childrenTree.poolIndex = decreasePoolMinPos;
+				} else {
+					decreasePool[decreasePoolMinPos] = decreasePool[decreasePoolSize - 1];
+					decreasePool[decreasePoolMinPos].poolIndex = decreasePoolMinPos;
+					decreasePool[decreasePoolSize - 1] = null;
+					decreasePoolSize--;
+				}
 				poolMin.poolIndex = Node.NO_INDEX;
-				decreasePool[decreasePoolMinPos] = childrenTree;
-				childrenTree.poolIndex = decreasePoolMinPos;
+
 				consolidate();
 			}
 		}

@@ -110,6 +110,12 @@ public abstract class AbstractAddressableHeapTest {
 	}
 
 	@Test
+	public void testGetComparator() {
+		AddressableHeap<Integer, Void> h = createHeap(comparator);
+		assertEquals(comparator, h.comparator());
+	}
+
+	@Test
 	public void testOnly4() {
 
 		AddressableHeap<Integer, Void> h = createHeap();
@@ -393,6 +399,54 @@ public abstract class AbstractAddressableHeapTest {
 			}
 		}
 		assertTrue(h.isEmpty());
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testAddDecreaseKeyDeleteMin() {
+		AddressableHeap<Integer, Void> h = createHeap();
+
+		AddressableHeap.Handle<Integer, Void> array[];
+		array = new AddressableHeap.Handle[SIZE];
+		for (int i = 0; i < SIZE; i++) {
+			array[i] = h.insert(i);
+		}
+
+		for (int i = SIZE / 2; i < SIZE / 2 + 10; i++) {
+			array[i].decreaseKey(i / 2);
+		}
+
+		array[0].delete();
+
+		for (int i = SIZE / 2 + 10; i < SIZE / 2 + 20; i++) {
+			array[i].decreaseKey(0);
+		}
+
+		assertEquals(0, h.deleteMin().getKey().intValue());
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testAddDecreaseKeyDeleteMinComparator() {
+		AddressableHeap<Integer, Void> h = createHeap(comparator);
+
+		AddressableHeap.Handle<Integer, Void> array[];
+		array = new AddressableHeap.Handle[SIZE];
+		for (int i = 0; i < SIZE; i++) {
+			array[i] = h.insert(i);
+		}
+
+		for (int i = SIZE / 2; i < SIZE / 2 + 10; i++) {
+			array[i].decreaseKey(SIZE-1);
+		}
+
+		array[SIZE-1].delete();
+
+		for (int i = SIZE / 2 + 10; i < SIZE / 2 + 20; i++) {
+			array[i].decreaseKey(SIZE-1);
+		}
+
+		assertEquals(SIZE-1, h.deleteMin().getKey().intValue());
 	}
 
 	@Test
