@@ -394,7 +394,7 @@ public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, Mer
         }
 
         if (h.other != h) {
-            throw new IllegalArgumentException("A heap cannot be used after a meld.");
+            throw new IllegalStateException("A heap cannot be used after a meld.");
         }
 
         // meld

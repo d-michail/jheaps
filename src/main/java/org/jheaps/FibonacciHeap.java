@@ -337,7 +337,7 @@ public class FibonacciHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap
         }
 
         if (h.other != h) {
-            throw new IllegalArgumentException("A heap cannot be used after a meld.");
+            throw new IllegalStateException("A heap cannot be used after a meld.");
         }
 
         if (size == 0) {

@@ -254,12 +254,14 @@ public class BinaryArrayWeakHeap<K> extends AbstractBinaryArrayWeakHeap<K> imple
     @SuppressWarnings("unchecked")
     protected void ensureCapacity(int capacity) {
         checkCapacity(capacity);
-        K[] newArray = (K[]) new Object[capacity];
-        System.arraycopy(array, 0, newArray, 0, size);
-        array = newArray;
-        BitSet newBitSet = new BitSet(capacity);
-        newBitSet.or(reverse);
-        reverse = newBitSet;
+        if (array.length < capacity) {
+            K[] newArray = (K[]) new Object[capacity];
+            System.arraycopy(array, 0, newArray, 0, size);
+            array = newArray;
+            BitSet newBitSet = new BitSet(capacity);
+            newBitSet.or(reverse);
+            reverse = newBitSet;
+        }
     }
 
 }
