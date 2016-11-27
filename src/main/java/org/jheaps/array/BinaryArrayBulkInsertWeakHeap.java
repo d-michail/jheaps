@@ -75,12 +75,13 @@ public class BinaryArrayBulkInsertWeakHeap<K> extends BinaryArrayWeakHeap<K> imp
     private final static long serialVersionUID = 1;
 
     /**
-     * Insertion buffer capacity for long size.
+     * Insertion buffer capacity for integer size since we are using Java arrays
+     * to store elements.
      */
-    protected static final int INSERTION_BUFFER_CAPACITY = 64 + 2;
+    protected static final int INSERTION_BUFFER_CAPACITY = 32 + 2;
 
     /**
-     * Insertion buffer
+     * The insertion buffer
      */
     protected K[] insertionBuffer;
 
@@ -90,7 +91,7 @@ public class BinaryArrayBulkInsertWeakHeap<K> extends BinaryArrayWeakHeap<K> imp
     protected int insertionBufferSize;
 
     /**
-     * Position of minimum in insertion buffer
+     * Position of minimum in the insertion buffer
      */
     protected int insertionBufferMinPos;
 
