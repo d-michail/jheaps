@@ -443,6 +443,11 @@ public class BinaryArrayBulkInsertWeakHeap<K> extends BinaryArrayWeakHeap<K> imp
         return h;
     }
 
+    /**
+     * Check if the bulk insertion buffer is full.
+     * 
+     * @return true if the bulk insertion buffer is full, false otherwise
+     */
     protected boolean isBulkInsertionBufferFull() {
         if (insertionBufferSize >= insertionBuffer.length) {
             return true;
@@ -454,6 +459,9 @@ public class BinaryArrayBulkInsertWeakHeap<K> extends BinaryArrayWeakHeap<K> imp
         return false;
     }
 
+    /**
+     * Bulk insert from insertion buffer into the weak heap.
+     */
     protected void bulkInsert() {
         if (insertionBufferSize == 0) {
             return;
@@ -487,6 +495,9 @@ public class BinaryArrayBulkInsertWeakHeap<K> extends BinaryArrayWeakHeap<K> imp
         insertionBufferMinPos = 0;
     }
 
+    /**
+     * Bulk insert from insertion buffer into the weak heap.
+     */
     protected void bulkInsertWithComparator() {
         if (insertionBufferSize == 0) {
             return;

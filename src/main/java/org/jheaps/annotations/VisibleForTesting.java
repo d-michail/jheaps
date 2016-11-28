@@ -15,24 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.annotations;
 
-import java.util.Comparator;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class FibonacciHeapTest extends AbstractAddressableHeapTest {
-
-    @Override
-    protected AddressableHeap<Integer, Void> createHeap() {
-        return new FibonacciHeap<Integer, Void>();
-    }
-
-    @Override
-    protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
-        return new FibonacciHeap<Integer, Void>(comparator);
-    }
-
-    @Override
-    protected AddressableHeap<Integer, String> createHeapWithStringValues() {
-        return new FibonacciHeap<Integer, String>();
-    }
+/**
+ * Marker interface to indicate that something is visible as package-private
+ * only for testing purposes.
+ * 
+ * @author Dimitrios Michail
+ */
+@Retention(RetentionPolicy.SOURCE)
+@Target(value = { ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.TYPE,
+        ElementType.ANNOTATION_TYPE })
+public @interface VisibleForTesting {
 }
