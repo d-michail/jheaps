@@ -283,7 +283,6 @@ public class BinaryTreeSoftHeapTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testMeldGeneric() {
         Heap<Integer> h1 = new BinaryTreeSoftHeap<Integer>(1.0 / (SIZE + 1));
 
@@ -342,45 +341,41 @@ public class BinaryTreeSoftHeapTest {
         testSoftHeapMeldSmallLarge(SIZE, 0.95, comparator);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = IllegalArgumentException.class)
     public void testMeldWrong1() {
-        Heap<Integer> h1 = new BinaryTreeSoftHeap<Integer>(0.5, comparator);
-        Heap<Integer> h2 = new BinaryTreeSoftHeap<Integer>(0.5);
+        MergeableHeap<Integer> h1 = new BinaryTreeSoftHeap<Integer>(0.5, comparator);
+        MergeableHeap<Integer> h2 = new BinaryTreeSoftHeap<Integer>(0.5);
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = IllegalArgumentException.class)
     public void testMeldWrong2() {
-        Heap<Integer> h1 = new BinaryTreeSoftHeap<Integer>(0.4);
-        Heap<Integer> h2 = new BinaryTreeSoftHeap<Integer>(0.7);
+        MergeableHeap<Integer> h1 = new BinaryTreeSoftHeap<Integer>(0.4);
+        MergeableHeap<Integer> h2 = new BinaryTreeSoftHeap<Integer>(0.7);
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = IllegalArgumentException.class)
     public void testMeldWrong3() {
-        Heap<Integer> h1 = new BinaryTreeSoftHeap<Integer>(0.4);
-        Heap<Integer> h2 = new BinaryTreeSoftHeap<Integer>(0.4, comparator);
+        MergeableHeap<Integer> h1 = new BinaryTreeSoftHeap<Integer>(0.4);
+        MergeableHeap<Integer> h2 = new BinaryTreeSoftHeap<Integer>(0.4, comparator);
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = IllegalArgumentException.class)
     public void testMeldWrong4() {
-        Heap<Integer> h1 = new BinaryTreeSoftHeap<Integer>(0.4, comparator);
-        Heap<Integer> h2 = new BinaryTreeSoftHeap<Integer>(0.4, new Comparator<Integer>() {
+        MergeableHeap<Integer> h1 = new BinaryTreeSoftHeap<Integer>(0.4, comparator);
+        MergeableHeap<Integer> h2 = new BinaryTreeSoftHeap<Integer>(0.4, new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
                 return comparator.compare(o1, o2);
             }
         });
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
     }
 
     private void testSoftHeapMeld(int n, double epsilon, Comparator<Integer> comparator) {

@@ -387,38 +387,37 @@ public class BinaryTreeSoftAddressableHeapTest {
         testSoftHeapMeldSmallLarge(SIZE, 0.95, comparator);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = IllegalArgumentException.class)
     public void testMeldWrong1() {
-        AddressableHeap<Integer, Void> h1 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.5, comparator);
-        AddressableHeap<Integer, Void> h2 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.5);
+        BinaryTreeSoftAddressableHeap<Integer, Void> h1 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.5,
+                comparator);
+        BinaryTreeSoftAddressableHeap<Integer, Void> h2 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.5);
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = IllegalArgumentException.class)
     public void testMeldWrong2() {
-        AddressableHeap<Integer, Void> h1 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.4);
-        AddressableHeap<Integer, Void> h2 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.7);
+        BinaryTreeSoftAddressableHeap<Integer, Void> h1 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.4);
+        BinaryTreeSoftAddressableHeap<Integer, Void> h2 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.7);
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = IllegalArgumentException.class)
     public void testMeldWrong3() {
-        AddressableHeap<Integer, Void> h1 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.4);
-        AddressableHeap<Integer, Void> h2 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.4, comparator);
+        BinaryTreeSoftAddressableHeap<Integer, Void> h1 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.4);
+        BinaryTreeSoftAddressableHeap<Integer, Void> h2 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.4,
+                comparator);
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = IllegalArgumentException.class)
     public void testMeldWrong4() {
-        AddressableHeap<Integer, Void> h1 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.4, comparator);
-        AddressableHeap<Integer, Void> h2 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.4,
+        BinaryTreeSoftAddressableHeap<Integer, Void> h1 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.4,
+                comparator);
+        BinaryTreeSoftAddressableHeap<Integer, Void> h2 = new BinaryTreeSoftAddressableHeap<Integer, Void>(0.4,
                 new Comparator<Integer>() {
                     @Override
                     public int compare(Integer o1, Integer o2) {
@@ -426,7 +425,7 @@ public class BinaryTreeSoftAddressableHeapTest {
                     }
                 });
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
     }
 
     @Test(expected = IllegalStateException.class)
@@ -449,14 +448,12 @@ public class BinaryTreeSoftAddressableHeapTest {
         c.insert(20);
         c.insert(21);
 
-        if (a instanceof MergeableHeap) {
-            ((MergeableHeap<Integer>) a).meld((MergeableHeap<Integer>) b);
-            ((MergeableHeap<Integer>) a).meld((MergeableHeap<Integer>) b);
-            validateSoftHeap(a, 0.5, 12l);
-        }
+        a.meld(b);
+        a.meld(b);
+        validateSoftHeap(a, 0.5, 12l);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testDeleteAfterMultipleMelds() {
         BinaryTreeSoftAddressableHeap<Integer, String> a = new BinaryTreeSoftAddressableHeap<Integer, String>(0.5);
         a.insert(10);
@@ -476,36 +473,31 @@ public class BinaryTreeSoftAddressableHeapTest {
         Handle<Integer, String> c3 = c.insert(20);
         c.insert(21);
 
-        if (a instanceof MergeableHeap) {
-            ((MergeableHeap<Integer>) a).meld((MergeableHeap<Integer>) b);
-            ((MergeableHeap<Integer>) a).meld((MergeableHeap<Integer>) b);
-            validateSoftHeap(a, 0.5, 12l);
-            b3.delete();
-            validateSoftHeap(a, 0.5, 12l);
-            c3.delete();
-            validateSoftHeap(a, 0.5, 12l);
-        }
+        a.meld(b);
+        a.meld(c);
+        validateSoftHeap(a, 0.5, 12l);
+        b3.delete();
+        validateSoftHeap(a, 0.5, 12l);
+        c3.delete();
+        validateSoftHeap(a, 0.5, 12l);
     }
 
-    @SuppressWarnings("unchecked")
     @Test(expected = IllegalStateException.class)
     public void testInsertAfterAMeld() {
-        AddressableHeap<Integer, String> a = new BinaryTreeSoftAddressableHeap<Integer, String>(0.5);
+        BinaryTreeSoftAddressableHeap<Integer, String> a = new BinaryTreeSoftAddressableHeap<Integer, String>(0.5);
         a.insert(10);
         a.insert(11);
         a.insert(12);
         a.insert(13);
 
-        AddressableHeap<Integer, String> b = new BinaryTreeSoftAddressableHeap<Integer, String>(0.5);
+        BinaryTreeSoftAddressableHeap<Integer, String> b = new BinaryTreeSoftAddressableHeap<Integer, String>(0.5);
         b.insert(14);
         b.insert(15);
         b.insert(16);
         b.insert(17);
 
-        if (a instanceof MergeableHeap) {
-            ((MergeableHeap<Integer>) a).meld((MergeableHeap<Integer>) b);
-            b.insert(30);
-        }
+        a.meld(b);
+        b.insert(30);
     }
 
     @Test
@@ -540,20 +532,18 @@ public class BinaryTreeSoftAddressableHeapTest {
         e.insert(28);
         e.insert(29);
 
-        if (a instanceof MergeableHeap) {
-            ((MergeableHeap<Integer>) d).meld((MergeableHeap<Integer>) e);
-            ((MergeableHeap<Integer>) c).meld((MergeableHeap<Integer>) d);
-            ((MergeableHeap<Integer>) b).meld((MergeableHeap<Integer>) c);
-            ((MergeableHeap<Integer>) a).meld((MergeableHeap<Integer>) b);
+        d.meld(e);
+        c.meld(d);
+        b.meld(c);
+        a.meld(b);
 
-            assertEquals(20, a.size());
-            assertEquals(0, b.size());
-            assertEquals(0, c.size());
-            assertEquals(0, d.size());
-            assertEquals(0, e.size());
+        assertEquals(20, a.size());
+        assertEquals(0, b.size());
+        assertEquals(0, c.size());
+        assertEquals(0, d.size());
+        assertEquals(0, e.size());
 
-            validateSoftHeap(a, 0.5, 20l);
-        }
+        validateSoftHeap(a, 0.5, 20l);
     }
 
     @Test
@@ -588,29 +578,27 @@ public class BinaryTreeSoftAddressableHeapTest {
         Handle<Integer, String> e3 = e.insert(28);
         e.insert(29);
 
-        if (a instanceof MergeableHeap) {
-            ((MergeableHeap<Integer>) d).meld((MergeableHeap<Integer>) e);
-            ((MergeableHeap<Integer>) c).meld((MergeableHeap<Integer>) d);
-            ((MergeableHeap<Integer>) b).meld((MergeableHeap<Integer>) c);
-            ((MergeableHeap<Integer>) a).meld((MergeableHeap<Integer>) b);
+        d.meld(e);
+        c.meld(d);
+        b.meld(c);
+        a.meld(b);
 
-            assertEquals(20, a.size());
-            assertEquals(0, b.size());
-            assertEquals(0, c.size());
-            assertEquals(0, d.size());
-            assertEquals(0, e.size());
+        assertEquals(20, a.size());
+        assertEquals(0, b.size());
+        assertEquals(0, c.size());
+        assertEquals(0, d.size());
+        assertEquals(0, e.size());
 
-            e3.delete();
-            validateSoftHeap(a, 0.5, 20l);
-            d3.delete();
-            validateSoftHeap(a, 0.5, 20l);
-            c3.delete();
-            validateSoftHeap(a, 0.5, 20l);
-            b3.delete();
-            validateSoftHeap(a, 0.5, 20l);
-            a3.delete();
-            validateSoftHeap(a, 0.5, 20l);
-        }
+        e3.delete();
+        validateSoftHeap(a, 0.5, 20l);
+        d3.delete();
+        validateSoftHeap(a, 0.5, 20l);
+        c3.delete();
+        validateSoftHeap(a, 0.5, 20l);
+        b3.delete();
+        validateSoftHeap(a, 0.5, 20l);
+        a3.delete();
+        validateSoftHeap(a, 0.5, 20l);
     }
 
     @Test(expected = NullPointerException.class)
@@ -637,7 +625,7 @@ public class BinaryTreeSoftAddressableHeapTest {
         validateSoftHeap(h2, epsilon, n / 2);
         assertEquals(n / 2, h2.size());
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
 
         validateSoftHeap(h1, epsilon, n);
         validateSoftHeap(h2, epsilon, n);
@@ -662,7 +650,7 @@ public class BinaryTreeSoftAddressableHeapTest {
         validateSoftHeap(h2, epsilon, 2 * n / 3);
         assertEquals((int) Math.ceil(2.0 * n / 3.0), h2.size());
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
 
         validateSoftHeap(h1, epsilon, n);
         validateSoftHeap(h2, epsilon, n);

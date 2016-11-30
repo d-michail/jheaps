@@ -18,7 +18,7 @@
 package org.jheaps;
 
 /**
- * A heap that allows melding with another heap.
+ * An addressable heap that allows melding with another addressable heap.
  *
  * <p>
  * The second heap becomes empty and unusable after the meld operation, meaning
@@ -48,10 +48,12 @@ package org.jheaps;
  *
  * @param <K>
  *            the type of keys maintained by this heap
+ * @param <V>
+ *            the type of values maintained by this heap
  * 
  * @author Dimitrios Michail
  */
-public interface MergeableHeap<K> extends Heap<K> {
+public interface MergeableAddressableHeap<K, V> extends AddressableHeap<K, V> {
 
     /**
      * Meld a heap into the current heap.
@@ -66,6 +68,6 @@ public interface MergeableHeap<K> extends Heap<K> {
      * @throws IllegalArgumentException
      *             if {@code other} does not have a compatible comparator
      */
-    void meld(MergeableHeap<K> other);
+    void meld(MergeableAddressableHeap<K, V> other);
 
 }

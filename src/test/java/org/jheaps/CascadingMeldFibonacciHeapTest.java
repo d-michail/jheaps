@@ -19,8 +19,8 @@ package org.jheaps;
 
 public class CascadingMeldFibonacciHeapTest extends CascadingMeldTest {
 
-	protected AddressableHeap<Integer, String> createHeap() {
-		return new FibonacciHeap<Integer, String>();
-	}
+    protected MergeableAddressableHeap<Integer, String> createHeap() {
+        return new FibonacciHeap<Integer, String>();
+    }
 
 }

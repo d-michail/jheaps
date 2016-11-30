@@ -100,7 +100,7 @@ import org.jheaps.annotations.VisibleForTesting;
  *
  * @author Dimitrios Michail
  */
-public class BinaryTreeSoftAddressableHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K>, Serializable {
+public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializable {
 
     private final static long serialVersionUID = 1;
 
@@ -250,8 +250,7 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements AddressableHeap<K, V
      *             if {@code other} has a different error rate
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public void meld(MergeableHeap<K> other) {
+    public void meld(MergeableAddressableHeap<K, V> other) {
         BinaryTreeSoftAddressableHeap<K, V> h = (BinaryTreeSoftAddressableHeap<K, V>) other;
 
         // check same comparator

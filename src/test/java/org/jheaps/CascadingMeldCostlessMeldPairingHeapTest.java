@@ -19,8 +19,8 @@ package org.jheaps;
 
 public class CascadingMeldCostlessMeldPairingHeapTest extends CascadingMeldTest {
 
-	protected AddressableHeap<Integer, String> createHeap() {
-		return new CostlessMeldPairingHeap<Integer, String>();
-	}
+    protected MergeableAddressableHeap<Integer, String> createHeap() {
+        return new CostlessMeldPairingHeap<Integer, String>();
+    }
 
 }

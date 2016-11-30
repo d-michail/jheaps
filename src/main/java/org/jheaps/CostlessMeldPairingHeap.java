@@ -94,7 +94,7 @@ import org.jheaps.annotations.LogarithmicTime;
  * @see PairingHeap
  * @see FibonacciHeap
  */
-public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, MergeableHeap<K>, Serializable {
+public class CostlessMeldPairingHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializable {
 
     private final static long serialVersionUID = 1;
 
@@ -380,8 +380,7 @@ public class CostlessMeldPairingHeap<K, V> implements AddressableHeap<K, V>, Mer
      */
     @Override
     @ConstantTime(amortized = true)
-    @SuppressWarnings("unchecked")
-    public void meld(MergeableHeap<K> other) {
+    public void meld(MergeableAddressableHeap<K, V> other) {
         CostlessMeldPairingHeap<K, V> h = (CostlessMeldPairingHeap<K, V>) other;
 
         // check same comparator
