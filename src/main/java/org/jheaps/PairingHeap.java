@@ -38,7 +38,6 @@ import org.jheaps.annotations.LogarithmicTime;
  * applications requiring the {@code decreaseKey} operation. The operation
  * {@code meld} is amortized O(log(n)).
  * 
- * 
  * <p>
  * All the above bounds, however, assume that the user does not perform
  * cascading melds on heaps such as:
