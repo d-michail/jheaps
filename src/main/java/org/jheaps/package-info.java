@@ -17,6 +17,6 @@
  */
 
 /**
- * Main package containing interfaces
+ * Interfaces
  */
 package org.jheaps;

@@ -16,6 +16,6 @@
  * limitations under the License.
  */
 /**
- * Heaps using a pointer-based explicit tree representation
+ * Heaps using an explicit "pointer-based" tree representation
  */
 package org.jheaps.tree;
