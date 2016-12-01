@@ -15,13 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.tree;
 
 import java.io.Serializable;
 import java.util.BitSet;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
+import org.jheaps.AddressableHeap;
 import org.jheaps.annotations.ConstantTime;
 import org.jheaps.annotations.LogarithmicTime;
 

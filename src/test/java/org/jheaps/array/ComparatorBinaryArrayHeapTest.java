@@ -19,9 +19,9 @@ package org.jheaps.array;
 
 import java.util.Comparator;
 
-import org.jheaps.ComparatorAbstractHeapTest;
 import org.jheaps.Heap;
 import org.jheaps.array.BinaryArrayHeap;
+import org.jheaps.tree.ComparatorAbstractHeapTest;
 
 public class ComparatorBinaryArrayHeapTest extends ComparatorAbstractHeapTest {
 

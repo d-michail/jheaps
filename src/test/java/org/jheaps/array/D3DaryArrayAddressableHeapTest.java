@@ -19,9 +19,9 @@ package org.jheaps.array;
 
 import java.util.Comparator;
 
-import org.jheaps.AbstractAddressableHeapTest;
 import org.jheaps.AddressableHeap;
 import org.jheaps.array.DaryArrayAddressableHeap;
+import org.jheaps.tree.AbstractAddressableHeapTest;
 import org.junit.Test;
 
 public class D3DaryArrayAddressableHeapTest extends AbstractAddressableHeapTest {

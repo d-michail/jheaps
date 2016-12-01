@@ -19,9 +19,9 @@ package org.jheaps.array;
 
 import java.util.Comparator;
 
-import org.jheaps.AbstractStaticHeapTest;
 import org.jheaps.Heap;
 import org.jheaps.array.DaryFixedArrayHeap;
+import org.jheaps.tree.AbstractStaticHeapTest;
 
 public class D4DaryFixedArrayHeapTest extends AbstractStaticHeapTest {
 

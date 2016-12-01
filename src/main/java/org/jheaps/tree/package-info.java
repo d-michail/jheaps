@@ -15,12 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
-
-public class CascadingMeldFibonacciHeapTest extends CascadingMeldTest {
-
-    protected MergeableAddressableHeap<Integer, String> createHeap() {
-        return new FibonacciHeap<Integer, String>();
-    }
-
-}
+/**
+ * Heaps using a pointer-based explicit tree representation
+ */
+package org.jheaps.tree;

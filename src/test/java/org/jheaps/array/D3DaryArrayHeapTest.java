@@ -17,9 +17,9 @@
  */
 package org.jheaps.array;
 
-import org.jheaps.AbstractHeapTest;
 import org.jheaps.Heap;
 import org.jheaps.array.DaryArrayHeap;
+import org.jheaps.tree.AbstractHeapTest;
 import org.junit.Test;
 
 public class D3DaryArrayHeapTest extends AbstractHeapTest {

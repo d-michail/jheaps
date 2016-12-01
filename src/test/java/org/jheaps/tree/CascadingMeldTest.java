@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.tree;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 
 import org.jheaps.AddressableHeap.Handle;
+import org.jheaps.MergeableAddressableHeap;
 import org.junit.Test;
 
 public abstract class CascadingMeldTest {

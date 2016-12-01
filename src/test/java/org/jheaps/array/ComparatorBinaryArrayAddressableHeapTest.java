@@ -20,8 +20,8 @@ package org.jheaps.array;
 import java.util.Comparator;
 
 import org.jheaps.AddressableHeap;
-import org.jheaps.ComparatorAbstractAddressableHeapTest;
 import org.jheaps.array.BinaryArrayAddressableHeap;
+import org.jheaps.tree.ComparatorAbstractAddressableHeapTest;
 
 public class ComparatorBinaryArrayAddressableHeapTest extends ComparatorAbstractAddressableHeapTest {
 

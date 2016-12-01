@@ -15,22 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps.array;
+package org.jheaps.tree;
 
 import java.util.Comparator;
 
-import org.jheaps.Heap;
-import org.jheaps.array.BinaryFixedArrayWeakHeap;
-import org.jheaps.tree.AbstractStaticHeapTest;
+import org.jheaps.AddressableHeap;
+import org.jheaps.tree.CostlessMeldPairingHeap;
 
-public class BinaryFixedArrayWeakHeapTest extends AbstractStaticHeapTest {
+public class CostlessMeldPairingHeapTest extends AbstractAddressableHeapTest {
 
-	protected Heap<Integer> createHeap(Comparator<Integer> comparator, int capacity) {
-		return new BinaryFixedArrayWeakHeap<Integer>(comparator, capacity);
+	@Override
+	protected AddressableHeap<Integer, Void> createHeap() {
+		return new CostlessMeldPairingHeap<Integer, Void>();
 	}
 
-	protected Heap<Integer> createHeap(int capacity) {
-		return new BinaryFixedArrayWeakHeap<Integer>(capacity);
+	@Override
+	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
+		return new CostlessMeldPairingHeap<Integer, Void>(comparator);
 	}
 
+	@Override
+	protected AddressableHeap<Integer, String> createHeapWithStringValues() {
+		return new CostlessMeldPairingHeap<Integer, String>();
+	}
 }

@@ -19,9 +19,9 @@ package org.jheaps.array;
 
 import java.util.Comparator;
 
-import org.jheaps.AbstractStaticHeapTest;
 import org.jheaps.Heap;
 import org.jheaps.array.BinaryFixedArrayHeap;
+import org.jheaps.tree.AbstractStaticHeapTest;
 
 public class BinaryFixedArrayHeapTest extends AbstractStaticHeapTest {
 

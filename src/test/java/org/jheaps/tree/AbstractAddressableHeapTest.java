@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.tree;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,6 +30,8 @@ import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
+import org.jheaps.AddressableHeap;
+import org.jheaps.MergeableAddressableHeap;
 import org.jheaps.AddressableHeap.Handle;
 import org.junit.BeforeClass;
 import org.junit.Test;

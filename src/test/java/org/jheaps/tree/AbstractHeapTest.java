@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.tree;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,6 +30,7 @@ import java.io.ObjectOutputStream;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
+import org.jheaps.Heap;
 import org.junit.Test;
 
 public abstract class AbstractHeapTest {

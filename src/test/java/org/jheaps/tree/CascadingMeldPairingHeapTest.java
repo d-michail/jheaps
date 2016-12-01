@@ -15,15 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.tree;
 
-import java.util.Comparator;
+import org.jheaps.MergeableAddressableHeap;
+import org.jheaps.tree.PairingHeap;
 
-public class ComparatorBinaryTreeAddressableHeapTest extends ComparatorAbstractAddressableHeapTest {
+public class CascadingMeldPairingHeapTest extends CascadingMeldTest {
 
-	@Override
-	protected AddressableHeap<Long, Void> createHeap(Comparator<Long> comparator) {
-		return new BinaryTreeAddressableHeap<Long, Void>(comparator);
-	}
+    protected MergeableAddressableHeap<Integer, String> createHeap() {
+        return new PairingHeap<Integer, String>();
+    }
 
 }

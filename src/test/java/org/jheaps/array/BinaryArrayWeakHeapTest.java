@@ -17,9 +17,9 @@
  */
 package org.jheaps.array;
 
-import org.jheaps.AbstractHeapTest;
 import org.jheaps.Heap;
 import org.jheaps.array.BinaryArrayWeakHeap;
+import org.jheaps.tree.AbstractHeapTest;
 import org.junit.Test;
 
 public class BinaryArrayWeakHeapTest extends AbstractHeapTest {

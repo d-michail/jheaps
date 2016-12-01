@@ -15,24 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.tree;
 
 import java.util.Comparator;
 
-public class FibonacciHeapTest extends AbstractAddressableHeapTest {
+import org.jheaps.AddressableHeap;
+import org.jheaps.tree.PairingHeap;
 
-    @Override
-    protected AddressableHeap<Integer, Void> createHeap() {
-        return new FibonacciHeap<Integer, Void>();
-    }
+public class ComparatorPairingHeapTest extends ComparatorAbstractAddressableHeapTest {
 
-    @Override
-    protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
-        return new FibonacciHeap<Integer, Void>(comparator);
-    }
+	@Override
+	protected AddressableHeap<Long, Void> createHeap(Comparator<Long> comparator) {
+		return new PairingHeap<Long, Void>(comparator);
+	}
 
-    @Override
-    protected AddressableHeap<Integer, String> createHeapWithStringValues() {
-        return new FibonacciHeap<Integer, String>();
-    }
 }

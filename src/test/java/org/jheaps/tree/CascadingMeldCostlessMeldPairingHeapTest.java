@@ -15,12 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.tree;
 
-public class CascadingMeldPairingHeapTest extends CascadingMeldTest {
+import org.jheaps.MergeableAddressableHeap;
+import org.jheaps.tree.CostlessMeldPairingHeap;
+
+public class CascadingMeldCostlessMeldPairingHeapTest extends CascadingMeldTest {
 
     protected MergeableAddressableHeap<Integer, String> createHeap() {
-        return new PairingHeap<Integer, String>();
+        return new CostlessMeldPairingHeap<Integer, String>();
     }
 
 }

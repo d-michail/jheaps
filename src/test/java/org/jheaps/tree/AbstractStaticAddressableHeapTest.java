@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.tree;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -29,10 +29,11 @@ import java.io.ObjectOutputStream;
 import java.util.Comparator;
 import java.util.Random;
 
+import org.jheaps.AddressableHeap;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public abstract class AbstractStaticHeapTest {
+public abstract class AbstractStaticAddressableHeapTest {
 
 	private static final int SIZE = 100000;
 
@@ -54,137 +55,130 @@ public abstract class AbstractStaticHeapTest {
 		};
 	}
 
-	protected abstract Heap<Integer> createHeap(Comparator<Integer> comparator, int capacity);
+	protected abstract AddressableHeap<Integer, String> createHeap(Comparator<Integer> comparator, int capacity);
 
-	protected abstract Heap<Integer> createHeap(int capacity);
+	protected abstract AddressableHeap<Integer, String> createHeap(int capacity);
 
 	@Test
 	public void test() {
-		Heap<Integer> h = createHeap(SIZE);
+		AddressableHeap<Integer, String> h = createHeap(SIZE);
 
 		for (int i = 0; i < SIZE; i++) {
 			h.insert(i);
-			assertEquals(Integer.valueOf(0), h.findMin());
+			assertEquals(Integer.valueOf(0), h.findMin().getKey());
 			assertFalse(h.isEmpty());
 			assertEquals(h.size(), i + 1);
 		}
 
 		for (int i = SIZE - 1; i >= 0; i--) {
-			assertEquals(h.findMin(), Integer.valueOf(SIZE - i - 1));
+			assertEquals(h.findMin().getKey(), Integer.valueOf(SIZE - i - 1));
 			h.deleteMin();
 		}
-
 	}
 
 	@Test
 	public void testOnlyInsert() {
-
-		Heap<Integer> h = createHeap(SIZE);
+		AddressableHeap<Integer, String> h = createHeap(SIZE);
 
 		for (int i = 0; i < SIZE; i++) {
 			h.insert(SIZE - i);
-			assertEquals(Integer.valueOf(SIZE - i), h.findMin());
+			assertEquals(Integer.valueOf(SIZE - i), h.findMin().getKey());
 			assertFalse(h.isEmpty());
 			assertEquals(h.size(), i + 1);
 		}
-
 	}
 
 	@Test
 	public void testComparator() {
-
-		Heap<Integer> h = createHeap(comparator, SIZE);
+		AddressableHeap<Integer, String> h = createHeap(comparator, SIZE);
 		int i;
 
 		for (i = 0; i < SIZE; i++) {
 			h.insert(i);
-			assertEquals(Integer.valueOf(i), h.findMin());
+			assertEquals(Integer.valueOf(i), h.findMin().getKey());
 			assertFalse(h.isEmpty());
 			assertEquals(h.size(), i + 1);
 		}
 
 		for (i = SIZE - 1; i >= 0; i--) {
-			assertEquals(h.findMin(), Integer.valueOf(i));
+			assertEquals(h.findMin().getKey(), Integer.valueOf(i));
 			h.deleteMin();
 		}
-
 	}
 
 	@Test
 	public void testOnly4() {
-
-		Heap<Integer> h = createHeap(4);
+		AddressableHeap<Integer, String> h = createHeap(4);
 
 		assertTrue(h.isEmpty());
 
 		h.insert(780);
 		assertEquals(h.size(), 1);
-		assertEquals(Integer.valueOf(780), h.findMin());
+		assertEquals(Integer.valueOf(780), h.findMin().getKey());
 
 		h.insert(-389);
 		assertEquals(h.size(), 2);
-		assertEquals(Integer.valueOf(-389), h.findMin());
+		assertEquals(Integer.valueOf(-389), h.findMin().getKey());
 
 		h.insert(306);
 		assertEquals(h.size(), 3);
-		assertEquals(Integer.valueOf(-389), h.findMin());
+		assertEquals(Integer.valueOf(-389), h.findMin().getKey());
 
 		h.insert(579);
 		assertEquals(h.size(), 4);
-		assertEquals(Integer.valueOf(-389), h.findMin());
+		assertEquals(Integer.valueOf(-389), h.findMin().getKey());
 
 		h.deleteMin();
 		assertEquals(h.size(), 3);
-		assertEquals(Integer.valueOf(306), h.findMin());
+		assertEquals(Integer.valueOf(306), h.findMin().getKey());
 
 		h.deleteMin();
 		assertEquals(h.size(), 2);
-		assertEquals(Integer.valueOf(579), h.findMin());
+		assertEquals(Integer.valueOf(579), h.findMin().getKey());
 
 		h.deleteMin();
 		assertEquals(h.size(), 1);
-		assertEquals(Integer.valueOf(780), h.findMin());
+		assertEquals(Integer.valueOf(780), h.findMin().getKey());
 
 		h.deleteMin();
 		assertEquals(h.size(), 0);
 
 		assertTrue(h.isEmpty());
-
 	}
 
 	@Test
 	public void testOnly4Reverse() {
-		Heap<Integer> h = createHeap(comparator, 4);
+		AddressableHeap<Integer, String> h = createHeap(comparator, 4);
 
 		assertTrue(h.isEmpty());
 
 		h.insert(780);
 		assertEquals(h.size(), 1);
-		assertEquals(Integer.valueOf(780), h.findMin());
+		assertEquals(Integer.valueOf(780), h.findMin().getKey());
 
 		h.insert(-389);
 		assertEquals(h.size(), 2);
-		assertEquals(Integer.valueOf(780), h.findMin());
+		assertEquals(Integer.valueOf(780), h.findMin().getKey());
 
 		h.insert(306);
 		assertEquals(h.size(), 3);
-		assertEquals(Integer.valueOf(780), h.findMin());
+		assertEquals(Integer.valueOf(780), h.findMin().getKey());
 
 		h.insert(579);
 		assertEquals(h.size(), 4);
-		assertEquals(Integer.valueOf(780), h.findMin());
+		assertEquals(Integer.valueOf(780), h.findMin().getKey());
 
 		h.deleteMin();
 		assertEquals(h.size(), 3);
-		assertEquals(Integer.valueOf(579), h.findMin());
+		assertEquals(Integer.valueOf(579), h.findMin().getKey());
 
 		h.deleteMin();
 		assertEquals(h.size(), 2);
-		assertEquals(Integer.valueOf(306), h.findMin());
+		assertEquals(Integer.valueOf(306), h.findMin().getKey());
 
 		h.deleteMin();
 		assertEquals(h.size(), 1);
-		assertEquals(Integer.valueOf(-389), h.findMin());
+		assertEquals(Integer.valueOf(-389), h.findMin().getKey());
 
 		h.deleteMin();
 		assertEquals(h.size(), 0);
@@ -194,8 +188,7 @@ public abstract class AbstractStaticHeapTest {
 
 	@Test
 	public void testSortRandomSeed1() {
-
-		Heap<Integer> h = createHeap(SIZE);
+		AddressableHeap<Integer, String> h = createHeap(SIZE);
 
 		Random generator = new Random(1);
 
@@ -205,20 +198,18 @@ public abstract class AbstractStaticHeapTest {
 
 		Integer prev = null, cur;
 		while (!h.isEmpty()) {
-			cur = h.findMin();
+			cur = h.findMin().getKey();
 			h.deleteMin();
 			if (prev != null) {
 				assertTrue(prev.compareTo(cur) <= 0);
 			}
 			prev = cur;
 		}
-
 	}
 
 	@Test
 	public void testSortRandomSeed2() {
-
-		Heap<Integer> h = createHeap(SIZE);
+		AddressableHeap<Integer, String> h = createHeap(SIZE);
 
 		Random generator = new Random(2);
 
@@ -228,19 +219,18 @@ public abstract class AbstractStaticHeapTest {
 
 		Integer prev = null, cur;
 		while (!h.isEmpty()) {
-			cur = h.findMin();
+			cur = h.findMin().getKey();
 			h.deleteMin();
 			if (prev != null) {
 				assertTrue(prev.compareTo(cur) <= 0);
 			}
 			prev = cur;
 		}
-
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testMaxSize() {
-		Heap<Integer> h = createHeap(4);
+		AddressableHeap<Integer, String> h = createHeap(4);
 		h.insert(1);
 		h.insert(2);
 		h.insert(3);
@@ -250,26 +240,25 @@ public abstract class AbstractStaticHeapTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalSize() {
-		Heap<Integer> h = createHeap(-4);
+		AddressableHeap<Integer, String> h = createHeap(-4);
 		h.insert(1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalSize1() {
-		Heap<Integer> h = createHeap(-1);
+		AddressableHeap<Integer, String> h = createHeap(-1);
 		h.insert(1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalSize2() {
-		Heap<Integer> h = createHeap(Integer.MAX_VALUE - 8);
+		AddressableHeap<Integer, String> h = createHeap(Integer.MAX_VALUE - 8);
 		h.insert(1);
 	}
 
 	@Test
 	public void testClear() {
-
-		Heap<Integer> h = createHeap(15);
+		AddressableHeap<Integer, String> h = createHeap(15);
 
 		for (int i = 0; i < 15; i++) {
 			h.insert(i);
@@ -283,8 +272,7 @@ public abstract class AbstractStaticHeapTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testSerializable() throws IOException, ClassNotFoundException {
-
-		Heap<Integer> h = createHeap(15);
+		AddressableHeap<Integer, String> h = createHeap(15);
 
 		for (int i = 0; i < 15; i++) {
 			h.insert(i);
@@ -303,11 +291,11 @@ public abstract class AbstractStaticHeapTest {
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object o = ois.readObject();
 		ois.close();
-		h = (Heap<Integer>) o;
+		h = (AddressableHeap<Integer, String>) o;
 
 		for (int i = 0; i < 15; i++) {
 			assertEquals(15 - i, h.size());
-			assertEquals(Integer.valueOf(i), h.findMin());
+			assertEquals(Integer.valueOf(i), h.findMin().getKey());
 			h.deleteMin();
 		}
 		assertTrue(h.isEmpty());

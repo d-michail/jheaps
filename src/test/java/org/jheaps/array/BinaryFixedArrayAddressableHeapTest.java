@@ -19,9 +19,9 @@ package org.jheaps.array;
 
 import java.util.Comparator;
 
-import org.jheaps.AbstractStaticAddressableHeapTest;
 import org.jheaps.AddressableHeap;
 import org.jheaps.array.BinaryFixedArrayAddressableHeap;
+import org.jheaps.tree.AbstractStaticAddressableHeapTest;
 
 public class BinaryFixedArrayAddressableHeapTest extends AbstractStaticAddressableHeapTest {
 

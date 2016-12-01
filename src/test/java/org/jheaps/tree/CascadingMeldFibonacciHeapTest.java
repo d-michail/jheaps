@@ -15,24 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.tree;
 
-import java.util.Comparator;
+import org.jheaps.MergeableAddressableHeap;
+import org.jheaps.tree.FibonacciHeap;
 
-public class CostlessMeldPairingHeapTest extends AbstractAddressableHeapTest {
+public class CascadingMeldFibonacciHeapTest extends CascadingMeldTest {
 
-	@Override
-	protected AddressableHeap<Integer, Void> createHeap() {
-		return new CostlessMeldPairingHeap<Integer, Void>();
-	}
+    protected MergeableAddressableHeap<Integer, String> createHeap() {
+        return new FibonacciHeap<Integer, String>();
+    }
 
-	@Override
-	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
-		return new CostlessMeldPairingHeap<Integer, Void>(comparator);
-	}
-
-	@Override
-	protected AddressableHeap<Integer, String> createHeapWithStringValues() {
-		return new CostlessMeldPairingHeap<Integer, String>();
-	}
 }

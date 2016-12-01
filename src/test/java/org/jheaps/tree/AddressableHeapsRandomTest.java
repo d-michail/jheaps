@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.tree;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -27,8 +27,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import org.jheaps.AddressableHeap;
 import org.jheaps.AddressableHeap.Handle;
 import org.jheaps.array.BinaryArrayAddressableHeap;
+import org.jheaps.tree.BinaryTreeAddressableHeap;
+import org.jheaps.tree.CostlessMeldPairingHeap;
+import org.jheaps.tree.FibonacciHeap;
+import org.jheaps.tree.PairingHeap;
 import org.junit.Test;
 
 public class AddressableHeapsRandomTest {
