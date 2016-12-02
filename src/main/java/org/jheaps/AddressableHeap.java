@@ -61,6 +61,14 @@ public interface AddressableHeap<K, V> {
         V getValue();
 
         /**
+         * Set the value of the element.
+         * 
+         * @param value
+         *            the new value
+         */
+        void setValue(V value);
+
+        /**
          * Decrease the key of the element.
          *
          * @param newKey

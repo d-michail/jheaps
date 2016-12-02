@@ -248,6 +248,11 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
         }
 
         @Override
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        @Override
         @SuppressWarnings("unchecked")
         @LogarithmicTime
         public void decreaseKey(K newKey) {

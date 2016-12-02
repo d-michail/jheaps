@@ -350,6 +350,14 @@ public class PairingHeap<K, V> implements MergeableAddressableHeap<K, V>, Serial
          * {@inheritDoc}
          */
         @Override
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         @LogarithmicTime(amortized = true)
         public void decreaseKey(K newKey) {
             getOwner().decreaseKey(this, newKey);

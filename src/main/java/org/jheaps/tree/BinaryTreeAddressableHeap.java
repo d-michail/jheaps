@@ -327,6 +327,11 @@ public class BinaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, S
         }
 
         @Override
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        @Override
         @LogarithmicTime
         @SuppressWarnings("unchecked")
         public void decreaseKey(K newKey) {

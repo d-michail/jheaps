@@ -484,6 +484,14 @@ public class CostlessMeldPairingHeap<K, V> implements MergeableAddressableHeap<K
          * {@inheritDoc}
          */
         @Override
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         @LogLogTime(amortized = true)
         public void delete() {
             getOwner().delete(this);

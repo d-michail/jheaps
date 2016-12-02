@@ -426,6 +426,14 @@ public class FibonacciHeap<K, V> implements MergeableAddressableHeap<K, V>, Seri
          * {@inheritDoc}
          */
         @Override
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         @ConstantTime(amortized = true)
         public void decreaseKey(K newKey) {
             FibonacciHeap<K, V> h = getOwner();

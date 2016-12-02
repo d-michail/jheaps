@@ -378,6 +378,11 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
         }
 
         @Override
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        @Override
         public void decreaseKey(K newKey) {
             if (bucket == NO_BUCKET) {
                 throw new IllegalArgumentException("Invalid handle!");

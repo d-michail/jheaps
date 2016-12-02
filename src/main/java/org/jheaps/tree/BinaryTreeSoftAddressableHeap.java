@@ -510,6 +510,14 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
 
         /**
          * {@inheritDoc}
+         */
+        @Override
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        /**
+         * {@inheritDoc}
          * 
          * @throws UnsupportedOperationException
          *             always, as this operation is not supported in soft heaps
