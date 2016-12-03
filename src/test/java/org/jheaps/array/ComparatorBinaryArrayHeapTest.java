@@ -21,9 +21,9 @@ import java.util.Comparator;
 
 import org.jheaps.Heap;
 import org.jheaps.array.BinaryArrayHeap;
-import org.jheaps.tree.ComparatorAbstractHeapTest;
+import org.jheaps.tree.AbstractComparatorHeapTest;
 
-public class ComparatorBinaryArrayHeapTest extends ComparatorAbstractHeapTest {
+public class ComparatorBinaryArrayHeapTest extends AbstractComparatorHeapTest {
 
 	protected Heap<Long> createHeap(Comparator<Long> comparator) {
 		return new BinaryArrayHeap<Long>(comparator);

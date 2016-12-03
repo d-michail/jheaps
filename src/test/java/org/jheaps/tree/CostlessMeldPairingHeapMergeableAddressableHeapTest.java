@@ -19,14 +19,18 @@ package org.jheaps.tree;
 
 import java.util.Comparator;
 
-import org.jheaps.AddressableHeap;
-import org.jheaps.tree.FibonacciHeap;
+import org.jheaps.MergeableAddressableHeap;
+import org.jheaps.tree.CostlessMeldPairingHeap;
 
-public class ComparatorFibonacciHeapTest extends ComparatorAbstractAddressableHeapTest {
+public class CostlessMeldPairingHeapMergeableAddressableHeapTest extends AbstractMergeableAddressableHeapTest {
 
-	@Override
-	protected AddressableHeap<Long, Void> createHeap(Comparator<Long> comparator) {
-		return new FibonacciHeap<Long, Void>(comparator);
-	}
+    protected MergeableAddressableHeap<Integer, String> createHeap() {
+        return new CostlessMeldPairingHeap<Integer, String>();
+    }
+
+    @Override
+    protected MergeableAddressableHeap<Integer, String> createHeap(Comparator<Integer> comparator) {
+        return new CostlessMeldPairingHeap<Integer, String>(comparator);
+    }
 
 }

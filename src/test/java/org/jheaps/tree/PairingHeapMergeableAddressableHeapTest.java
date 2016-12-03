@@ -19,14 +19,18 @@ package org.jheaps.tree;
 
 import java.util.Comparator;
 
-import org.jheaps.AddressableHeap;
+import org.jheaps.MergeableAddressableHeap;
 import org.jheaps.tree.PairingHeap;
 
-public class ComparatorPairingHeapTest extends ComparatorAbstractAddressableHeapTest {
+public class PairingHeapMergeableAddressableHeapTest extends AbstractMergeableAddressableHeapTest {
 
-	@Override
-	protected AddressableHeap<Long, Void> createHeap(Comparator<Long> comparator) {
-		return new PairingHeap<Long, Void>(comparator);
-	}
+    protected MergeableAddressableHeap<Integer, String> createHeap() {
+        return new PairingHeap<Integer, String>();
+    }
+
+    @Override
+    protected MergeableAddressableHeap<Integer, String> createHeap(Comparator<Integer> comparator) {
+        return new PairingHeap<Integer, String>(comparator);
+    }
 
 }

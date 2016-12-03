@@ -15,18 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps.tree;
-
-import java.util.Comparator;
-
-import org.jheaps.AddressableHeap;
-import org.jheaps.tree.BinaryTreeAddressableHeap;
-
-public class ComparatorBinaryTreeAddressableHeapTest extends ComparatorAbstractAddressableHeapTest {
-
-	@Override
-	protected AddressableHeap<Long, Void> createHeap(Comparator<Long> comparator) {
-		return new BinaryTreeAddressableHeap<Long, Void>(comparator);
-	}
-
-}
+/**
+ * MinMax heaps
+ */
+package org.jheaps.minmax;

@@ -33,7 +33,7 @@ import org.jheaps.Heap;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public abstract class ComparatorAbstractHeapTest {
+public abstract class AbstractComparatorHeapTest {
 
 	private static final int SIZE = 100000;
 

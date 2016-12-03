@@ -17,13 +17,25 @@
  */
 package org.jheaps.tree;
 
-import org.jheaps.MergeableAddressableHeap;
-import org.jheaps.tree.CostlessMeldPairingHeap;
+import java.util.Comparator;
 
-public class CascadingMeldCostlessMeldPairingHeapTest extends CascadingMeldTest {
+import org.jheaps.AddressableHeap;
+import org.jheaps.tree.PairingHeap;
 
-    protected MergeableAddressableHeap<Integer, String> createHeap() {
-        return new CostlessMeldPairingHeap<Integer, String>();
-    }
+public class PairingHeapAddressableHeapTest extends AbstractAddressableHeapTest {
 
+	@Override
+	protected AddressableHeap<Integer, Void> createHeap() {
+		return new PairingHeap<Integer, Void>();
+	}
+
+	@Override
+	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
+		return new PairingHeap<Integer, Void>(comparator);
+	}
+
+	@Override
+	protected AddressableHeap<Integer, String> createHeapWithStringValues() {
+		return new PairingHeap<Integer, String>();
+	}
 }

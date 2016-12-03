@@ -20,9 +20,9 @@ package org.jheaps.array;
 import java.util.Comparator;
 
 import org.jheaps.Heap;
-import org.jheaps.tree.ComparatorAbstractHeapTest;
+import org.jheaps.tree.AbstractComparatorHeapTest;
 
-public class ComparatorBinaryArrayBulkInsertWeakHeapTest extends ComparatorAbstractHeapTest {
+public class ComparatorBinaryArrayBulkInsertWeakHeapTest extends AbstractComparatorHeapTest {
 
     protected Heap<Long> createHeap(Comparator<Long> comparator) {
         return new BinaryArrayBulkInsertWeakHeap<Long>(comparator);

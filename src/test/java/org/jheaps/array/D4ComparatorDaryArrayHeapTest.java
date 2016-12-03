@@ -21,9 +21,9 @@ import java.util.Comparator;
 
 import org.jheaps.Heap;
 import org.jheaps.array.DaryArrayHeap;
-import org.jheaps.tree.ComparatorAbstractHeapTest;
+import org.jheaps.tree.AbstractComparatorHeapTest;
 
-public class D4ComparatorDaryArrayHeapTest extends ComparatorAbstractHeapTest {
+public class D4ComparatorDaryArrayHeapTest extends AbstractComparatorHeapTest {
 
 	protected Heap<Long> createHeap(Comparator<Long> comparator) {
 		return new DaryArrayHeap<Long>(4, comparator);

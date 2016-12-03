@@ -15,27 +15,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps.tree;
+package org.jheaps.minmax;
 
 import java.util.Comparator;
 
 import org.jheaps.AddressableHeap;
-import org.jheaps.tree.FibonacciHeap;
+import org.jheaps.AddressableHeapFactory;
+import org.jheaps.minmax.ReflectedHeap;
+import org.jheaps.tree.AbstractAddressableHeapTest;
+import org.jheaps.tree.PairingHeap;
 
-public class FibonacciHeapTest extends AbstractAddressableHeapTest {
+public class ReflectedPairingHeapAddressableHeapTest extends AbstractAddressableHeapTest {
+
+    private static AddressableHeapFactory<Integer, Void> FACTORY = new AddressableHeapFactory<Integer, Void>() {
+
+        @Override
+        public AddressableHeap<Integer, Void> get(Comparator<? super Integer> comparator) {
+            return new PairingHeap<Integer, Void>(comparator);
+        }
+
+    };
 
     @Override
     protected AddressableHeap<Integer, Void> createHeap() {
-        return new FibonacciHeap<Integer, Void>();
+        return new ReflectedHeap<Integer, Void>(FACTORY, null);
     }
 
     @Override
     protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
-        return new FibonacciHeap<Integer, Void>(comparator);
+        return new ReflectedHeap<Integer, Void>(FACTORY, comparator);
     }
 
     @Override
     protected AddressableHeap<Integer, String> createHeapWithStringValues() {
-        return new FibonacciHeap<Integer, String>();
+        return new ReflectedHeap<Integer, String>(FACTORY, null);
     }
 }

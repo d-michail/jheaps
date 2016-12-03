@@ -17,13 +17,20 @@
  */
 package org.jheaps.tree;
 
-import org.jheaps.MergeableAddressableHeap;
-import org.jheaps.tree.PairingHeap;
+import java.util.Comparator;
 
-public class CascadingMeldPairingHeapTest extends CascadingMeldTest {
+import org.jheaps.MergeableAddressableHeap;
+import org.jheaps.tree.FibonacciHeap;
+
+public class FibonacciHeapMergeableAddressableHeapTest extends AbstractMergeableAddressableHeapTest {
 
     protected MergeableAddressableHeap<Integer, String> createHeap() {
-        return new PairingHeap<Integer, String>();
+        return new FibonacciHeap<Integer, String>();
+    }
+
+    @Override
+    protected MergeableAddressableHeap<Integer, String> createHeap(Comparator<Integer> comparator) {
+        return new FibonacciHeap<Integer, String>(comparator);
     }
 
 }

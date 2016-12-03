@@ -17,13 +17,25 @@
  */
 package org.jheaps.tree;
 
-import org.jheaps.MergeableAddressableHeap;
+import java.util.Comparator;
+
+import org.jheaps.AddressableHeap;
 import org.jheaps.tree.FibonacciHeap;
 
-public class CascadingMeldFibonacciHeapTest extends CascadingMeldTest {
+public class FibonacciHeapAddressableHeapTest extends AbstractAddressableHeapTest {
 
-    protected MergeableAddressableHeap<Integer, String> createHeap() {
-        return new FibonacciHeap<Integer, String>();
+    @Override
+    protected AddressableHeap<Integer, Void> createHeap() {
+        return new FibonacciHeap<Integer, Void>();
     }
 
+    @Override
+    protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
+        return new FibonacciHeap<Integer, Void>(comparator);
+    }
+
+    @Override
+    protected AddressableHeap<Integer, String> createHeapWithStringValues() {
+        return new FibonacciHeap<Integer, String>();
+    }
 }

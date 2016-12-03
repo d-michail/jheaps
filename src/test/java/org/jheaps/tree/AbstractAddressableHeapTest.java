@@ -26,13 +26,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.jheaps.AddressableHeap;
-import org.jheaps.MergeableAddressableHeap;
 import org.jheaps.AddressableHeap.Handle;
+import org.jheaps.MergeableAddressableHeap;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -42,20 +43,24 @@ public abstract class AbstractAddressableHeapTest {
 
     protected static Comparator<Integer> comparator;
 
+    private static class TestComparator implements Comparator<Integer>, Serializable {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            if (o1 < o2) {
+                return 1;
+            } else if (o1 > o2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
     @BeforeClass
     public static void setUpClass() {
-        comparator = new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                if (o1 < o2) {
-                    return 1;
-                } else if (o1 > o2) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            }
-        };
+        comparator = new TestComparator();
     }
 
     protected abstract AddressableHeap<Integer, Void> createHeap();
@@ -94,27 +99,10 @@ public abstract class AbstractAddressableHeapTest {
     }
 
     @Test
-    public void testComparator() {
-        AddressableHeap<Integer, Void> h = createHeap(comparator);
-        int i;
-
-        for (i = 0; i < SIZE; i++) {
-            h.insert(i);
-            assertEquals(Integer.valueOf(i), h.findMin().getKey());
-            assertFalse(h.isEmpty());
-            assertEquals(h.size(), i + 1);
-        }
-
-        for (i = SIZE - 1; i >= 0; i--) {
-            assertEquals(h.findMin().getKey(), Integer.valueOf(i));
-            h.deleteMin();
-        }
-    }
-
-    @Test
-    public void testGetComparator() {
-        AddressableHeap<Integer, Void> h = createHeap(comparator);
-        assertEquals(comparator, h.comparator());
+    public void testSetValue() {
+        AddressableHeap<Integer, String> h = createHeapWithStringValues();
+        h.insert(1, "value1").setValue("value2");
+        assertEquals("value2", h.findMin().getValue());
     }
 
     @Test
@@ -156,7 +144,6 @@ public abstract class AbstractAddressableHeapTest {
         assertEquals(h.size(), 0);
 
         assertTrue(h.isEmpty());
-
     }
 
     @Test
@@ -574,6 +561,32 @@ public abstract class AbstractAddressableHeapTest {
 
     @Test
     @SuppressWarnings("unchecked")
+    public void testDecreaseKeyWithComparator1() {
+        AddressableHeap<Integer, Void> h = createHeap(comparator);
+
+        AddressableHeap.Handle<Integer, Void> array[];
+        array = new AddressableHeap.Handle[15];
+        for (int i = 0; i < 15; i++) {
+            array[i] = h.insert(Integer.valueOf(i));
+        }
+
+        assertEquals(Integer.valueOf(14), h.findMin().getKey());
+        array[5].decreaseKey(205);
+        assertEquals(Integer.valueOf(205), h.findMin().getKey());
+        array[1].decreaseKey(250);
+        assertEquals(Integer.valueOf(250), h.findMin().getKey());
+        array[1].decreaseKey(300);
+        assertEquals(Integer.valueOf(300), h.findMin().getKey());
+        array[5].delete();
+        assertEquals(Integer.valueOf(300), h.findMin().getKey());
+        array[10].decreaseKey(403);
+        assertEquals(Integer.valueOf(403), h.findMin().getKey());
+        array[0].decreaseKey(1000);
+        assertEquals(Integer.valueOf(1000), h.findMin().getKey());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
     public void testDecreaseKey1() {
         AddressableHeap<Integer, Void> h = createHeap();
 
@@ -630,6 +643,12 @@ public abstract class AbstractAddressableHeapTest {
         array[1].decreaseKey(102);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testIncreaseKeyWithComparator() {
+        AddressableHeap<Integer, Void> h = createHeap(comparator);
+        h.insert(10).decreaseKey(9);
+    }
+
     @SuppressWarnings("unchecked")
     @Test
     public void testSerializable() throws IOException, ClassNotFoundException {
@@ -683,118 +702,6 @@ public abstract class AbstractAddressableHeapTest {
 
         Handle<Integer, String> handle = h.insert(1, "1");
         assertEquals("1", handle.getValue());
-    }
-
-    @Test
-    public void testMeldGeneric() {
-        AddressableHeap<Integer, Void> h1 = createHeap();
-
-        if (h1 instanceof MergeableAddressableHeap) {
-            for (int i = 0; i < SIZE; i++) {
-                h1.insert(2 * i);
-            }
-
-            AddressableHeap<Integer, Void> h2 = createHeap();
-            for (int i = 0; i < SIZE; i++) {
-                h2.insert(2 * i + 1);
-            }
-
-            ((MergeableAddressableHeap<Integer, Void>) h1).meld((MergeableAddressableHeap<Integer, Void>) h2);
-
-            assertEquals(h1.size(), SIZE * 2);
-            assertEquals(h2.size(), 0);
-
-            Integer prev = null, cur;
-            while (!h1.isEmpty()) {
-                cur = h1.findMin().getKey();
-                h1.deleteMin();
-                if (prev != null) {
-                    assertTrue(prev.compareTo(cur) <= 0);
-                }
-                prev = cur;
-            }
-        }
-    }
-
-    @Test
-    public void testMeldGeneric1() {
-        AddressableHeap<Integer, Void> h1 = createHeap();
-
-        if (h1 instanceof MergeableAddressableHeap) {
-            AddressableHeap<Integer, Void> h2 = createHeap();
-            for (int i = 0; i < SIZE; i++) {
-                h2.insert(i);
-            }
-
-            ((MergeableAddressableHeap<Integer, Void>) h1).meld((MergeableAddressableHeap<Integer, Void>) h2);
-
-            assertEquals(h1.size(), SIZE);
-            assertEquals(h2.size(), 0);
-
-            Integer prev = null, cur;
-            while (!h1.isEmpty()) {
-                cur = h1.findMin().getKey();
-                h1.deleteMin();
-                if (prev != null) {
-                    assertTrue(prev.compareTo(cur) <= 0);
-                }
-                prev = cur;
-            }
-        }
-    }
-
-    @Test
-    public void testMeldGeneric2() {
-        AddressableHeap<Integer, Void> h1 = createHeap();
-
-        if (h1 instanceof MergeableAddressableHeap) {
-            AddressableHeap<Integer, Void> h2 = createHeap();
-            for (int i = 0; i < SIZE; i++) {
-                h1.insert(i);
-            }
-
-            ((MergeableAddressableHeap<Integer, Void>) h1).meld((MergeableAddressableHeap<Integer, Void>) h2);
-
-            assertEquals(h1.size(), SIZE);
-            assertEquals(h2.size(), 0);
-
-            Integer prev = null, cur;
-            while (!h1.isEmpty()) {
-                cur = h1.findMin().getKey();
-                h1.deleteMin();
-                if (prev != null) {
-                    assertTrue(prev.compareTo(cur) <= 0);
-                }
-                prev = cur;
-            }
-        }
-    }
-
-    @Test
-    public void testMeld() {
-        AddressableHeap<Integer, Void> h1 = createHeap();
-        AddressableHeap<Integer, Void> h2 = createHeap();
-
-        if (h1 instanceof MergeableAddressableHeap) {
-            for (int i = 0; i < SIZE; i++) {
-                if (i % 2 == 0) {
-                    h1.insert(i);
-                } else {
-                    h2.insert(i);
-                }
-            }
-
-            ((MergeableAddressableHeap<Integer, Void>) h1).meld((MergeableAddressableHeap<Integer, Void>) h2);
-
-            assertTrue(h2.isEmpty());
-            assertEquals(0, h2.size());
-
-            for (int i = 0; i < SIZE; i++) {
-                assertEquals(Integer.valueOf(i), h1.findMin().getKey());
-                h1.deleteMin();
-            }
-            assertTrue(h1.isEmpty());
-        }
     }
 
     @Test
@@ -892,6 +799,77 @@ public abstract class AbstractAddressableHeapTest {
         } else {
             throw new IllegalArgumentException();
         }
+    }
+
+    @Test
+    public void testComparator() {
+        AddressableHeap<Integer, Void> h = createHeap(comparator);
+        int i;
+
+        for (i = 0; i < SIZE; i++) {
+            h.insert(i);
+            assertEquals(Integer.valueOf(i), h.findMin().getKey());
+            assertFalse(h.isEmpty());
+            assertEquals(h.size(), i + 1);
+        }
+
+        for (i = SIZE - 1; i >= 0; i--) {
+            assertEquals(h.findMin().getKey(), Integer.valueOf(i));
+            h.deleteMin();
+        }
+    }
+
+    @Test
+    public void testDecreaseSame() {
+        AddressableHeap<Integer, Void> h = createHeap(comparator);
+        h.insert(10).decreaseKey(10);
+        assertEquals(10, h.findMin().getKey().intValue());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidHandleDecreaseKey() {
+        AddressableHeap<Integer, Void> h = createHeap(comparator);
+        Handle<Integer, Void> handle = h.insert(10);
+        h.deleteMin();
+        handle.decreaseKey(11);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testSerializableWithComparator() throws IOException, ClassNotFoundException {
+        AddressableHeap<Integer, Void> h = createHeap(comparator);
+
+        for (int i = 0; i < 15; i++) {
+            h.insert(i);
+        }
+
+        // write
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(h);
+        oos.close();
+        byte[] data = baos.toByteArray();
+
+        // read
+        h = null;
+
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+        Object o = ois.readObject();
+        ois.close();
+        h = (AddressableHeap<Integer, Void>) o;
+
+        for (int i = 0; i < 15; i++) {
+            assertEquals(15 - i, h.size());
+            assertEquals(Integer.valueOf(15 - i - 1), h.findMin().getKey());
+            h.deleteMin();
+        }
+        assertTrue(h.isEmpty());
+    }
+
+    @Test
+    public void testGetComparator() {
+        AddressableHeap<Integer, Void> h = createHeap(comparator);
+        assertEquals(comparator, h.comparator());
     }
 
 }

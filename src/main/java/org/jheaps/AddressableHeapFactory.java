@@ -15,27 +15,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps.tree;
+package org.jheaps;
 
 import java.util.Comparator;
 
-import org.jheaps.AddressableHeap;
-import org.jheaps.tree.PairingHeap;
+/**
+ * An addressable heap factory.
+ * 
+ * 
+ * @author Dimitrios Michail
+ *
+ * @param <K>
+ *            the type of keys maintained by the heap
+ * @param <V>
+ *            the type of values maintained by the heap
+ */
+public interface AddressableHeapFactory<K, V> {
 
-public class PairingHeapTest extends AbstractAddressableHeapTest {
+    /**
+     * Get a new heap.
+     * 
+     * @param comparator
+     *            the comparator that will be used to order this heap. If
+     *            {@code null}, the {@linkplain Comparable natural ordering} of
+     *            the keys will be used.
+     * 
+     * @return a new heap
+     */
+    AddressableHeap<K, V> get(Comparator<? super K> comparator);
 
-	@Override
-	protected AddressableHeap<Integer, Void> createHeap() {
-		return new PairingHeap<Integer, Void>();
-	}
-
-	@Override
-	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
-		return new PairingHeap<Integer, Void>(comparator);
-	}
-
-	@Override
-	protected AddressableHeap<Integer, String> createHeapWithStringValues() {
-		return new PairingHeap<Integer, String>();
-	}
 }
