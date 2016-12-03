@@ -20,34 +20,22 @@ package org.jheaps.minmax;
 import java.util.Comparator;
 
 import org.jheaps.AddressableHeap;
-import org.jheaps.AddressableHeapFactory;
-import org.jheaps.minmax.ReflectedHeap;
 import org.jheaps.tree.AbstractAddressableHeapTest;
-import org.jheaps.tree.PairingHeap;
 
 public class ReflectedPairingHeapAddressableHeapTest extends AbstractAddressableHeapTest {
 
-    private static AddressableHeapFactory<Integer, Void> FACTORY = new AddressableHeapFactory<Integer, Void>() {
-
-        @Override
-        public AddressableHeap<Integer, Void> get(Comparator<? super Integer> comparator) {
-            return new PairingHeap<Integer, Void>(comparator);
-        }
-
-    };
-
     @Override
     protected AddressableHeap<Integer, Void> createHeap() {
-        return new ReflectedHeap<Integer, Void>(FACTORY, null);
+        return new ReflectedPairingHeap<Integer, Void>(null);
     }
 
     @Override
     protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
-        return new ReflectedHeap<Integer, Void>(FACTORY, comparator);
+        return new ReflectedPairingHeap<Integer, Void>(comparator);
     }
 
     @Override
     protected AddressableHeap<Integer, String> createHeapWithStringValues() {
-        return new ReflectedHeap<Integer, String>(FACTORY, null);
+        return new ReflectedPairingHeap<Integer, String>(null);
     }
 }

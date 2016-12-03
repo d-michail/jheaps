@@ -32,10 +32,19 @@ import org.jheaps.MergeableDoubleEndedAddressableHeap;
  * {@link Comparator} provided at heap creation time, depending on which
  * constructor is used.
  * 
- * TODO: add bounds and link to paper
+ * <p>
+ * This class implements a general technique which uses two
+ * {@link MergeableAddressableHeap}s to implement a double ended heap, described
+ * in detail in the following
+ * <a href="http://dx.doi.org/10.1016/S0020-0190(02)00501-X">paper</a>:
+ * <ul>
+ * <li>C. Makris, A. Tsakalidis, and K. Tsichlas. Reflected min-max heaps.
+ * Information Processing Letters, 86(4), 209--214, 2003.</li>
+ * </ul>
  * 
  * <p>
- * All the above bounds, however, assume that the user does not perform
+ * The running time bounds depend on the implementation of the underlying used
+ * heap. All the above bounds, however, assume that the user does not perform
  * cascading melds on heaps such as:
  * 
  * <pre>
@@ -120,6 +129,26 @@ public class ReflectedHeap<K, V> implements MergeableDoubleEndedAddressableHeap<
      * one heap to another and then another.
      */
     private ReflectedHeap<K, V> other;
+
+    /**
+     * Constructs a new, empty heap, using the natural ordering of its keys. All
+     * keys inserted into the heap must implement the {@link Comparable}
+     * interface. Furthermore, all such keys must be <em>mutually
+     * comparable</em>: {@code k1.compareTo(k2)} must not throw a
+     * {@code ClassCastException} for any keys {@code k1} and {@code k2} in the
+     * heap. If the user attempts to put a key into the heap that violates this
+     * constraint (for example, the user attempts to put a string key into a
+     * heap whose keys are integers), the {@code insert(Object key)} call will
+     * throw a {@code ClassCastException}.
+     * 
+     * @param heapFactory
+     *            a factory for the underlying heap implementation
+     * @throws NullPointerException
+     *             if the heap factory is null
+     */
+    public ReflectedHeap(AddressableHeapFactory<K, ?> heapFactory) {
+        this(heapFactory, null);
+    }
 
     /**
      * Constructs a new, empty heap, ordered according to the given comparator.
