@@ -15,32 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps;
+package org.jheaps.tree;
 
 import java.util.Comparator;
 
-/**
- * An addressable heap factory.
- * 
- * @author Dimitrios Michail
- *
- * @param <K>
- *            the type of keys maintained by the heap
- * @param <V>
- *            the type of values maintained by the heap
- */
-public interface AddressableHeapFactory<K, V> {
+import org.jheaps.MergeableAddressableHeap;
 
-    /**
-     * Get a new heap.
-     * 
-     * @param comparator
-     *            the comparator that will be used to order this heap. If
-     *            {@code null}, the {@linkplain Comparable natural ordering} of
-     *            the keys will be used.
-     * 
-     * @return a new heap
-     */
-    AddressableHeap<K, V> get(Comparator<? super K> comparator);
+public class LeftistHeapMergeableAddressableHeapTest extends AbstractMergeableAddressableHeapTest {
+
+    @Override
+    protected MergeableAddressableHeap<Integer, String> createHeap() {
+        return new LeftistHeap<Integer, String>();
+    }
+
+    @Override
+    protected MergeableAddressableHeap<Integer, String> createHeap(Comparator<Integer> comparator) {
+        return new LeftistHeap<Integer, String>(comparator);
+    }
 
 }

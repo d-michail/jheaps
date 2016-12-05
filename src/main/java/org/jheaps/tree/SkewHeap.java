@@ -27,7 +27,7 @@ import org.jheaps.annotations.ConstantTime;
 import org.jheaps.annotations.LogarithmicTime;
 
 /**
- * A skew heap. The heap is sorted according to the {@linkplain Comparable
+ * Skew heaps. The heap is sorted according to the {@linkplain Comparable
  * natural ordering} of its keys, or by a {@link Comparator} provided at heap
  * creation time, depending on which constructor is used.
  *
@@ -76,17 +76,17 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
      *
      * @serial
      */
-    private final Comparator<? super K> comparator;
+    protected final Comparator<? super K> comparator;
 
     /**
      * Size of the heap
      */
-    private long size;
+    protected long size;
 
     /**
      * Root node of the heap
      */
-    private Node<K, V> root;
+    protected Node<K, V> root;
 
     /**
      * Used to reference the current heap or some other heap in case of melding,
@@ -98,7 +98,7 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
      * path-compression in case of cascading melds, that it, a handle moves from
      * one heap to another and then another.
      */
-    private SkewHeap<K, V> other;
+    protected SkewHeap<K, V> other;
 
     /**
      * Constructs a new, empty heap, using the natural ordering of its keys.
@@ -162,7 +162,7 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
         if (key == null) {
             throw new NullPointerException("Null keys not permitted");
         }
-        Node<K, V> n = new Node<K, V>(this, key, value);
+        Node<K, V> n = createNode(key, value);
 
         // easy special cases
         if (size == 0) {
@@ -413,7 +413,26 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
         size++;
     }
 
-    private void delete(Node<K, V> n) {
+    /**
+     * Create a new node.
+     * 
+     * @param key
+     *            the key
+     * @param value
+     *            the value
+     * @return the newly created node
+     */
+    protected Node<K, V> createNode(K key, V value) {
+        return new Node<K, V>(this, key, value);
+    }
+
+    /**
+     * Delete a node from the heap.
+     * 
+     * @param n
+     *            the node
+     */
+    protected void delete(Node<K, V> n) {
         if (n == root) {
             deleteMin();
             return;
@@ -464,7 +483,7 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
      *            the node
      * @return the tree which is formed by the two children subtrees of the node
      */
-    private Node<K, V> unlinkAndUnionChildren(Node<K, V> n) {
+    protected Node<K, V> unlinkAndUnionChildren(Node<K, V> n) {
         // disconnect children
         Node<K, V> child1 = n.o_c;
         if (child1 == null) {
@@ -487,10 +506,14 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
         }
     }
 
-    /*
+    /**
      * Get the parent node of a given node.
+     * 
+     * @param n
+     *            the node
+     * @return the parent of a node
      */
-    private Node<K, V> getParent(Node<K, V> n) {
+    protected Node<K, V> getParent(Node<K, V> n) {
         if (n.y_s == null) {
             return null;
         }
@@ -505,7 +528,14 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
         return c;
     }
 
-    private Node<K, V> unlinkRightChild(Node<K, V> n) {
+    /**
+     * Unlink the right child of a node.
+     * 
+     * @param n
+     *            the node
+     * @return the right child after unlinking
+     */
+    protected Node<K, V> unlinkRightChild(Node<K, V> n) {
         Node<K, V> left = n.o_c;
         if (left == null || left.y_s == n) {
             return null;
@@ -516,11 +546,17 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
         return right;
     }
 
-    /*
-     * Top-down union.
+    /**
+     * Top-down union of two skew heaps.
+     * 
+     * @param root1
+     *            the root of the first heap
+     * @param root2
+     *            the root of the right heap
+     * @return the new root of the merged heap
      */
     @SuppressWarnings("unchecked")
-    private Node<K, V> union(Node<K, V> root1, Node<K, V> root2) {
+    protected Node<K, V> union(Node<K, V> root1, Node<K, V> root2) {
         if (root1 == null) {
             return root2;
         } else if (root2 == null) {
@@ -545,7 +581,7 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
         while (root1 != null && root2 != null) {
             c = ((Comparable<? super K>) root1.key).compareTo(root2.key);
             if (c <= 0) {
-                // link as left child of result
+                // link as left child of cur
                 if (cur.o_c == null) {
                     root1.y_s = cur;
                 } else {
@@ -555,7 +591,7 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
                 cur = root1;
                 root1 = unlinkRightChild(root1);
             } else {
-                // link as left child of result
+                // link as left child of cur
                 if (cur.o_c == null) {
                     root2.y_s = cur;
                 } else {
@@ -568,7 +604,7 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
         }
 
         while (root1 != null) {
-            // link as left child of result
+            // link as left child of cur
             if (cur.o_c == null) {
                 root1.y_s = cur;
             } else {
@@ -580,7 +616,7 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
         }
 
         while (root2 != null) {
-            // link as left child of result
+            // link as left child of cur
             if (cur.o_c == null) {
                 root2.y_s = cur;
             } else {
@@ -594,10 +630,16 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
         return newRoot;
     }
 
-    /*
-     * Top-down union with comparator
+    /**
+     * Top-down union of two skew heaps with comparator.
+     * 
+     * @param root1
+     *            the root of the first heap
+     * @param root2
+     *            the root of the right heap
+     * @return the new root of the merged heap
      */
-    private Node<K, V> unionWithComparator(Node<K, V> root1, Node<K, V> root2) {
+    protected Node<K, V> unionWithComparator(Node<K, V> root1, Node<K, V> root2) {
         if (root1 == null) {
             return root2;
         } else if (root2 == null) {

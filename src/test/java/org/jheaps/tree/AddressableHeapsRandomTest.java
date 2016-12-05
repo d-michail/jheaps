@@ -64,7 +64,7 @@ public class AddressableHeapsRandomTest {
 
     private void test(Random rng) {
 
-        final int classes = 7;
+        final int classes = 8;
 
         @SuppressWarnings("unchecked")
         AddressableHeap<Integer, Void>[] h = (AddressableHeap<Integer, Void>[]) Array.newInstance(AddressableHeap.class,
@@ -76,16 +76,13 @@ public class AddressableHeapsRandomTest {
         h[4] = new CostlessMeldPairingHeap<Integer, Void>();
         h[5] = new SkewHeap<Integer, Void>();
         h[6] = new ReflectedPairingHeap<Integer, Void>();
+        h[7] = new LeftistHeap<Integer, Void>();
 
         @SuppressWarnings("unchecked")
         List<Handle<Integer, Void>>[] s = (List<Handle<Integer, Void>>[]) Array.newInstance(List.class, classes);
-        s[0] = new ArrayList<Handle<Integer, Void>>();
-        s[1] = new ArrayList<Handle<Integer, Void>>();
-        s[2] = new ArrayList<Handle<Integer, Void>>();
-        s[3] = new ArrayList<Handle<Integer, Void>>();
-        s[4] = new ArrayList<Handle<Integer, Void>>();
-        s[5] = new ArrayList<Handle<Integer, Void>>();
-        s[6] = new ArrayList<Handle<Integer, Void>>();
+        for (int j = 0; j < classes; j++) {
+            s[j] = new ArrayList<Handle<Integer, Void>>();
+        }
 
         for (int i = 0; i < SIZE; i++) {
             Integer k = rng.nextInt();
@@ -149,7 +146,7 @@ public class AddressableHeapsRandomTest {
 
     private void testRandomDeletes(long seed) {
 
-        final int classes = 7;
+        final int classes = 8;
 
         @SuppressWarnings("unchecked")
         AddressableHeap<Integer, Void>[] h = (AddressableHeap<Integer, Void>[]) Array.newInstance(AddressableHeap.class,
@@ -161,6 +158,7 @@ public class AddressableHeapsRandomTest {
         h[4] = new CostlessMeldPairingHeap<Integer, Void>();
         h[5] = new SkewHeap<Integer, Void>();
         h[6] = new ReflectedPairingHeap<Integer, Void>();
+        h[7] = new LeftistHeap<Integer, Void>();
 
         @SuppressWarnings("unchecked")
         List<Handle<Integer, Void>>[] s = (List<Handle<Integer, Void>>[]) Array.newInstance(List.class, classes);

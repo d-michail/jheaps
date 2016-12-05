@@ -34,7 +34,7 @@ import org.jheaps.annotations.LogarithmicTime;
  *
  * <p>
  * The worst-case cost of {@code insert}, {@code deleteMin}, {@code delete} and
- * {@code decreateKey} operations is O(log(n)) and the cost of {@code findMin}
+ * {@code decreaceKey} operations is O(log(n)) and the cost of {@code findMin}
  * is O(1).
  *
  * <p>
