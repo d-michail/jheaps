@@ -33,7 +33,6 @@ import java.util.Random;
 
 import org.jheaps.AddressableHeap;
 import org.jheaps.AddressableHeap.Handle;
-import org.jheaps.MergeableAddressableHeap;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -702,103 +701,6 @@ public abstract class AbstractAddressableHeapTest {
 
         Handle<Integer, String> handle = h.insert(1, "1");
         assertEquals("1", handle.getValue());
-    }
-
-    @Test
-    public void testMeldWithComparatorSmallerFirst() {
-        AddressableHeap<Integer, Void> h1 = createHeap(comparator);
-        AddressableHeap<Integer, Void> h2 = createHeap(comparator);
-
-        if (h1 instanceof MergeableAddressableHeap) {
-
-            h1.insert(0);
-            h1.insert(1);
-            h1.insert(2);
-            h1.insert(3);
-
-            for (int i = 4; i < SIZE; i++) {
-                h2.insert(i);
-            }
-
-            ((MergeableAddressableHeap<Integer, Void>) h1).meld((MergeableAddressableHeap<Integer, Void>) h2);
-
-            assertTrue(h2.isEmpty());
-            assertEquals(0, h2.size());
-
-            for (int i = 0; i < SIZE; i++) {
-                assertEquals(Integer.valueOf(SIZE - i - 1), h1.findMin().getKey());
-                h1.deleteMin();
-            }
-            assertTrue(h1.isEmpty());
-        }
-    }
-
-    @Test
-    public void testMeldWithComparator() {
-        AddressableHeap<Integer, Void> h1 = createHeap(comparator);
-        AddressableHeap<Integer, Void> h2 = createHeap(comparator);
-
-        if (h1 instanceof MergeableAddressableHeap) {
-            for (int i = 0; i < SIZE; i++) {
-                if (i % 2 == 0) {
-                    h1.insert(i);
-                } else {
-                    h2.insert(i);
-                }
-            }
-
-            ((MergeableAddressableHeap<Integer, Void>) h1).meld((MergeableAddressableHeap<Integer, Void>) h2);
-
-            assertTrue(h2.isEmpty());
-            assertEquals(0, h2.size());
-
-            for (int i = 0; i < SIZE; i++) {
-                assertEquals(Integer.valueOf(SIZE - i - 1), h1.findMin().getKey());
-                h1.deleteMin();
-            }
-            assertTrue(h1.isEmpty());
-        }
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testMeldWrong() {
-        AddressableHeap<Integer, Void> h1 = createHeap();
-        AddressableHeap<Integer, Void> h2 = createHeap(comparator);
-
-        if (h1 instanceof MergeableAddressableHeap) {
-            for (int i = 0; i < SIZE; i++) {
-                if (i % 2 == 0) {
-                    h1.insert(i);
-                } else {
-                    h2.insert(i);
-                }
-            }
-
-            ((MergeableAddressableHeap<Integer, Void>) h1).meld((MergeableAddressableHeap<Integer, Void>) h2);
-
-            assertTrue(h2.isEmpty());
-            assertEquals(0, h2.size());
-
-            for (int i = 0; i < SIZE; i++) {
-                assertEquals(Integer.valueOf(i), h1.findMin().getKey());
-                h1.deleteMin();
-            }
-            assertTrue(h1.isEmpty());
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testMeldWrong1() throws IOException, ClassNotFoundException {
-        AddressableHeap<Integer, Void> h1 = createHeap(comparator);
-        AddressableHeap<Integer, Void> h2 = createHeap();
-
-        if (h1 instanceof MergeableAddressableHeap) {
-            ((MergeableAddressableHeap<Integer, Void>) h1).meld((MergeableAddressableHeap<Integer, Void>) h2);
-        } else {
-            throw new IllegalArgumentException();
-        }
     }
 
     @Test
