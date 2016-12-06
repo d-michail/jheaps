@@ -379,4 +379,72 @@ public abstract class AbstractMergeableDoubleEndedAddressableHeapTest {
         }
     }
 
+    @Test
+    public void testMeldEvenOddSizes() {
+        MergeableDoubleEndedAddressableHeap<Integer, String> a = createHeap();
+        a.insert(10);
+        a.insert(11);
+        a.insert(12);
+        a.insert(13);
+
+        MergeableDoubleEndedAddressableHeap<Integer, String> b = createHeap();
+        b.insert(14);
+        b.insert(15);
+        b.insert(16);
+
+        a.meld(b);
+
+        assertEquals(7, a.size());
+        assertTrue(b.isEmpty());
+        assertEquals(0, b.size());
+
+        assertEquals(Integer.valueOf(10), a.findMin().getKey());
+        assertEquals(Integer.valueOf(16), a.findMax().getKey());
+    }
+
+    @Test
+    public void testMeldOddOddSizes() {
+        MergeableDoubleEndedAddressableHeap<Integer, String> a = createHeap();
+        a.insert(10);
+        a.insert(11);
+        a.insert(12);
+
+        MergeableDoubleEndedAddressableHeap<Integer, String> b = createHeap();
+        b.insert(14);
+        b.insert(15);
+        b.insert(16);
+
+        a.meld(b);
+
+        assertEquals(6, a.size());
+        assertTrue(b.isEmpty());
+        assertEquals(0, b.size());
+
+        assertEquals(Integer.valueOf(10), a.findMin().getKey());
+        assertEquals(Integer.valueOf(16), a.findMax().getKey());
+    }
+
+    @Test
+    public void testMeldOddEvenSizes() {
+        MergeableDoubleEndedAddressableHeap<Integer, String> a = createHeap();
+        a.insert(10);
+        a.insert(11);
+        a.insert(12);
+
+        MergeableDoubleEndedAddressableHeap<Integer, String> b = createHeap();
+        b.insert(13);
+        b.insert(14);
+        b.insert(15);
+        b.insert(16);
+
+        a.meld(b);
+
+        assertEquals(7, a.size());
+        assertTrue(b.isEmpty());
+        assertEquals(0, b.size());
+
+        assertEquals(Integer.valueOf(10), a.findMin().getKey());
+        assertEquals(Integer.valueOf(16), a.findMax().getKey());
+    }
+
 }

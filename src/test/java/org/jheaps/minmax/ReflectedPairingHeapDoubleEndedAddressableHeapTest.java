@@ -25,6 +25,7 @@ import org.jheaps.DoubleEndedAddressableHeap;
 import org.jheaps.minmax.ReflectedHeap;
 import org.jheaps.tree.AbstractDoubleEndedAddressableHeapTest;
 import org.jheaps.tree.PairingHeap;
+import org.junit.Test;
 
 public class ReflectedPairingHeapDoubleEndedAddressableHeapTest extends AbstractDoubleEndedAddressableHeapTest {
 
@@ -49,6 +50,12 @@ public class ReflectedPairingHeapDoubleEndedAddressableHeapTest extends Abstract
 
     @Override
     protected DoubleEndedAddressableHeap<Integer, String> createHeapWithStringValues() {
-        return new ReflectedHeap<Integer, String>(FACTORY, null);
+        return new ReflectedHeap<Integer, String>(FACTORY);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void testNoFactory() {
+        new ReflectedHeap<Integer, Void>(null);
+    }
+
 }

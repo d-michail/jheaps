@@ -18,6 +18,7 @@
 package org.jheaps.minmax;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
@@ -176,11 +177,7 @@ public class ReflectedHeap<K, V> implements MergeableDoubleEndedAddressableHeap<
         }
         this.comparator = comparator;
         this.minHeap = (AddressableHeap<K, HandleMap<K, V>>) heapFactory.get(comparator);
-        if (comparator == null) {
-            this.maxHeap = (AddressableHeap<K, HandleMap<K, V>>) heapFactory.get(new ReverseNaturalComparator<K>());
-        } else {
-            this.maxHeap = (AddressableHeap<K, HandleMap<K, V>>) heapFactory.get(new ReverseComparator<K>(comparator));
-        }
+        this.maxHeap = (AddressableHeap<K, HandleMap<K, V>>) heapFactory.get(Collections.reverseOrder(comparator));
         this.free = null;
         this.size = 0;
         this.other = this;
@@ -691,6 +688,9 @@ public class ReflectedHeap<K, V> implements MergeableDoubleEndedAddressableHeap<
 
     // ~-------------------------------------------------------------------
 
+    /*
+     * This is the outer handle which we provide to the users.
+     */
     private static class ReflectedHandle<K, V> implements Handle<K, V>, Serializable {
 
         private static final long serialVersionUID = 3179286196684064903L;
@@ -703,7 +703,15 @@ public class ReflectedHeap<K, V> implements MergeableDoubleEndedAddressableHeap<
 
         K key;
         V value;
+
+        /*
+         * Whether the key is inside the minimum or the maximum heap (if not the
+         * free element).
+         */
         boolean minNotMax;
+        /*
+         * Handle inside one of the inner heaps, or null if free element.
+         */
         AddressableHeap.Handle<K, HandleMap<K, V>> inner;
 
         public ReflectedHandle(ReflectedHeap<K, V> heap, K key, V value) {
@@ -785,6 +793,10 @@ public class ReflectedHeap<K, V> implements MergeableDoubleEndedAddressableHeap<
 
     }
 
+    /*
+     * Value kept in the inner heaps, in order to map (a) to the outer heap and
+     * (b) to the pair inside the other inner heap.
+     */
     private static class HandleMap<K, V> implements Serializable {
 
         private static final long serialVersionUID = 1L;
@@ -796,83 +808,6 @@ public class ReflectedHeap<K, V> implements MergeableDoubleEndedAddressableHeap<
             this.outer = outer;
             this.otherInner = otherInner;
         }
-    }
-
-    private static class ReverseComparator<T> implements Comparator<T>, Serializable {
-        private static final long serialVersionUID = 1L;
-
-        private Comparator<? super T> comparator;
-
-        public ReverseComparator(Comparator<? super T> comparator) {
-            this.comparator = comparator;
-        }
-
-        @Override
-        public int compare(T o1, T o2) {
-            return -1 * comparator.compare(o1, o2);
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((comparator == null) ? 0 : comparator.hashCode());
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            @SuppressWarnings("rawtypes")
-            ReverseComparator other = (ReverseComparator) obj;
-            if (comparator == null) {
-                if (other.comparator != null)
-                    return false;
-            } else if (!comparator.equals(other.comparator))
-                return false;
-            return true;
-        }
-
-    }
-
-    private static class ReverseNaturalComparator<T> implements Comparator<T>, Serializable {
-
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public int compare(T o1, T o2) {
-            Comparable<T> c1 = (Comparable<T>) o1;
-            return -1 * c1.compareTo(o2);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            /*
-             * Always true as we have no fields.
-             */
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result;
-            return result;
-        }
-
     }
 
 }

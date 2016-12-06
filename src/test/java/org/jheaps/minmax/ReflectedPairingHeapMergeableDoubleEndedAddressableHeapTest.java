@@ -24,7 +24,9 @@ import org.jheaps.AddressableHeapFactory;
 import org.jheaps.MergeableDoubleEndedAddressableHeap;
 import org.jheaps.minmax.ReflectedHeap;
 import org.jheaps.tree.AbstractMergeableDoubleEndedAddressableHeapTest;
+import org.jheaps.tree.BinaryTreeAddressableHeap;
 import org.jheaps.tree.PairingHeap;
+import org.junit.Test;
 
 public class ReflectedPairingHeapMergeableDoubleEndedAddressableHeapTest
         extends AbstractMergeableDoubleEndedAddressableHeapTest {
@@ -38,6 +40,15 @@ public class ReflectedPairingHeapMergeableDoubleEndedAddressableHeapTest
 
     };
 
+    private static AddressableHeapFactory<Integer, String> NON_MELDABLE_FACTORY = new AddressableHeapFactory<Integer, String>() {
+
+        @Override
+        public AddressableHeap<Integer, String> get(Comparator<? super Integer> comparator) {
+            return new BinaryTreeAddressableHeap<Integer, String>(comparator);
+        }
+
+    };
+
     @Override
     protected MergeableDoubleEndedAddressableHeap<Integer, String> createHeap() {
         return new ReflectedHeap<Integer, String>(FACTORY, null);
@@ -46,6 +57,13 @@ public class ReflectedPairingHeapMergeableDoubleEndedAddressableHeapTest
     @Override
     protected MergeableDoubleEndedAddressableHeap<Integer, String> createHeap(Comparator<Integer> comparator) {
         return new ReflectedHeap<Integer, String>(FACTORY, comparator);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNonMeldableInnerHeaps() {
+        ReflectedHeap<Integer, String> h1 = new ReflectedHeap<Integer, String>(NON_MELDABLE_FACTORY);
+        ReflectedHeap<Integer, String> h2 = new ReflectedHeap<Integer, String>(NON_MELDABLE_FACTORY);
+        h1.meld(h2);
     }
 
 }
