@@ -103,7 +103,9 @@ abstract class AbstractArrayHeap<K> extends AbstractArrayWeakHeap<K> {
             array[1] = null;
             size = 0;
         } else {
-            array[1] = array[size--];
+            array[1] = array[size];
+            array[size] = null;
+            size--;
             if (comparator == null) {
                 fixdown(1);
             } else {
