@@ -17,6 +17,8 @@
  */
 package org.jheaps.array;
 
+import java.util.Comparator;
+
 import org.jheaps.Heap;
 import org.jheaps.array.DaryArrayHeap;
 import org.jheaps.tree.AbstractHeapTest;
@@ -24,35 +26,40 @@ import org.junit.Test;
 
 public class D3DaryArrayHeapTest extends AbstractHeapTest {
 
-	protected Heap<Long> createHeap() {
-		return new DaryArrayHeap<Long>(3);
-	}
+    protected Heap<Long> createHeap() {
+        return new DaryArrayHeap<Long>(3);
+    }
 
-	protected Heap<Long> createHeap(int capacity) {
-		return new DaryArrayHeap<Long>(3, capacity);
-	}
+    protected Heap<Long> createHeap(int capacity) {
+        return new DaryArrayHeap<Long>(3, capacity);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testWrongD() {
-		new DaryArrayHeap<Long>(1);
-	}
+    @Override
+    protected Heap<Long> createHeap(Comparator<Long> comparator) {
+        return new DaryArrayHeap<Long>(3, comparator);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize() {
-		Heap<Long> h = createHeap(-4);
-		h.insert(1l);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testWrongD() {
+        new DaryArrayHeap<Long>(1);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize1() {
-		Heap<Long> h = createHeap(-1);
-		h.insert(1l);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalSize() {
+        Heap<Long> h = createHeap(-4);
+        h.insert(1l);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize2() {
-		Heap<Long> h = createHeap(Integer.MAX_VALUE - 8);
-		h.insert(1l);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalSize1() {
+        Heap<Long> h = createHeap(-1);
+        h.insert(1l);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalSize2() {
+        Heap<Long> h = createHeap(Integer.MAX_VALUE - 8);
+        h.insert(1l);
+    }
 
 }

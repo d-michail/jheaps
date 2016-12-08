@@ -20,13 +20,16 @@ package org.jheaps.array;
 import java.util.Comparator;
 
 import org.jheaps.Heap;
-import org.jheaps.array.DaryArrayHeap;
-import org.jheaps.tree.AbstractComparatorHeapTest;
+import org.jheaps.tree.AbstractStaticHeapTest;
 
-public class D3ComparatorDaryArrayHeapTest extends AbstractComparatorHeapTest {
+public class MinMaxBinaryFixedArrayHeapTest extends AbstractStaticHeapTest {
 
-	protected Heap<Long> createHeap(Comparator<Long> comparator) {
-		return new DaryArrayHeap<Long>(3, comparator);
-	}
+    protected Heap<Integer> createHeap(Comparator<Integer> comparator, int capacity) {
+        return new MinMaxBinaryFixedArrayDoubleEndedHeap<Integer>(comparator, capacity);
+    }
+
+    protected Heap<Integer> createHeap(int capacity) {
+        return new MinMaxBinaryFixedArrayDoubleEndedHeap<Integer>(capacity);
+    }
 
 }

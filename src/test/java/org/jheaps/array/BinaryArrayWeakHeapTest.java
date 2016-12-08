@@ -17,6 +17,8 @@
  */
 package org.jheaps.array;
 
+import java.util.Comparator;
+
 import org.jheaps.Heap;
 import org.jheaps.array.BinaryArrayWeakHeap;
 import org.jheaps.tree.AbstractHeapTest;
@@ -24,30 +26,35 @@ import org.junit.Test;
 
 public class BinaryArrayWeakHeapTest extends AbstractHeapTest {
 
-	protected Heap<Long> createHeap() {
-		return new BinaryArrayWeakHeap<Long>();
-	}
+    protected Heap<Long> createHeap() {
+        return new BinaryArrayWeakHeap<Long>();
+    }
 
-	protected Heap<Long> createHeap(int capacity) {
-		return new BinaryArrayWeakHeap<Long>(capacity);
-	}
+    protected Heap<Long> createHeap(int capacity) {
+        return new BinaryArrayWeakHeap<Long>(capacity);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize() {
-		Heap<Long> h = createHeap(-4);
-		h.insert(1l);
-	}
+    @Override
+    protected Heap<Long> createHeap(Comparator<Long> comparator) {
+        return new BinaryArrayWeakHeap<Long>(comparator);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize1() {
-		Heap<Long> h = createHeap(-1);
-		h.insert(1l);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalSize() {
+        Heap<Long> h = createHeap(-4);
+        h.insert(1l);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegalSize2() {
-		Heap<Long> h = createHeap(Integer.MAX_VALUE - 8);
-		h.insert(1l);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalSize1() {
+        Heap<Long> h = createHeap(-1);
+        h.insert(1l);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalSize2() {
+        Heap<Long> h = createHeap(Integer.MAX_VALUE - 8);
+        h.insert(1l);
+    }
 
 }

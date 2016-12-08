@@ -30,7 +30,6 @@ import java.util.Random;
 import org.jheaps.AddressableHeap;
 import org.jheaps.AddressableHeap.Handle;
 import org.jheaps.array.BinaryArrayAddressableHeap;
-import org.jheaps.minmax.ReflectedPairingHeap;
 import org.junit.Test;
 
 public class AddressableHeapsRandomTest {

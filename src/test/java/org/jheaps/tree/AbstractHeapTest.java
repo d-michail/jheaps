@@ -27,280 +27,400 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.jheaps.Heap;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public abstract class AbstractHeapTest {
 
-	private static final int SIZE = 100000;
+    protected static final int SIZE = 100000;
 
-	protected abstract Heap<Long> createHeap();
+    protected abstract Heap<Long> createHeap();
 
-	protected abstract Heap<Long> createHeap(int capacity);
+    protected abstract Heap<Long> createHeap(int capacity);
 
-	@Test
-	public void test() {
-		Heap<Long> h = createHeap();
+    protected abstract Heap<Long> createHeap(Comparator<Long> comparator);
 
-		for (long i = 0; i < SIZE; i++) {
-			h.insert(i);
-			assertEquals(Long.valueOf(0), h.findMin());
-			assertFalse(h.isEmpty());
-			assertEquals(h.size(), i + 1);
-		}
+    protected static Comparator<Long> comparator;
 
-		for (int i = SIZE - 1; i >= 0; i--) {
-			assertEquals(h.findMin(), Long.valueOf(SIZE - i - 1));
-			h.deleteMin();
-		}
-	}
+    private static class TestComparator implements Comparator<Long>, Serializable {
+        private static final long serialVersionUID = 1L;
 
-	@Test
-	public void testOnlyInsert() {
-		Heap<Long> h = createHeap();
+        @Override
+        public int compare(Long o1, Long o2) {
+            if (o1 < o2) {
+                return 1;
+            } else if (o1 > o2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
 
-		for (long i = 0; i < SIZE; i++) {
-			h.insert(SIZE - i);
-			assertEquals(Long.valueOf(SIZE - i), h.findMin());
-			assertFalse(h.isEmpty());
-			assertEquals(h.size(), i + 1);
-		}
-	}
+    @BeforeClass
+    public static void setUpClass() {
+        comparator = new TestComparator();
+    }
 
-	@Test
-	public void testInsertFromZero() {
-		Heap<Long> h = createHeap(0);
+    @Test
+    public void test() {
+        Heap<Long> h = createHeap();
 
-		for (long i = 0; i < SIZE; i++) {
-			h.insert(SIZE - i);
-			assertEquals(Long.valueOf(SIZE - i), h.findMin());
-			assertFalse(h.isEmpty());
-			assertEquals(h.size(), i + 1);
-		}
-	}
+        for (long i = 0; i < SIZE; i++) {
+            h.insert(i);
+            assertEquals(Long.valueOf(0), h.findMin());
+            assertFalse(h.isEmpty());
+            assertEquals(h.size(), i + 1);
+        }
 
-	@Test(expected = NullPointerException.class)
-	public void testBadInsert() {
-		Heap<Long> h = createHeap();
-		h.insert(null);
-	}
+        for (int i = SIZE - 1; i >= 0; i--) {
+            assertEquals(h.findMin(), Long.valueOf(SIZE - i - 1));
+            h.deleteMin();
+        }
+    }
 
-	@Test(expected = NoSuchElementException.class)
-	public void testBadDeleteMin() {
-		Heap<Long> h = createHeap();
-		h.deleteMin();
-	}
+    @Test
+    public void testOnlyInsert() {
+        Heap<Long> h = createHeap();
 
-	@Test(expected = NoSuchElementException.class)
-	public void testBadFindMin() {
-		Heap<Long> h = createHeap();
-		h.findMin();
-	}
+        for (long i = 0; i < SIZE; i++) {
+            h.insert(SIZE - i);
+            assertEquals(Long.valueOf(SIZE - i), h.findMin());
+            assertFalse(h.isEmpty());
+            assertEquals(h.size(), i + 1);
+        }
+    }
 
-	@Test
-	public void testOnly4() {
+    @Test
+    public void testInsertFromZero() {
+        Heap<Long> h = createHeap(0);
 
-		Heap<Long> h = createHeap();
+        for (long i = 0; i < SIZE; i++) {
+            h.insert(SIZE - i);
+            assertEquals(Long.valueOf(SIZE - i), h.findMin());
+            assertFalse(h.isEmpty());
+            assertEquals(h.size(), i + 1);
+        }
+    }
 
-		assertTrue(h.isEmpty());
+    @Test(expected = NullPointerException.class)
+    public void testBadInsert() {
+        Heap<Long> h = createHeap();
+        h.insert(null);
+    }
 
-		h.insert(780l);
-		assertEquals(h.size(), 1);
-		assertEquals(Long.valueOf(780).longValue(), h.findMin().longValue());
+    @Test(expected = NoSuchElementException.class)
+    public void testBadDeleteMin() {
+        Heap<Long> h = createHeap();
+        h.deleteMin();
+    }
 
-		h.insert(-389l);
-		assertEquals(h.size(), 2);
-		assertEquals(Long.valueOf(-389), h.findMin());
+    @Test(expected = NoSuchElementException.class)
+    public void testBadFindMin() {
+        Heap<Long> h = createHeap();
+        h.findMin();
+    }
 
-		h.insert(306l);
-		assertEquals(h.size(), 3);
-		assertEquals(Long.valueOf(-389), h.findMin());
+    @Test
+    public void testOnly4() {
 
-		h.insert(579l);
-		assertEquals(h.size(), 4);
-		assertEquals(Long.valueOf(-389), h.findMin());
+        Heap<Long> h = createHeap();
 
-		h.deleteMin();
-		assertEquals(h.size(), 3);
-		assertEquals(Long.valueOf(306), h.findMin());
+        assertTrue(h.isEmpty());
 
-		h.deleteMin();
-		assertEquals(h.size(), 2);
-		assertEquals(Long.valueOf(579), h.findMin());
+        h.insert(780l);
+        assertEquals(h.size(), 1);
+        assertEquals(Long.valueOf(780).longValue(), h.findMin().longValue());
 
-		h.deleteMin();
-		assertEquals(h.size(), 1);
-		assertEquals(Long.valueOf(780), h.findMin());
+        h.insert(-389l);
+        assertEquals(h.size(), 2);
+        assertEquals(Long.valueOf(-389), h.findMin());
 
-		h.deleteMin();
-		assertEquals(h.size(), 0);
+        h.insert(306l);
+        assertEquals(h.size(), 3);
+        assertEquals(Long.valueOf(-389), h.findMin());
 
-		assertTrue(h.isEmpty());
+        h.insert(579l);
+        assertEquals(h.size(), 4);
+        assertEquals(Long.valueOf(-389), h.findMin());
 
-	}
+        h.deleteMin();
+        assertEquals(h.size(), 3);
+        assertEquals(Long.valueOf(306), h.findMin());
 
-	@Test
-	public void testSortRandomSeed1() {
-		Heap<Long> h = createHeap();
+        h.deleteMin();
+        assertEquals(h.size(), 2);
+        assertEquals(Long.valueOf(579), h.findMin());
 
-		Random generator = new Random(1);
+        h.deleteMin();
+        assertEquals(h.size(), 1);
+        assertEquals(Long.valueOf(780), h.findMin());
 
-		for (int i = 0; i < SIZE; i++) {
-			h.insert(generator.nextLong());
-		}
+        h.deleteMin();
+        assertEquals(h.size(), 0);
 
-		Long prev = null, cur;
-		while (!h.isEmpty()) {
-			cur = h.findMin();
-			h.deleteMin();
-			if (prev != null) {
-				assertTrue(prev.compareTo(cur) <= 0);
-			}
-			prev = cur;
-		}
-	}
+        assertTrue(h.isEmpty());
 
-	@Test
-	public void testSort1RandomSeed1() {
-		Heap<Long> h = createHeap();
+    }
 
-		Random generator = new Random(1);
+    @Test
+    public void testSortRandomSeed1() {
+        Heap<Long> h = createHeap();
 
-		for (int i = 0; i < SIZE; i++) {
-			h.insert(generator.nextLong());
-		}
+        Random generator = new Random(1);
 
-		Long prev = null, cur;
-		while (!h.isEmpty()) {
-			cur = h.deleteMin();
-			if (prev != null) {
-				assertTrue(prev.compareTo(cur) <= 0);
-			}
-			prev = cur;
-		}
-	}
+        for (int i = 0; i < SIZE; i++) {
+            h.insert(generator.nextLong());
+        }
 
-	@Test
-	public void testSortRandomSeed2() {
-		Heap<Long> h = createHeap();
+        Long prev = null, cur;
+        while (!h.isEmpty()) {
+            cur = h.findMin();
+            h.deleteMin();
+            if (prev != null) {
+                assertTrue(prev.compareTo(cur) <= 0);
+            }
+            prev = cur;
+        }
+    }
 
-		Random generator = new Random(2);
+    @Test
+    public void testSort1RandomSeed1() {
+        Heap<Long> h = createHeap();
 
-		for (int i = 0; i < SIZE; i++) {
-			h.insert(generator.nextLong());
-		}
+        Random generator = new Random(1);
 
-		Long prev = null, cur;
-		while (!h.isEmpty()) {
-			cur = h.findMin();
-			h.deleteMin();
-			if (prev != null) {
-				assertTrue(prev.compareTo(cur) <= 0);
-			}
-			prev = cur;
-		}
-	}
+        for (int i = 0; i < SIZE; i++) {
+            h.insert(generator.nextLong());
+        }
 
-	@Test
-	public void testSort1RandomSeed2() {
-		Heap<Long> h = createHeap();
+        Long prev = null, cur;
+        while (!h.isEmpty()) {
+            cur = h.deleteMin();
+            if (prev != null) {
+                assertTrue(prev.compareTo(cur) <= 0);
+            }
+            prev = cur;
+        }
+    }
 
-		Random generator = new Random(1);
+    @Test
+    public void testSortRandomSeed2() {
+        Heap<Long> h = createHeap();
 
-		for (int i = 0; i < SIZE; i++) {
-			h.insert(generator.nextLong());
-		}
+        Random generator = new Random(2);
 
-		Long prev = null, cur;
-		while (!h.isEmpty()) {
-			cur = h.deleteMin();
-			if (prev != null) {
-				assertTrue(prev.compareTo(cur) <= 0);
-			}
-			prev = cur;
-		}
-	}
+        for (int i = 0; i < SIZE; i++) {
+            h.insert(generator.nextLong());
+        }
 
-	@Test
-	public void testFindMinDeleteMinSameObject() {
-		Heap<Long> h = createHeap();
+        Long prev = null, cur;
+        while (!h.isEmpty()) {
+            cur = h.findMin();
+            h.deleteMin();
+            if (prev != null) {
+                assertTrue(prev.compareTo(cur) <= 0);
+            }
+            prev = cur;
+        }
+    }
 
-		Random generator = new Random(1);
+    @Test
+    public void testSort1RandomSeed2() {
+        Heap<Long> h = createHeap();
 
-		for (int i = 0; i < SIZE; i++) {
-			h.insert(generator.nextLong());
-		}
+        Random generator = new Random(1);
 
-		while (!h.isEmpty()) {
-			assertEquals(h.findMin(), h.deleteMin());
-		}
-	}
+        for (int i = 0; i < SIZE; i++) {
+            h.insert(generator.nextLong());
+        }
 
-	@Test
-	public void testSizeOneInitial() {
-		Heap<Long> h = createHeap(1);
+        Long prev = null, cur;
+        while (!h.isEmpty()) {
+            cur = h.deleteMin();
+            if (prev != null) {
+                assertTrue(prev.compareTo(cur) <= 0);
+            }
+            prev = cur;
+        }
+    }
 
-		for (long i = 0; i < 15; i++) {
-			h.insert(i);
-		}
+    @Test
+    public void testFindMinDeleteMinSameObject() {
+        Heap<Long> h = createHeap();
 
-		assertEquals(15, h.size());
-	}
+        Random generator = new Random(1);
 
-	@Test
-	public void testClear() {
-		Heap<Long> h = createHeap();
+        for (int i = 0; i < SIZE; i++) {
+            h.insert(generator.nextLong());
+        }
 
-		for (long i = 0; i < 15; i++) {
-			h.insert(i);
-		}
+        while (!h.isEmpty()) {
+            assertEquals(h.findMin(), h.deleteMin());
+        }
+    }
 
-		h.clear();
-		assertEquals(0L, h.size());
-		assertTrue(h.isEmpty());
-	}
+    @Test
+    public void testSizeOneInitial() {
+        Heap<Long> h = createHeap(1);
 
-	@Test
-	public void testComparator() {
-		Heap<Long> h = createHeap();
+        for (long i = 0; i < 15; i++) {
+            h.insert(i);
+        }
 
-		assertNull(h.comparator());
-	}
+        assertEquals(15, h.size());
+    }
 
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testSerializable() throws IOException, ClassNotFoundException {
-		Heap<Long> h = createHeap();
+    @Test
+    public void testClear() {
+        Heap<Long> h = createHeap();
 
-		for (long i = 0; i < 15; i++) {
-			h.insert(i);
-		}
+        for (long i = 0; i < 15; i++) {
+            h.insert(i);
+        }
 
-		// write
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
-		oos.writeObject(h);
-		oos.close();
-		byte[] data = baos.toByteArray();
+        h.clear();
+        assertEquals(0L, h.size());
+        assertTrue(h.isEmpty());
+    }
 
-		// read
-		h = null;
+    @Test
+    public void testComparator() {
+        Heap<Long> h = createHeap();
 
-		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-		Object o = ois.readObject();
-		ois.close();
-		h = (Heap<Long>) o;
+        assertNull(h.comparator());
+    }
 
-		for (int i = 0; i < 15; i++) {
-			assertEquals(15 - i, h.size());
-			assertEquals(Long.valueOf(i), h.findMin());
-			h.deleteMin();
-		}
-		assertTrue(h.isEmpty());
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testSerializable() throws IOException, ClassNotFoundException {
+        Heap<Long> h = createHeap();
 
-	}
+        for (long i = 0; i < 15; i++) {
+            h.insert(i);
+        }
+
+        // write
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(h);
+        oos.close();
+        byte[] data = baos.toByteArray();
+
+        // read
+        h = null;
+
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+        Object o = ois.readObject();
+        ois.close();
+        h = (Heap<Long>) o;
+
+        for (int i = 0; i < 15; i++) {
+            assertEquals(15 - i, h.size());
+            assertEquals(Long.valueOf(i), h.findMin());
+            h.deleteMin();
+        }
+        assertTrue(h.isEmpty());
+
+    }
+
+    @Test
+    public void testWithComparator() {
+
+        Heap<Long> h = createHeap(comparator);
+        long i;
+
+        for (i = 0; i < SIZE; i++) {
+            h.insert(i);
+            assertEquals(Long.valueOf(i), h.findMin());
+            assertFalse(h.isEmpty());
+            assertEquals(h.size(), i + 1);
+        }
+
+        for (i = SIZE - 1; i >= 0; i--) {
+            assertEquals(h.findMin(), Long.valueOf(i));
+            h.deleteMin();
+        }
+
+    }
+
+    @Test
+    public void testOnly4Reverse() {
+        Heap<Long> h = createHeap(comparator);
+
+        assertTrue(h.isEmpty());
+
+        h.insert(780l);
+        assertEquals(h.size(), 1);
+        assertEquals(Long.valueOf(780), h.findMin());
+
+        h.insert(-389l);
+        assertEquals(h.size(), 2);
+        assertEquals(Long.valueOf(780), h.findMin());
+
+        h.insert(306l);
+        assertEquals(h.size(), 3);
+        assertEquals(Long.valueOf(780), h.findMin());
+
+        h.insert(579l);
+        assertEquals(h.size(), 4);
+        assertEquals(Long.valueOf(780), h.findMin());
+
+        h.deleteMin();
+        assertEquals(h.size(), 3);
+        assertEquals(Long.valueOf(579), h.findMin());
+
+        h.deleteMin();
+        assertEquals(h.size(), 2);
+        assertEquals(Long.valueOf(306), h.findMin());
+
+        h.deleteMin();
+        assertEquals(h.size(), 1);
+        assertEquals(Long.valueOf(-389), h.findMin());
+
+        h.deleteMin();
+        assertEquals(h.size(), 0);
+
+        assertTrue(h.isEmpty());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testSerializableWithComparator() throws IOException, ClassNotFoundException {
+        Heap<Long> h = createHeap(comparator);
+
+        for (long i = 0; i < 15; i++) {
+            h.insert(i);
+        }
+
+        // write
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(h);
+        oos.close();
+        byte[] data = baos.toByteArray();
+
+        // read
+        h = null;
+
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+        Object o = ois.readObject();
+        ois.close();
+        h = (Heap<Long>) o;
+
+        for (int i = 0; i < 15; i++) {
+            assertEquals(15 - i, h.size());
+            assertEquals(Long.valueOf(15 - i - 1), h.findMin());
+            h.deleteMin();
+        }
+        assertTrue(h.isEmpty());
+
+    }
 
 }

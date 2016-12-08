@@ -15,17 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps.array;
+package org.jheaps.tree;
 
 import java.util.Comparator;
 
-import org.jheaps.Heap;
-import org.jheaps.tree.AbstractComparatorHeapTest;
+import org.jheaps.AddressableHeap;
+import org.jheaps.tree.ReflectedPairingHeap;
 
-public class ComparatorBinaryArrayWeakHeapTest extends AbstractComparatorHeapTest {
+public class ReflectedPairingHeapAddressableHeapTest extends AbstractAddressableHeapTest {
 
-    protected Heap<Long> createHeap(Comparator<Long> comparator) {
-        return new BinaryArrayWeakHeap<Long>(comparator);
+    @Override
+    protected AddressableHeap<Integer, Void> createHeap() {
+        return new ReflectedPairingHeap<Integer, Void>(null);
     }
 
+    @Override
+    protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
+        return new ReflectedPairingHeap<Integer, Void>(comparator);
+    }
+
+    @Override
+    protected AddressableHeap<Integer, String> createHeapWithStringValues() {
+        return new ReflectedPairingHeap<Integer, String>(null);
+    }
 }

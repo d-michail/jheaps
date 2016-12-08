@@ -19,14 +19,22 @@ package org.jheaps.array;
 
 import java.util.Comparator;
 
-import org.jheaps.Heap;
-import org.jheaps.array.DaryArrayHeap;
-import org.jheaps.tree.AbstractComparatorHeapTest;
+import org.jheaps.DoubleEndedHeap;
+import org.jheaps.tree.AbstractDoubleEndedHeapTest;
 
-public class D4ComparatorDaryArrayHeapTest extends AbstractComparatorHeapTest {
+public class MinMaxBinaryArrayDoubleEndedHeapTest extends AbstractDoubleEndedHeapTest {
 
-	protected Heap<Long> createHeap(Comparator<Long> comparator) {
-		return new DaryArrayHeap<Long>(4, comparator);
-	}
+    protected DoubleEndedHeap<Long> createHeap() {
+        return new MinMaxBinaryArrayDoubleEndedHeap<Long>();
+    }
+
+    protected DoubleEndedHeap<Long> createHeap(int capacity) {
+        return new MinMaxBinaryArrayDoubleEndedHeap<Long>(capacity);
+    }
+
+    @Override
+    protected DoubleEndedHeap<Long> createHeap(Comparator<Long> comparator) {
+        return new MinMaxBinaryArrayDoubleEndedHeap<Long>(comparator);
+    }
 
 }

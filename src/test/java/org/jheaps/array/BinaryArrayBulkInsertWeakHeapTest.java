@@ -17,6 +17,8 @@
  */
 package org.jheaps.array;
 
+import java.util.Comparator;
+
 import org.jheaps.Heap;
 import org.jheaps.tree.AbstractHeapTest;
 import org.junit.Test;
@@ -29,6 +31,11 @@ public class BinaryArrayBulkInsertWeakHeapTest extends AbstractHeapTest {
 
     protected Heap<Long> createHeap(int capacity) {
         return new BinaryArrayBulkInsertWeakHeap<Long>(capacity);
+    }
+
+    @Override
+    protected Heap<Long> createHeap(Comparator<Long> comparator) {
+        return new BinaryArrayBulkInsertWeakHeap<Long>(comparator);
     }
 
     @Test(expected = IllegalArgumentException.class)

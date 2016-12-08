@@ -15,17 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps.minmax;
+package org.jheaps.tree;
 
 import java.util.Comparator;
 
 import org.jheaps.AddressableHeap;
 import org.jheaps.AddressableHeapFactory;
 import org.jheaps.MergeableDoubleEndedAddressableHeap;
-import org.jheaps.minmax.ReflectedHeap;
-import org.jheaps.tree.AbstractMergeableDoubleEndedAddressableHeapTest;
 import org.jheaps.tree.BinaryTreeAddressableHeap;
 import org.jheaps.tree.PairingHeap;
+import org.jheaps.tree.ReflectedHeap;
 import org.junit.Test;
 
 public class ReflectedPairingHeapMergeableDoubleEndedAddressableHeapTest

@@ -15,16 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jheaps.minmax;
+package org.jheaps.tree;
 
 import java.util.Comparator;
 
 import org.jheaps.AddressableHeap;
 import org.jheaps.AddressableHeapFactory;
 import org.jheaps.DoubleEndedAddressableHeap;
-import org.jheaps.minmax.ReflectedHeap;
-import org.jheaps.tree.AbstractDoubleEndedAddressableHeapTest;
 import org.jheaps.tree.FibonacciHeap;
+import org.jheaps.tree.ReflectedHeap;
 
 public class ReflectedFibonacciHeapDoubleEndedAddressableHeapTest extends AbstractDoubleEndedAddressableHeapTest {
 
