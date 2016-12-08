@@ -5,25 +5,24 @@ import java.util.Comparator;
 import org.jheaps.annotations.LinearTime;
 
 /**
- * An array based MinMax heap with a maximum number of elements. The heap is
- * sorted according to the {@linkplain Comparable natural ordering} of its keys,
- * or by a {@link Comparator} provided at heap creation time, depending on which
- * constructor is used.
+ * An array based binary MinMax heap with a maximum number of elements. The heap
+ * is sorted according to the {@linkplain Comparable natural ordering} of its
+ * keys, or by a {@link Comparator} provided at heap creation time, depending on
+ * which constructor is used.
  * 
  * <p>
  * For details about the implementation see the following
  * <a href="http://doi.acm.org/10.1145/6617.6621">paper</a>:
  * <ul>
  * <li>M. D. Atkinson, J.-R. Sack, N. Santoro, and T. Strothotte. Min-max Heaps
- * and Generalized Priority Queues. Commun. ACM, 29(10), 996--1000, 1986.
- * <li>
+ * and Generalized Priority Queues. Commun. ACM, 29(10), 996--1000, 1986.</li>
  * </ul>
  * 
  * <p>
  * The implementation uses a fixed size array in order to store the elements,
  * providing worst case O(log(n)) time for the {@code insert},
  * {@code deleteMin}, and {@code deleteMax} operations. Operations
- * {@code findMin} and {@code findMax} are worst-case O(1)
+ * {@code findMin} and {@code findMax} are worst-case O(1).
  * {@link MinMaxBinaryArrayDoubleEndedHeap} provides a more dynamic
  * implementation in the expense of amortized complexity bounds.
  * 

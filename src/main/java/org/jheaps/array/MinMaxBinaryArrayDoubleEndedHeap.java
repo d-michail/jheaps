@@ -5,7 +5,7 @@ import java.util.Comparator;
 import org.jheaps.annotations.LinearTime;
 
 /**
- * An array based MinMax heap. The heap is sorted according to the
+ * An array based binary MinMax heap. The heap is sorted according to the
  * {@linkplain Comparable natural ordering} of its keys, or by a
  * {@link Comparator} provided at heap creation time, depending on which
  * constructor is used.
@@ -15,8 +15,7 @@ import org.jheaps.annotations.LinearTime;
  * <a href="http://doi.acm.org/10.1145/6617.6621">paper</a>:
  * <ul>
  * <li>M. D. Atkinson, J.-R. Sack, N. Santoro, and T. Strothotte. Min-max Heaps
- * and Generalized Priority Queues. Commun. ACM, 29(10), 996--1000, 1986.
- * <li>
+ * and Generalized Priority Queues. Commun. ACM, 29(10), 996--1000, 1986.</li>
  * </ul>
  * 
  * <p>
