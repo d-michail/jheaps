@@ -75,7 +75,7 @@ public class BinaryArrayWeakHeap<K> extends AbstractBinaryArrayWeakHeap<K> imple
     /**
      * Default initial capacity of the binary heap.
      */
-    public static final int DEFAULT_HEAP_CAPACITY = 128;
+    public static final int DEFAULT_HEAP_CAPACITY = 16;
 
     /**
      * Constructs a new, empty heap, using the natural ordering of its keys.
@@ -254,14 +254,12 @@ public class BinaryArrayWeakHeap<K> extends AbstractBinaryArrayWeakHeap<K> imple
     @SuppressWarnings("unchecked")
     protected void ensureCapacity(int capacity) {
         checkCapacity(capacity);
-        if (array.length < capacity) {
-            K[] newArray = (K[]) new Object[capacity];
-            System.arraycopy(array, 0, newArray, 0, size);
-            array = newArray;
-            BitSet newBitSet = new BitSet(capacity);
-            newBitSet.or(reverse);
-            reverse = newBitSet;
-        }
+        K[] newArray = (K[]) new Object[capacity];
+        System.arraycopy(array, 0, newArray, 0, size);
+        array = newArray;
+        BitSet newBitSet = new BitSet(capacity);
+        newBitSet.or(reverse);
+        reverse = newBitSet;
     }
 
 }

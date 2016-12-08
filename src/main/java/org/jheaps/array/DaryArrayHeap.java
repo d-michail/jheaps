@@ -73,7 +73,7 @@ public class DaryArrayHeap<K> extends AbstractDaryArrayHeap<K> {
     /**
      * Default initial capacity of the heap.
      */
-    public static final int DEFAULT_HEAP_CAPACITY = 128;
+    public static final int DEFAULT_HEAP_CAPACITY = 16;
 
     /**
      * Constructs a new, empty heap, using the natural ordering of its keys.

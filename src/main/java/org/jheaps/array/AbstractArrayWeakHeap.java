@@ -29,6 +29,11 @@ abstract class AbstractArrayWeakHeap<K> implements Heap<K>, Serializable {
     protected static final int MIN_HEAP_CAPACITY = 0;
 
     /**
+     * Limit for the heap capacity when down-sizing.
+     */
+    protected static final int DOWNSIZING_MIN_HEAP_CAPACITY = 16;
+
+    /**
      * The comparator used to maintain order in this heap, or null if it uses
      * the natural ordering of its keys.
      *

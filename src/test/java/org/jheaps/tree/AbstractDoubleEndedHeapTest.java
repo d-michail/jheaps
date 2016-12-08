@@ -71,62 +71,26 @@ public abstract class AbstractDoubleEndedHeapTest extends AbstractHeapTest {
     }
 
     @Test
-    public void testSortMaxRandomSeed1() {
-        DoubleEndedHeap<Long> h = createHeap();
-
-        Random generator = new Random(1);
-
-        for (int i = 0; i < SIZE; i++) {
-            h.insert(generator.nextLong());
-        }
-
-        Long prev = null, cur;
-        while (!h.isEmpty()) {
-            cur = h.deleteMax();
-            if (prev != null) {
-                assertTrue(prev.compareTo(cur) >= 0);
-            }
-            prev = cur;
-        }
+    public void testSortMaxRandom() {
+        testSort(SIZE, new Random(1));
+        testSortReverse(SIZE, new Random(1));
+        testSort(SIZE, new Random(2));
+        testSortReverse(SIZE, new Random(2));
+        testSort(SIZE, new Random(3));
+        testSortReverse(SIZE, new Random(3));
+        testSort(SIZE, new Random(4));
+        testSortReverse(SIZE, new Random(4));
+        testSort(SIZE, new Random(5));
+        testSortReverse(SIZE, new Random(5));
+        testSort(SIZE, new Random(6));
+        testSortReverse(SIZE, new Random(6));
     }
 
     @Test
-    public void testSortMaxRandomSeed3() {
-        DoubleEndedHeap<Long> h = createHeap();
-
-        Random generator = new Random(3);
-
-        for (int i = 0; i < SIZE; i++) {
-            h.insert(generator.nextLong());
-        }
-
-        Long prev = null, cur;
-        while (!h.isEmpty()) {
-            cur = h.deleteMax();
-            if (prev != null) {
-                assertTrue(prev.compareTo(cur) >= 0);
-            }
-            prev = cur;
-        }
-    }
-
-    @Test
-    public void testSortMaxRandomSeed2() {
-        DoubleEndedHeap<Long> h = createHeap();
-
-        Random generator = new Random(2);
-
-        for (int i = 0; i < SIZE; i++) {
-            h.insert(generator.nextLong());
-        }
-
-        Long prev = null, cur;
-        while (!h.isEmpty()) {
-            cur = h.deleteMax();
-            if (prev != null) {
-                assertTrue(prev.compareTo(cur) >= 0);
-            }
-            prev = cur;
+    public void testSmallInstanceSortMaxRandom() {
+        for (long seed = 13; seed < 1000; seed++) {
+            testSort(SIZE / 100, new Random(seed));
+            testSortReverse(SIZE / 100, new Random(seed));
         }
     }
 
@@ -181,7 +145,7 @@ public abstract class AbstractDoubleEndedHeapTest extends AbstractHeapTest {
         assertEquals(Long.valueOf(780), h.findMin());
         assertEquals(Long.valueOf(900), h.findMax());
     }
-    
+
     @Test
     public void test3Elements1() {
         DoubleEndedHeap<Long> h = createHeap();
@@ -198,7 +162,7 @@ public abstract class AbstractDoubleEndedHeapTest extends AbstractHeapTest {
         assertEquals(Long.valueOf(900), h.findMax());
         assertEquals(Long.valueOf(900), h.deleteMax());
     }
-    
+
     @Test
     public void test3ElementsComparator() {
         DoubleEndedHeap<Long> h = createHeap(comparator);
@@ -214,7 +178,7 @@ public abstract class AbstractDoubleEndedHeapTest extends AbstractHeapTest {
         assertEquals(Long.valueOf(780), h.findMax());
         assertEquals(Long.valueOf(900), h.findMin());
     }
-    
+
     @Test
     public void test3ElementsComparator1() {
         DoubleEndedHeap<Long> h = createHeap(comparator);
@@ -277,6 +241,40 @@ public abstract class AbstractDoubleEndedHeapTest extends AbstractHeapTest {
         assertEquals(h.size(), 0);
 
         assertTrue(h.isEmpty());
+    }
+
+    private void testSort(int size, Random rng) {
+        DoubleEndedHeap<Long> h = createHeap();
+
+        for (int i = 0; i < size; i++) {
+            h.insert(rng.nextLong());
+        }
+
+        Long prev = null, cur;
+        while (!h.isEmpty()) {
+            cur = h.deleteMax();
+            if (prev != null) {
+                assertTrue(prev.compareTo(cur) >= 0);
+            }
+            prev = cur;
+        }
+    }
+
+    private void testSortReverse(int size, Random rng) {
+        DoubleEndedHeap<Long> h = createHeap(comparator);
+
+        for (int i = 0; i < size; i++) {
+            h.insert(rng.nextLong());
+        }
+
+        Long prev = null, cur;
+        while (!h.isEmpty()) {
+            cur = h.deleteMax();
+            if (prev != null) {
+                assertTrue(comparator.compare(prev, cur) >= 0);
+            }
+            prev = cur;
+        }
     }
 
 }

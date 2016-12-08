@@ -121,7 +121,7 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
             break;
         }
 
-        if (2 < array.length - 1 && 4 * size < array.length - 1) {
+        if (DOWNSIZING_MIN_HEAP_CAPACITY < array.length - 1 && 4 * size < array.length - 1) {
             ensureCapacity((array.length - 1) / 2 + 1);
         }
 
@@ -524,7 +524,7 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
             }
             return maxgc;
         case 0:
-            // 1 grandchildren, maybe two children
+            // 1 grandchild, maybe two children
             gcValue = array[gc];
             maxgc = gc;
             if (2 * k + 1 <= size && ((Comparable<? super K>) array[2 * k + 1]).compareTo(gcValue) > 0) {
@@ -602,7 +602,7 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
             }
             return maxgc;
         case 0:
-            // 1 grandchildren, maybe two children
+            // 1 grandchild, maybe two children
             gcValue = array[gc];
             maxgc = gc;
             if (2 * k + 1 <= size && comparator.compare(array[2 * k + 1], gcValue) > 0) {
@@ -681,7 +681,7 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
             }
             return mingc;
         case 0:
-            // 1 grandchildren, maybe two children
+            // 1 grandchild, maybe two children
             gcValue = array[gc];
             mingc = gc;
             if (2 * k + 1 <= size && ((Comparable<? super K>) array[2 * k + 1]).compareTo(gcValue) < 0) {
@@ -759,7 +759,7 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
             }
             return mingc;
         case 0:
-            // 1 grandchildren, maybe two children
+            // 1 grandchild, maybe two children
             gcValue = array[gc];
             mingc = gc;
             if (2 * k + 1 <= size && comparator.compare(array[2 * k + 1], gcValue) < 0) {

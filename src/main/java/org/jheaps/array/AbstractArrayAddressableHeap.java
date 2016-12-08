@@ -54,6 +54,11 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
     protected static final int MIN_HEAP_CAPACITY = 0;
 
     /**
+     * Limit for the heap capacity when down-sizing.
+     */
+    protected static final int DOWNSIZING_MIN_HEAP_CAPACITY = 16;
+
+    /**
      * The comparator used to maintain order in this heap, or null if it uses
      * the natural ordering of its keys.
      *
@@ -195,7 +200,7 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
             }
         }
 
-        if (2 < array.length - 1 && 4 * size < array.length - 1) {
+        if (DOWNSIZING_MIN_HEAP_CAPACITY < array.length - 1 && 4 * size < array.length - 1) {
             ensureCapacity((array.length - 1) / 2 + 1);
         }
         return result;

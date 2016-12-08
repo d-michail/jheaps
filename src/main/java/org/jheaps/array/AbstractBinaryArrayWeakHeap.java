@@ -119,7 +119,7 @@ abstract class AbstractBinaryArrayWeakHeap<K> extends AbstractArrayWeakHeap<K> {
             }
         }
 
-        if (array.length > 2 && 4 * size < array.length) {
+        if (DOWNSIZING_MIN_HEAP_CAPACITY < array.length && 4 * size < array.length) {
             ensureCapacity(array.length / 2);
         }
 

@@ -113,7 +113,7 @@ abstract class AbstractArrayHeap<K> extends AbstractArrayWeakHeap<K> {
             }
         }
 
-        if (2 < array.length - 1 && 4 * size < array.length - 1) {
+        if (DOWNSIZING_MIN_HEAP_CAPACITY < array.length - 1 && 4 * size < array.length - 1) {
             ensureCapacity((array.length - 1) / 2 + 1);
         }
         return result;
