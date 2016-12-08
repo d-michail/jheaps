@@ -58,7 +58,7 @@ import org.jheaps.annotations.LinearTime;
  *
  * @author Dimitrios Michail
  */
-public class MinMaxBinaryFixedArrayDoubleEndedHeap<K> extends AbstractMinMaxBinaryArrayDoubleEndedHeap<K> {
+public class MinMaxBinaryFixedArrayDoubleEndedHeap<K> extends AbstractBinaryArrayDoubleEndedHeap<K> {
 
     private static final long serialVersionUID = -3409705010080904056L;
 

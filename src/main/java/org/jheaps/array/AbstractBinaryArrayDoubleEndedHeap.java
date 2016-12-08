@@ -8,7 +8,7 @@ import org.jheaps.DoubleEndedHeap;
 import org.jheaps.annotations.VisibleForTesting;
 
 /**
- * Abstract implementation of a min-max binary heap using an array
+ * Abstract implementation of a binary double-ended heap using an array
  * representation.
  * 
  * @author Dimitrios Michail
@@ -16,7 +16,7 @@ import org.jheaps.annotations.VisibleForTesting;
  * @param <K>
  *            the type of keys maintained by this heap
  */
-abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArrayHeap<K>
+abstract class AbstractBinaryArrayDoubleEndedHeap<K> extends AbstractArrayHeap<K>
         implements DoubleEndedHeap<K>, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,7 +29,7 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
      * @param capacity
      *            the requested capacity
      */
-    public AbstractMinMaxBinaryArrayDoubleEndedHeap(Comparator<? super K> comparator, int capacity) {
+    public AbstractBinaryArrayDoubleEndedHeap(Comparator<? super K> comparator, int capacity) {
         super(comparator, capacity);
     }
 
@@ -139,20 +139,20 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
     protected void fixup(int k) {
         if (onMinLevel(k)) {
             int p = k / 2;
-            if (p > 0 && ((Comparable<? super K>) array[p]).compareTo(array[k]) < 0) {
-                K tmp = array[p];
-                array[p] = array[k];
-                array[k] = tmp;
+            K kValue = array[k];
+            if (p > 0 && ((Comparable<? super K>) array[p]).compareTo(kValue) < 0) {
+                array[k] = array[p];
+                array[p] = kValue;
                 fixupMax(p);
             } else {
                 fixupMin(k);
             }
         } else {
             int p = k / 2;
-            if (p > 0 && ((Comparable<? super K>) array[k]).compareTo(array[p]) < 0) {
-                K tmp = array[p];
-                array[p] = array[k];
-                array[k] = tmp;
+            K kValue = array[k];
+            if (p > 0 && ((Comparable<? super K>) kValue).compareTo(array[p]) < 0) {
+                array[k] = array[p];
+                array[p] = kValue;
                 fixupMin(p);
             } else {
                 fixupMax(k);
@@ -169,20 +169,20 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
     protected void fixupWithComparator(int k) {
         if (onMinLevel(k)) {
             int p = k / 2;
-            if (p > 0 && comparator.compare(array[p], array[k]) < 0) {
-                K tmp = array[p];
-                array[p] = array[k];
-                array[k] = tmp;
+            K kValue = array[k];
+            if (p > 0 && comparator.compare(array[p], kValue) < 0) {
+                array[k] = array[p];
+                array[p] = kValue;
                 fixupMaxWithComparator(p);
             } else {
                 fixupMinWithComparator(k);
             }
         } else {
             int p = k / 2;
-            if (p > 0 && comparator.compare(array[k], array[p]) < 0) {
-                K tmp = array[p];
-                array[p] = array[k];
-                array[k] = tmp;
+            K kValue = array[k];
+            if (p > 0 && comparator.compare(kValue, array[p]) < 0) {
+                array[k] = array[p];
+                array[p] = kValue;
                 fixupMinWithComparator(p);
             } else {
                 fixupMaxWithComparator(k);
@@ -198,16 +198,14 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
      */
     @SuppressWarnings("unchecked")
     private void fixupMin(int k) {
+        K key = array[k];
         int gp = k / 4;
-        while (gp > 0 && ((Comparable<? super K>) array[gp]).compareTo(array[k]) > 0) {
-            K tmp = array[gp];
-            array[gp] = array[k];
-            array[k] = tmp;
-
-            // go to grandparent
+        while (gp > 0 && ((Comparable<? super K>) array[gp]).compareTo(key) > 0) {
+            array[k] = array[gp];
             k = gp;
             gp = k / 4;
         }
+        array[k] = key;
     }
 
     /**
@@ -218,16 +216,14 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
      *            the index of the starting element
      */
     private void fixupMinWithComparator(int k) {
+        K key = array[k];
         int gp = k / 4;
-        while (gp > 0 && comparator.compare(array[gp], array[k]) > 0) {
-            K tmp = array[gp];
-            array[gp] = array[k];
-            array[k] = tmp;
-
-            // go to grandparent
+        while (gp > 0 && comparator.compare(array[gp], key) > 0) {
+            array[k] = array[gp];
             k = gp;
             gp = k / 4;
         }
+        array[k] = key;
     }
 
     /**
@@ -238,16 +234,14 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
      */
     @SuppressWarnings("unchecked")
     private void fixupMax(int k) {
+        K key = array[k];
         int gp = k / 4;
-        while (gp > 0 && ((Comparable<? super K>) array[gp]).compareTo(array[k]) < 0) {
-            K tmp = array[gp];
-            array[gp] = array[k];
-            array[k] = tmp;
-
-            // go to grandparent
+        while (gp > 0 && ((Comparable<? super K>) array[gp]).compareTo(key) < 0) {
+            array[k] = array[gp];
             k = gp;
             gp = k / 4;
         }
+        array[k] = key;
     }
 
     /**
@@ -258,16 +252,14 @@ abstract class AbstractMinMaxBinaryArrayDoubleEndedHeap<K> extends AbstractArray
      *            the index of the starting element
      */
     private void fixupMaxWithComparator(int k) {
+        K key = array[k];
         int gp = k / 4;
-        while (gp > 0 && comparator.compare(array[gp], array[k]) < 0) {
-            K tmp = array[gp];
-            array[gp] = array[k];
-            array[k] = tmp;
-
-            // go to grandparent
+        while (gp > 0 && comparator.compare(array[gp], key) < 0) {
+            array[k] = array[gp];
             k = gp;
             gp = k / 4;
         }
+        array[k] = key;
     }
 
     /**
