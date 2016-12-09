@@ -119,8 +119,8 @@ public class BigIntegerRadixAddressableHeapTest {
 	public void testMonotone() {
 		AddressableHeap<BigInteger, Void> h = new BigIntegerRadixAddressableHeap<Void>(BigInteger.ZERO,
 				BigInteger.valueOf(100));
-		h.insert(BigInteger.valueOf(100l));
-		h.insert(BigInteger.valueOf(99l));
+		h.insert(BigInteger.valueOf(100L));
+		h.insert(BigInteger.valueOf(99L));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -421,7 +421,6 @@ public class BigIntegerRadixAddressableHeapTest {
 		byte[] data = baos.toByteArray();
 
 		// read
-		h = null;
 
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object o = ois.readObject();

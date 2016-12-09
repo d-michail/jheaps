@@ -41,19 +41,19 @@ public class BinaryArrayBulkInsertWeakHeapTest extends AbstractHeapTest {
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalSize() {
         Heap<Long> h = createHeap(-4);
-        h.insert(1l);
+        h.insert(1L);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalSize1() {
         Heap<Long> h = createHeap(-1);
-        h.insert(1l);
+        h.insert(1L);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalSize2() {
         Heap<Long> h = createHeap(Integer.MAX_VALUE - 8);
-        h.insert(1l);
+        h.insert(1L);
     }
 
 }

@@ -163,7 +163,7 @@ public class LeftistHeap<K, V> extends SkewHeap<K, V> {
             return root1;
         }
 
-        Node<K, V> newRoot = null;
+        Node<K, V> newRoot;
         Deque<LeftistNode<K, V>> path = new LinkedList<LeftistNode<K, V>>();
 
         // find initial
@@ -276,7 +276,7 @@ public class LeftistHeap<K, V> extends SkewHeap<K, V> {
             return root1;
         }
 
-        Node<K, V> newRoot = null;
+        Node<K, V> newRoot;
         Deque<LeftistNode<K, V>> path = new LinkedList<LeftistNode<K, V>>();
 
         // find initial

@@ -68,14 +68,14 @@ public class DoubleRadixHeapTest {
 		Heap<Double> h = new DoubleRadixHeap(0.0, SIZE);
 
 		for (long i = 0; i < SIZE; i++) {
-			h.insert(Double.valueOf(i));
-			assertEquals(Double.valueOf(0), h.findMin(), 1e-9);
+			h.insert((double) i);
+			assertEquals(0d, h.findMin(), 1e-9);
 			assertFalse(h.isEmpty());
 			assertEquals(h.size(), i + 1);
 		}
 
 		for (int i = SIZE - 1; i >= 0; i--) {
-			assertEquals(Double.valueOf(SIZE - i - 1), h.findMin(), 1e-9);
+			assertEquals((double) (SIZE - i - 1), h.findMin(), 1e-9);
 			h.deleteMin();
 		}
 	}

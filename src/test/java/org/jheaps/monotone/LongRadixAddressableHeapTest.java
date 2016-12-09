@@ -41,31 +41,31 @@ public class LongRadixAddressableHeapTest {
 	public void testVerySmall() {
 		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(15, 100);
 
-		h.insert(15l);
-		h.insert(50l);
-		h.insert(21l);
-		h.insert(51l);
-		h.insert(30l);
-		h.insert(25l);
-		h.insert(18l);
+		h.insert(15L);
+		h.insert(50L);
+		h.insert(21L);
+		h.insert(51L);
+		h.insert(30L);
+		h.insert(25L);
+		h.insert(18L);
 
 		assertEquals(7, h.size());
-		assertEquals(15l, h.findMin().getKey().longValue());
+		assertEquals(15L, h.findMin().getKey().longValue());
 		assertEquals(7, h.size());
-		assertEquals(15l, h.deleteMin().getKey().longValue());
+		assertEquals(15L, h.deleteMin().getKey().longValue());
 		assertEquals(6, h.size());
-		assertEquals(18l, h.findMin().getKey().longValue());
-		assertEquals(18l, h.deleteMin().getKey().longValue());
-		assertEquals(21l, h.findMin().getKey().longValue());
-		assertEquals(21l, h.deleteMin().getKey().longValue());
-		assertEquals(25l, h.findMin().getKey().longValue());
-		assertEquals(25l, h.deleteMin().getKey().longValue());
-		assertEquals(30l, h.findMin().getKey().longValue());
-		assertEquals(30l, h.deleteMin().getKey().longValue());
-		assertEquals(50l, h.findMin().getKey().longValue());
-		assertEquals(50l, h.deleteMin().getKey().longValue());
-		assertEquals(51l, h.findMin().getKey().longValue());
-		assertEquals(51l, h.deleteMin().getKey().longValue());
+		assertEquals(18L, h.findMin().getKey().longValue());
+		assertEquals(18L, h.deleteMin().getKey().longValue());
+		assertEquals(21L, h.findMin().getKey().longValue());
+		assertEquals(21L, h.deleteMin().getKey().longValue());
+		assertEquals(25L, h.findMin().getKey().longValue());
+		assertEquals(25L, h.deleteMin().getKey().longValue());
+		assertEquals(30L, h.findMin().getKey().longValue());
+		assertEquals(30L, h.deleteMin().getKey().longValue());
+		assertEquals(50L, h.findMin().getKey().longValue());
+		assertEquals(50L, h.deleteMin().getKey().longValue());
+		assertEquals(51L, h.findMin().getKey().longValue());
+		assertEquals(51L, h.deleteMin().getKey().longValue());
 		assertEquals(h.size(), 0);
 		assertTrue(h.isEmpty());
 	}
@@ -75,14 +75,14 @@ public class LongRadixAddressableHeapTest {
 		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, SIZE);
 
 		for (long i = 0; i < SIZE; i++) {
-			h.insert(Long.valueOf(i));
-			assertEquals(Long.valueOf(0), h.findMin().getKey(), 1e-9);
+			h.insert(i);
+			assertEquals(0L, h.findMin().getKey(), 1e-9);
 			assertFalse(h.isEmpty());
 			assertEquals(h.size(), i + 1);
 		}
 
 		for (int i = SIZE - 1; i >= 0; i--) {
-			assertEquals(Long.valueOf(SIZE - i - 1), h.findMin().getKey(), 1e-9);
+			assertEquals((long) (SIZE - i - 1), h.findMin().getKey(), 1e-9);
 			h.deleteMin();
 		}
 	}
@@ -93,7 +93,7 @@ public class LongRadixAddressableHeapTest {
 
 		Random generator = new Random(1);
 
-		h.insert(0l);
+		h.insert(0L);
 		for (int i = 1; i < SIZE; i++) {
 			long d = Math.abs(generator.nextLong()) + 1;
 			h.insert(d);
@@ -115,7 +115,7 @@ public class LongRadixAddressableHeapTest {
 
 		Random generator = new Random(2);
 
-		h.insert(0l);
+		h.insert(0L);
 		for (int i = 1; i < SIZE; i++) {
 			long d = Math.abs(generator.nextLong()) + 1;
 			h.insert(d);
@@ -133,28 +133,28 @@ public class LongRadixAddressableHeapTest {
 
 	@Test
 	public void testSameMinMax() {
-		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(1l, 1l);
+		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(1L, 1L);
 
 		for (int i = 0; i < 15; i++) {
-			h.insert(1l);
+			h.insert(1L);
 		}
 
 		assertEquals(15, h.size());
 		for (int i = 0; i < 15; i++) {
-			assertEquals(1l, h.deleteMin().getKey().longValue());
+			assertEquals(1L, h.deleteMin().getKey().longValue());
 		}
 		assertEquals(0, h.size());
 	}
 
 	@Test
 	public void testMaxDifference() {
-		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0l, Long.MAX_VALUE);
+		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0L, Long.MAX_VALUE);
 
-		h.insert(0l);
+		h.insert(0L);
 		h.insert(Long.MAX_VALUE);
 
 		assertEquals(2, h.size());
-		assertEquals(0l, h.deleteMin().getKey().longValue());
+		assertEquals(0L, h.deleteMin().getKey().longValue());
 		assertEquals(Long.MAX_VALUE, h.deleteMin().getKey().longValue());
 		assertEquals(0, h.size());
 	}
@@ -162,12 +162,12 @@ public class LongRadixAddressableHeapTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testDelete() {
-		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0l, 15l);
+		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0L, 15L);
 
 		AddressableHeap.Handle<Long, Void> array[];
 		array = new AddressableHeap.Handle[15];
 		for (int i = 0; i < 15; i++) {
-			array[i] = h.insert(Long.valueOf(i));
+			array[i] = h.insert((long) i);
 		}
 
 		array[5].delete();
@@ -205,35 +205,35 @@ public class LongRadixAddressableHeapTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testDelete1() {
-		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0l, 10l);
+		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0L, 10L);
 
 		AddressableHeap.Handle<Long, Void> array[];
 		array = new AddressableHeap.Handle[8];
 		for (int i = 0; i < 8; i++) {
-			array[i] = h.insert(Long.valueOf(i));
+			array[i] = h.insert((long) i);
 		}
 
 		array[5].delete();
-		assertEquals(Long.valueOf(0), h.findMin().getKey(), 1e-9);
+		assertEquals(0L, h.findMin().getKey(), 1e-9);
 		array[7].delete();
-		assertEquals(Long.valueOf(0), h.findMin().getKey(), 1e-9);
+		assertEquals(0L, h.findMin().getKey(), 1e-9);
 		array[0].delete();
-		assertEquals(Long.valueOf(1), h.findMin().getKey(), 1e-9);
+		assertEquals(1L, h.findMin().getKey(), 1e-9);
 		array[2].delete();
-		assertEquals(Long.valueOf(1), h.findMin().getKey(), 1e-9);
+		assertEquals(1L, h.findMin().getKey(), 1e-9);
 		array[1].delete();
-		assertEquals(Long.valueOf(3), h.findMin().getKey(), 1e-9);
+		assertEquals(3L, h.findMin().getKey(), 1e-9);
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testAddDelete() {
-		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, Long.valueOf(SIZE));
+		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, (long) SIZE);
 
 		AddressableHeap.Handle<Long, Void> array[];
 		array = new AddressableHeap.Handle[SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			array[i] = h.insert(Long.valueOf(i));
+			array[i] = h.insert((long) i);
 		}
 
 		for (int i = SIZE - 1; i >= 0; i--) {
@@ -250,7 +250,7 @@ public class LongRadixAddressableHeapTest {
 		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, 15);
 
 		for (int i = 0; i < 15; i++) {
-			h.insert(Long.valueOf(i));
+			h.insert((long) i);
 		}
 
 		h.clear();
@@ -266,7 +266,7 @@ public class LongRadixAddressableHeapTest {
 		AddressableHeap.Handle<Long, Void> array[];
 		array = new AddressableHeap.Handle[15];
 		for (int i = 0; i < 15; i++) {
-			array[i] = h.insert(Long.valueOf(i));
+			array[i] = h.insert((long) i);
 		}
 
 		array[5].delete();
@@ -293,8 +293,8 @@ public class LongRadixAddressableHeapTest {
 	@Test
 	public void testDeleteMinUpdate() {
 		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, Long.MAX_VALUE);
-		h.insert(0l);
-		h.insert(0l);
+		h.insert(0L);
+		h.insert(0L);
 		h.insert(Long.MAX_VALUE);
 		h.insert(Long.MAX_VALUE);
 		h.insert(Long.MAX_VALUE);
@@ -307,8 +307,8 @@ public class LongRadixAddressableHeapTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteMinDeleteTwice() {
 		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, 100);
-		AddressableHeap.Handle<Long, Void> e1 = h.insert(50l);
-		h.insert(100l);
+		AddressableHeap.Handle<Long, Void> e1 = h.insert(50L);
+		h.insert(100L);
 		h.deleteMin();
 		e1.delete();
 	}
@@ -318,7 +318,7 @@ public class LongRadixAddressableHeapTest {
 		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(99, 200);
 
 		for (int i = 100; i < 200; i++) {
-			h.insert(Long.valueOf(i));
+			h.insert((long) i);
 		}
 
 		h.deleteMin().delete();
@@ -329,9 +329,9 @@ public class LongRadixAddressableHeapTest {
 		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(100, 200);
 
 		for (int i = 100; i < 200; i++) {
-			h.insert(Long.valueOf(i));
+			h.insert((long) i);
 		}
-		h.deleteMin().decreaseKey(0l);
+		h.deleteMin().decreaseKey(0L);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -343,7 +343,7 @@ public class LongRadixAddressableHeapTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testBadInsert1() {
 		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, 100);
-		h.insert(200l);
+		h.insert(200L);
 	}
 
 	@Test(expected = NoSuchElementException.class)
@@ -372,16 +372,16 @@ public class LongRadixAddressableHeapTest {
 		AddressableHeap.Handle<Long, Void> array[];
 		array = new AddressableHeap.Handle[15];
 
-		h.insert(0l); // monotone
+		h.insert(0L); // monotone
 
 		for (int i = 0; i < 15; i++) {
-			array[i] = h.insert(Long.valueOf(i) + 100);
+			array[i] = h.insert((long) i + 100);
 		}
 
-		array[5].decreaseKey(5l);
-		array[1].decreaseKey(50l);
-		array[10].decreaseKey(3l);
-		array[0].decreaseKey(1l);
+		array[5].decreaseKey(5L);
+		array[1].decreaseKey(50L);
+		array[10].decreaseKey(3L);
+		array[0].decreaseKey(1L);
 		array[5].delete();
 		array[2].delete();
 		array[11].delete();
@@ -394,8 +394,8 @@ public class LongRadixAddressableHeapTest {
 		assertEquals(Long.valueOf(103), h.deleteMin().getKey());
 		assertEquals(Long.valueOf(104), h.deleteMin().getKey());
 
-		array[14].decreaseKey(111l);
-		array[13].decreaseKey(109l);
+		array[14].decreaseKey(111L);
+		array[13].decreaseKey(109L);
 
 		assertEquals(Long.valueOf(106), h.deleteMin().getKey());
 		assertEquals(Long.valueOf(107), h.deleteMin().getKey());
@@ -413,13 +413,13 @@ public class LongRadixAddressableHeapTest {
 		AddressableHeap.Handle<Long, Void> array[];
 		array = new AddressableHeap.Handle[15];
 		for (int i = 0; i < 15; i++) {
-			array[i] = h.insert(Long.valueOf(i) + 100);
+			array[i] = h.insert((long) i + 100);
 		}
 
 		assertEquals(Long.valueOf(100), h.findMin().getKey());
-		array[5].decreaseKey(5l);
+		array[5].decreaseKey(5L);
 		assertEquals(Long.valueOf(5), h.findMin().getKey());
-		array[1].decreaseKey(102l);
+		array[1].decreaseKey(102L);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -429,7 +429,7 @@ public class LongRadixAddressableHeapTest {
 		AddressableHeap<Long, Void> h = new LongRadixAddressableHeap<Void>(0, 15);
 
 		for (int i = 0; i < 15; i++) {
-			h.insert(Long.valueOf(i));
+			h.insert((long) i);
 		}
 
 		// write
@@ -440,7 +440,6 @@ public class LongRadixAddressableHeapTest {
 		byte[] data = baos.toByteArray();
 
 		// read
-		h = null;
 
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object o = ois.readObject();
@@ -459,7 +458,7 @@ public class LongRadixAddressableHeapTest {
 	@Test
 	public void testGetValue() {
 		AddressableHeap<Long, String> h = new LongRadixAddressableHeap<String>(0, 0);
-		assertEquals("hello", h.insert(0l, "hello").getValue());
+		assertEquals("hello", h.insert(0L, "hello").getValue());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

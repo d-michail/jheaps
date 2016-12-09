@@ -211,8 +211,8 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
     @Override
     @ConstantTime
     public void clear() {
-        for (int i = 0; i < buckets.length; i++) {
-            buckets[i].clear();
+        for (List<K> bucket : buckets) {
+            bucket.clear();
         }
         size = 0;
         currentMin = null;

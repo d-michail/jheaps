@@ -316,7 +316,7 @@ public class CostlessMeldPairingHeap<K, V> implements MergeableAddressableHeap<K
             throw new NoSuchElementException();
         }
 
-        Node<K, V> min = null;
+        Node<K, V> min;
         if (decreasePoolMinPos >= decreasePoolSize) {
             // decrease pool empty
             min = root;

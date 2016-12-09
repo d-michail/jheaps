@@ -84,7 +84,6 @@ abstract class AbstractBinaryArrayDoubleEndedHeap<K> extends AbstractArrayHeap<K
             size--;
             break;
         default:
-            result = array[2];
             if (comparator == null) {
                 if (((Comparable<? super K>) array[3]).compareTo(array[2]) > 0) {
                     result = array[3];

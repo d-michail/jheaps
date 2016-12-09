@@ -200,7 +200,7 @@ public class HeapifyTest {
             try {
                 hf[i].insert(1);
                 fail("No!");
-            } catch (IllegalStateException e) {
+            } catch (IllegalStateException ignored) {
             }
         }
     }
@@ -247,7 +247,7 @@ public class HeapifyTest {
             try {
                 hf[i].insert(1);
                 fail("No!");
-            } catch (IllegalStateException e) {
+            } catch (IllegalStateException ignored) {
             }
         }
     }
@@ -351,253 +351,253 @@ public class HeapifyTest {
         try {
             BinaryArrayHeap.heapify(null);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryArrayHeap.heapify(null, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryArrayHeap.heapify(1, a);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryArrayHeap.heapify(1, a, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryArrayHeap.heapify(2, null);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryArrayHeap.heapify(2, null, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryFixedArrayHeap.heapify(null);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryFixedArrayHeap.heapify(null, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryFixedArrayHeap.heapify(1, a);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryFixedArrayHeap.heapify(1, a, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryFixedArrayHeap.heapify(2, null);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryFixedArrayHeap.heapify(2, null, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryArrayAddressableHeap.heapify(null, null);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryArrayAddressableHeap.heapify(null, null, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryArrayAddressableHeap.heapify(new Integer[2], new Integer[3]);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryArrayAddressableHeap.heapify(new Integer[2], new Integer[3], comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryArrayAddressableHeap.heapify(1, new Integer[2], new Integer[2]);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryArrayAddressableHeap.heapify(3, null, new Integer[2]);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryArrayAddressableHeap.heapify(3, new Integer[3], new Integer[2]);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryArrayAddressableHeap.heapify(1, new Integer[2], new Integer[2], comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryArrayAddressableHeap.heapify(3, null, new Integer[2], comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryArrayAddressableHeap.heapify(3, new Integer[3], new Integer[2], comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryFixedArrayAddressableHeap.heapify(null, new Integer[3]);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryFixedArrayAddressableHeap.heapify(new Integer[2], new Integer[3]);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryFixedArrayAddressableHeap.heapify(null, new Integer[3], comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryFixedArrayAddressableHeap.heapify(new Integer[2], new Integer[3], comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryFixedArrayAddressableHeap.heapify(1, new Integer[3], new Integer[3]);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryFixedArrayAddressableHeap.heapify(1, new Integer[3], new Integer[3], comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryFixedArrayAddressableHeap.heapify(3, null, new Integer[3]);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryFixedArrayAddressableHeap.heapify(3, null, new Integer[3], comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryFixedArrayAddressableHeap.heapify(3, new Integer[3], new Integer[2]);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             DaryFixedArrayAddressableHeap.heapify(3, new Integer[3], new Integer[2], comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryArrayWeakHeap.heapify(null);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryArrayWeakHeap.heapify(null, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryFixedArrayWeakHeap.heapify(null);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryFixedArrayWeakHeap.heapify(null, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryArrayBulkInsertWeakHeap.heapify(null);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             BinaryArrayBulkInsertWeakHeap.heapify(null, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             MinMaxBinaryArrayDoubleEndedHeap.heapify(null);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             MinMaxBinaryArrayDoubleEndedHeap.heapify(null, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             MinMaxBinaryFixedArrayDoubleEndedHeap.heapify(null);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
 
         try {
             MinMaxBinaryFixedArrayDoubleEndedHeap.heapify(null, comparator);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
     }
 

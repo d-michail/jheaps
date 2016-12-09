@@ -136,9 +136,9 @@ public abstract class AbstractDoubleEndedHeapTest extends AbstractHeapTest {
 
         assertTrue(h.isEmpty());
 
-        h.insert(780l);
-        h.insert(800l);
-        h.insert(900l);
+        h.insert(780L);
+        h.insert(800L);
+        h.insert(900L);
 
         assertEquals(h.size(), 3);
 
@@ -152,9 +152,9 @@ public abstract class AbstractDoubleEndedHeapTest extends AbstractHeapTest {
 
         assertTrue(h.isEmpty());
 
-        h.insert(900l);
-        h.insert(800l);
-        h.insert(780l);
+        h.insert(900L);
+        h.insert(800L);
+        h.insert(780L);
 
         assertEquals(h.size(), 3);
 
@@ -169,9 +169,9 @@ public abstract class AbstractDoubleEndedHeapTest extends AbstractHeapTest {
 
         assertTrue(h.isEmpty());
 
-        h.insert(900l);
-        h.insert(800l);
-        h.insert(780l);
+        h.insert(900L);
+        h.insert(800L);
+        h.insert(780L);
 
         assertEquals(h.size(), 3);
 
@@ -185,10 +185,10 @@ public abstract class AbstractDoubleEndedHeapTest extends AbstractHeapTest {
 
         assertTrue(h.isEmpty());
 
-        h.insert(900l);
-        h.insert(800l);
-        h.insert(780l);
-        h.insert(850l);
+        h.insert(900L);
+        h.insert(800L);
+        h.insert(780L);
+        h.insert(850L);
 
         assertEquals(h.size(), 4);
 
@@ -203,22 +203,22 @@ public abstract class AbstractDoubleEndedHeapTest extends AbstractHeapTest {
 
         assertTrue(h.isEmpty());
 
-        h.insert(780l);
+        h.insert(780L);
         assertEquals(h.size(), 1);
         assertEquals(Long.valueOf(780), h.findMin());
         assertEquals(Long.valueOf(780), h.findMax());
 
-        h.insert(-389l);
+        h.insert(-389L);
         assertEquals(h.size(), 2);
         assertEquals(Long.valueOf(780), h.findMin());
         assertEquals(Long.valueOf(-389), h.findMax());
 
-        h.insert(306l);
+        h.insert(306L);
         assertEquals(h.size(), 3);
         assertEquals(Long.valueOf(780), h.findMin());
         assertEquals(Long.valueOf(-389), h.findMax());
 
-        h.insert(579l);
+        h.insert(579L);
         assertEquals(h.size(), 4);
         assertEquals(Long.valueOf(780), h.findMin());
         assertEquals(Long.valueOf(-389), h.findMax());

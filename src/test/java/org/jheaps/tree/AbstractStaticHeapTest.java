@@ -299,9 +299,8 @@ public abstract class AbstractStaticHeapTest {
 		byte[] data = baos.toByteArray();
 
 		// read
-		h = null;
 
-		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object o = ois.readObject();
 		ois.close();
 		h = (Heap<Integer>) o;

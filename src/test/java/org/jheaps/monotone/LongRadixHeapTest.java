@@ -60,31 +60,31 @@ public class LongRadixHeapTest {
 	public void testVerySmall() {
 		Heap<Long> h = new LongRadixHeap(29, 36);
 
-		h.insert(29l);
-		h.insert(30l);
-		h.insert(31l);
-		h.insert(30l);
-		h.insert(33l);
-		h.insert(36l);
-		h.insert(35l);
+		h.insert(29L);
+		h.insert(30L);
+		h.insert(31L);
+		h.insert(30L);
+		h.insert(33L);
+		h.insert(36L);
+		h.insert(35L);
 
 		assertEquals(h.size(), 7);
-		assertEquals(h.findMin().longValue(), 29l);
+		assertEquals(h.findMin().longValue(), 29L);
 		assertEquals(h.size(), 7);
-		assertEquals(h.deleteMin().longValue(), 29l);
+		assertEquals(h.deleteMin().longValue(), 29L);
 		assertEquals(h.size(), 6);
-		assertEquals(h.findMin().longValue(), 30l);
-		assertEquals(h.deleteMin().longValue(), 30l);
-		assertEquals(h.findMin().longValue(), 30l);
-		assertEquals(h.deleteMin().longValue(), 30l);
-		assertEquals(h.findMin().longValue(), 31l);
-		assertEquals(h.deleteMin().longValue(), 31l);
-		assertEquals(h.findMin().longValue(), 33l);
-		assertEquals(h.deleteMin().longValue(), 33l);
-		assertEquals(h.findMin().longValue(), 35l);
-		assertEquals(h.deleteMin().longValue(), 35l);
-		assertEquals(h.findMin().longValue(), 36l);
-		assertEquals(h.deleteMin().longValue(), 36l);
+		assertEquals(h.findMin().longValue(), 30L);
+		assertEquals(h.deleteMin().longValue(), 30L);
+		assertEquals(h.findMin().longValue(), 30L);
+		assertEquals(h.deleteMin().longValue(), 30L);
+		assertEquals(h.findMin().longValue(), 31L);
+		assertEquals(h.deleteMin().longValue(), 31L);
+		assertEquals(h.findMin().longValue(), 33L);
+		assertEquals(h.deleteMin().longValue(), 33L);
+		assertEquals(h.findMin().longValue(), 35L);
+		assertEquals(h.deleteMin().longValue(), 35L);
+		assertEquals(h.findMin().longValue(), 36L);
+		assertEquals(h.deleteMin().longValue(), 36L);
 		assertEquals(h.size(), 0);
 		assertTrue(h.isEmpty());
 	}
@@ -196,12 +196,12 @@ public class LongRadixHeapTest {
 		Heap<Long> h = new LongRadixHeap(100, 100);
 
 		for (int i = 0; i < 15; i++) {
-			h.insert(100l);
+			h.insert(100L);
 		}
 
 		assertEquals(15, h.size());
 		for (int i = 0; i < 15; i++) {
-			assertEquals(100l, h.deleteMin().longValue());
+			assertEquals(100L, h.deleteMin().longValue());
 		}
 		assertEquals(0, h.size());
 	}
@@ -210,11 +210,11 @@ public class LongRadixHeapTest {
 	public void testMaxDifference() {
 		Heap<Long> h = new LongRadixHeap(0, Long.MAX_VALUE);
 
-		h.insert(0l);
+		h.insert(0L);
 		h.insert(Long.MAX_VALUE);
 
 		assertEquals(2, h.size());
-		assertEquals(0l, h.deleteMin().longValue());
+		assertEquals(0L, h.deleteMin().longValue());
 		assertEquals(Long.MAX_VALUE, h.deleteMin().longValue());
 		assertEquals(0, h.size());
 	}
@@ -241,8 +241,8 @@ public class LongRadixHeapTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testMonotone() {
 		Heap<Long> h = new LongRadixHeap(0, 1000);
-		h.insert(100l);
-		h.insert(99l);
+		h.insert(100L);
+		h.insert(99L);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -262,12 +262,12 @@ public class LongRadixHeapTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testBadInsert1() {
-		new LongRadixHeap(10, 15).insert(9l);
+		new LongRadixHeap(10, 15).insert(9L);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testBadInsert2() {
-		new LongRadixHeap(10, 15).insert(16l);
+		new LongRadixHeap(10, 15).insert(16L);
 	}
 
 	@Test(expected = NoSuchElementException.class)
@@ -297,7 +297,6 @@ public class LongRadixHeapTest {
 		byte[] data = baos.toByteArray();
 
 		// read
-		h = null;
 
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object o = ois.readObject();

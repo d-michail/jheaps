@@ -349,7 +349,7 @@ public abstract class AbstractMergeableDoubleEndedAddressableHeapTest {
         MergeableDoubleEndedAddressableHeap<Integer, String> h2 = createHeap(new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
-                return (int) (o1 - o2);
+                return o1 - o2;
             }
         });
 
@@ -364,7 +364,7 @@ public abstract class AbstractMergeableDoubleEndedAddressableHeapTest {
         try {
             h1.meld(h2);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
     }
 
@@ -375,7 +375,7 @@ public abstract class AbstractMergeableDoubleEndedAddressableHeapTest {
         try {
             h1.meld(h2);
             fail("No!");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
     }
 

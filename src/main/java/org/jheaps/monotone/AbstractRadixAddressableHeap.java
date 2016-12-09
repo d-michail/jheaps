@@ -419,7 +419,6 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
             }
 
             // add to new list
-            head = buckets[newBucket];
             if (buckets[newBucket] == null) {
                 buckets[newBucket] = this;
                 this.next = null;

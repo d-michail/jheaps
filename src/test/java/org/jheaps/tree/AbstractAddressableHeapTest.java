@@ -566,7 +566,7 @@ public abstract class AbstractAddressableHeapTest {
         AddressableHeap.Handle<Integer, Void> array[];
         array = new AddressableHeap.Handle[15];
         for (int i = 0; i < 15; i++) {
-            array[i] = h.insert(Integer.valueOf(i));
+            array[i] = h.insert(i);
         }
 
         assertEquals(Integer.valueOf(14), h.findMin().getKey());
@@ -666,7 +666,6 @@ public abstract class AbstractAddressableHeapTest {
         byte[] data = baos.toByteArray();
 
         // read
-        h = null;
 
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
         Object o = ois.readObject();
@@ -753,7 +752,6 @@ public abstract class AbstractAddressableHeapTest {
         byte[] data = baos.toByteArray();
 
         // read
-        h = null;
 
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
         Object o = ois.readObject();

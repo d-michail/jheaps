@@ -28,3 +28,7 @@ _site/
 # release stuff
 release.properties
 pom.xml.releaseBackup
+
+# ide stuff
+.idea/
+*.iml

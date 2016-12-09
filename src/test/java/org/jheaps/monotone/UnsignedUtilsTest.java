@@ -30,12 +30,12 @@ public class UnsignedUtilsTest {
 
 		new UnsignedUtils();
 
-		assertEquals(BigInteger.ONE, UnsignedUtils.unsignedLongToBigInt(1l));
+		assertEquals(BigInteger.ONE, UnsignedUtils.unsignedLongToBigInt(1L));
 		assertEquals(BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE).multiply(BigInteger.valueOf(2))
-				.subtract(BigInteger.ONE), UnsignedUtils.unsignedLongToBigInt(-1l));
+				.subtract(BigInteger.ONE), UnsignedUtils.unsignedLongToBigInt(-1L));
 
-		assertEquals(1.0, UnsignedUtils.unsignedLongToDouble(1l), 1e-9);
-		assertEquals(1.8446744073709552E19, UnsignedUtils.unsignedLongToDouble(-1l), 1e-9);
+		assertEquals(1.0, UnsignedUtils.unsignedLongToDouble(1L), 1e-9);
+		assertEquals(1.8446744073709552E19, UnsignedUtils.unsignedLongToDouble(-1L), 1e-9);
 
 	}
 

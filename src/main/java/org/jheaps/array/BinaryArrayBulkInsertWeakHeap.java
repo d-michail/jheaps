@@ -453,10 +453,7 @@ public class BinaryArrayBulkInsertWeakHeap<K> extends BinaryArrayWeakHeap<K> imp
             return true;
         }
         double sizeAsDouble = size + insertionBufferSize;
-        if (Math.getExponent(sizeAsDouble) + 3 >= insertionBuffer.length) {
-            return true;
-        }
-        return false;
+        return Math.getExponent(sizeAsDouble) + 3 >= insertionBuffer.length;
     }
 
     /**

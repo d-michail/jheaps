@@ -315,7 +315,6 @@ public class BinaryTreeSoftAddressableHeapTest {
         byte[] data = baos.toByteArray();
 
         // read
-        h = null;
 
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
         Object o = ois.readObject();
@@ -453,7 +452,7 @@ public class BinaryTreeSoftAddressableHeapTest {
 
         a.meld(b);
         a.meld(b);
-        validateSoftHeap(a, 0.5, 12l);
+        validateSoftHeap(a, 0.5, 12L);
     }
 
     @Test
@@ -478,11 +477,11 @@ public class BinaryTreeSoftAddressableHeapTest {
 
         a.meld(b);
         a.meld(c);
-        validateSoftHeap(a, 0.5, 12l);
+        validateSoftHeap(a, 0.5, 12L);
         b3.delete();
-        validateSoftHeap(a, 0.5, 12l);
+        validateSoftHeap(a, 0.5, 12L);
         c3.delete();
-        validateSoftHeap(a, 0.5, 12l);
+        validateSoftHeap(a, 0.5, 12L);
     }
 
     @Test(expected = IllegalStateException.class)
@@ -546,7 +545,7 @@ public class BinaryTreeSoftAddressableHeapTest {
         assertEquals(0, d.size());
         assertEquals(0, e.size());
 
-        validateSoftHeap(a, 0.5, 20l);
+        validateSoftHeap(a, 0.5, 20L);
     }
 
     @Test
@@ -593,15 +592,15 @@ public class BinaryTreeSoftAddressableHeapTest {
         assertEquals(0, e.size());
 
         e3.delete();
-        validateSoftHeap(a, 0.5, 20l);
+        validateSoftHeap(a, 0.5, 20L);
         d3.delete();
-        validateSoftHeap(a, 0.5, 20l);
+        validateSoftHeap(a, 0.5, 20L);
         c3.delete();
-        validateSoftHeap(a, 0.5, 20l);
+        validateSoftHeap(a, 0.5, 20L);
         b3.delete();
-        validateSoftHeap(a, 0.5, 20l);
+        validateSoftHeap(a, 0.5, 20L);
         a3.delete();
-        validateSoftHeap(a, 0.5, 20l);
+        validateSoftHeap(a, 0.5, 20L);
     }
 
     @Test(expected = NullPointerException.class)

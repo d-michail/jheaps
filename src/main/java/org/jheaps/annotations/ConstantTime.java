@@ -38,6 +38,6 @@ public @interface ConstantTime {
      *
      * @return {@code true} if amortized, {@code false} if actual
      */
-    public boolean amortized() default false;
+    boolean amortized() default false;
 
 }

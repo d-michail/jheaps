@@ -121,8 +121,8 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
             1598, 2397, 3596, 5394, 8091, 12137, 18206, 27309, 40964, 61446, 92169, 138254, 207381, 311072, 466608,
             699912, 1049868, 1574802, 2362203, 3543305, 5314958, 7972437, 11958656, 17937984, 26906976, 40360464,
             60540696, 90811044, 136216566, 204324849, 306487274, 459730911, 689596367, 1034394551, 1551591827,
-            2327387741l, 3491081612l, 5236622418l, 7854933627l, 11782400441l, 17673600662l, 26510400993l, 39765601490l,
-            59648402235l, 89472603353l, 134208905030l };
+            2327387741L, 3491081612L, 5236622418L, 7854933627L, 11782400441L, 17673600662L, 26510400993L, 39765601490L,
+            59648402235L, 89472603353L, 134208905030L };
 
     /**
      * Tree nodes with less or equal than this rank will have no corrupted keys.
@@ -202,7 +202,7 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
             throw new IllegalArgumentException("Error rate must be less than one");
         }
         this.rankLimit = (int) Math.ceil(Math.log(1d / errorRate) / Math.log(2)) + 5;
-        this.rootList = new RootList<K, V>(null, null);
+        this.rootList = new RootList<K, V>();
         this.comparator = comparator;
         this.size = 0;
         this.other = this;
@@ -383,9 +383,9 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
         RootListNode<K, V> head;
         RootListNode<K, V> tail;
 
-        RootList(RootListNode<K, V> head, RootListNode<K, V> tail) {
-            this.head = head;
-            this.tail = tail;
+        RootList() {
+            this.head = null;
+            this.tail = null;
         }
     }
 
@@ -711,8 +711,8 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
         }
 
         // initialize
-        RootListNode<K, V> resultHead = null;
-        RootListNode<K, V> resultTail = null;
+        RootListNode<K, V> resultHead;
+        RootListNode<K, V> resultTail;
         RootListNode<K, V> resultTailPrev = null;
         RootListNode<K, V> cur1 = rootList.head;
         RootListNode<K, V> cur2 = head;

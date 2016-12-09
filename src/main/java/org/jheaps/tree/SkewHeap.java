@@ -563,8 +563,8 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
             return root1;
         }
 
-        Node<K, V> newRoot = null;
-        Node<K, V> cur = null;
+        Node<K, V> newRoot;
+        Node<K, V> cur;
 
         // find initial
         int c = ((Comparable<? super K>) root1.key).compareTo(root2.key);
@@ -646,8 +646,8 @@ public class SkewHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializa
             return root1;
         }
 
-        Node<K, V> newRoot = null;
-        Node<K, V> cur = null;
+        Node<K, V> newRoot;
+        Node<K, V> cur;
 
         // find initial
         int c = comparator.compare(root1.key, root2.key);

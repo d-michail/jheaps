@@ -68,22 +68,22 @@ public class IntegerRadixHeapTest {
 		h.insert(35);
 
 		assertEquals(h.size(), 7);
-		assertEquals(h.findMin().intValue(), 29l);
+		assertEquals(h.findMin().intValue(), 29L);
 		assertEquals(h.size(), 7);
-		assertEquals(h.deleteMin().intValue(), 29l);
+		assertEquals(h.deleteMin().intValue(), 29L);
 		assertEquals(h.size(), 6);
-		assertEquals(h.findMin().intValue(), 30l);
-		assertEquals(h.deleteMin().intValue(), 30l);
-		assertEquals(h.findMin().intValue(), 30l);
-		assertEquals(h.deleteMin().intValue(), 30l);
-		assertEquals(h.findMin().intValue(), 31l);
-		assertEquals(h.deleteMin().intValue(), 31l);
-		assertEquals(h.findMin().intValue(), 33l);
-		assertEquals(h.deleteMin().intValue(), 33l);
-		assertEquals(h.findMin().intValue(), 35l);
-		assertEquals(h.deleteMin().intValue(), 35l);
-		assertEquals(h.findMin().intValue(), 36l);
-		assertEquals(h.deleteMin().intValue(), 36l);
+		assertEquals(h.findMin().intValue(), 30L);
+		assertEquals(h.deleteMin().intValue(), 30L);
+		assertEquals(h.findMin().intValue(), 30L);
+		assertEquals(h.deleteMin().intValue(), 30L);
+		assertEquals(h.findMin().intValue(), 31L);
+		assertEquals(h.deleteMin().intValue(), 31L);
+		assertEquals(h.findMin().intValue(), 33L);
+		assertEquals(h.deleteMin().intValue(), 33L);
+		assertEquals(h.findMin().intValue(), 35L);
+		assertEquals(h.deleteMin().intValue(), 35L);
+		assertEquals(h.findMin().intValue(), 36L);
+		assertEquals(h.deleteMin().intValue(), 36L);
 		assertEquals(h.size(), 0);
 		assertTrue(h.isEmpty());
 	}
@@ -200,7 +200,7 @@ public class IntegerRadixHeapTest {
 
 		assertEquals(15, h.size());
 		for (int i = 0; i < 15; i++) {
-			assertEquals(100l, h.deleteMin().intValue());
+			assertEquals(100L, h.deleteMin().intValue());
 		}
 		assertEquals(0, h.size());
 	}
@@ -265,7 +265,6 @@ public class IntegerRadixHeapTest {
 		byte[] data = baos.toByteArray();
 
 		// read
-		h = null;
 
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object o = ois.readObject();

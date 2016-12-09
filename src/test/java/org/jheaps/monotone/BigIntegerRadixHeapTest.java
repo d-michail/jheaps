@@ -59,31 +59,31 @@ public class BigIntegerRadixHeapTest {
 	public void testVerySmall() {
 		Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.valueOf(29), BigInteger.valueOf(36));
 
-		h.insert(BigInteger.valueOf(29l));
-		h.insert(BigInteger.valueOf(30l));
-		h.insert(BigInteger.valueOf(31l));
-		h.insert(BigInteger.valueOf(30l));
-		h.insert(BigInteger.valueOf(33l));
-		h.insert(BigInteger.valueOf(36l));
-		h.insert(BigInteger.valueOf(35l));
+		h.insert(BigInteger.valueOf(29L));
+		h.insert(BigInteger.valueOf(30L));
+		h.insert(BigInteger.valueOf(31L));
+		h.insert(BigInteger.valueOf(30L));
+		h.insert(BigInteger.valueOf(33L));
+		h.insert(BigInteger.valueOf(36L));
+		h.insert(BigInteger.valueOf(35L));
 
 		assertEquals(h.size(), 7);
-		assertEquals(h.findMin().longValue(), 29l);
+		assertEquals(h.findMin().longValue(), 29L);
 		assertEquals(h.size(), 7);
-		assertEquals(h.deleteMin().longValue(), 29l);
+		assertEquals(h.deleteMin().longValue(), 29L);
 		assertEquals(h.size(), 6);
-		assertEquals(h.findMin().longValue(), 30l);
-		assertEquals(h.deleteMin().longValue(), 30l);
-		assertEquals(h.findMin().longValue(), 30l);
-		assertEquals(h.deleteMin().longValue(), 30l);
-		assertEquals(h.findMin().longValue(), 31l);
-		assertEquals(h.deleteMin().longValue(), 31l);
-		assertEquals(h.findMin().longValue(), 33l);
-		assertEquals(h.deleteMin().longValue(), 33l);
-		assertEquals(h.findMin().longValue(), 35l);
-		assertEquals(h.deleteMin().longValue(), 35l);
-		assertEquals(h.findMin().longValue(), 36l);
-		assertEquals(h.deleteMin().longValue(), 36l);
+		assertEquals(h.findMin().longValue(), 30L);
+		assertEquals(h.deleteMin().longValue(), 30L);
+		assertEquals(h.findMin().longValue(), 30L);
+		assertEquals(h.deleteMin().longValue(), 30L);
+		assertEquals(h.findMin().longValue(), 31L);
+		assertEquals(h.deleteMin().longValue(), 31L);
+		assertEquals(h.findMin().longValue(), 33L);
+		assertEquals(h.deleteMin().longValue(), 33L);
+		assertEquals(h.findMin().longValue(), 35L);
+		assertEquals(h.deleteMin().longValue(), 35L);
+		assertEquals(h.findMin().longValue(), 36L);
+		assertEquals(h.deleteMin().longValue(), 36L);
 		assertEquals(h.size(), 0);
 		assertTrue(h.isEmpty());
 	}
@@ -130,8 +130,8 @@ public class BigIntegerRadixHeapTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testMonotone() {
 		Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.ZERO, BigInteger.valueOf(100));
-		h.insert(BigInteger.valueOf(100l));
-		h.insert(BigInteger.valueOf(99l));
+		h.insert(BigInteger.valueOf(100L));
+		h.insert(BigInteger.valueOf(99L));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -171,7 +171,6 @@ public class BigIntegerRadixHeapTest {
 		byte[] data = baos.toByteArray();
 
 		// read
-		h = null;
 
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object o = ois.readObject();

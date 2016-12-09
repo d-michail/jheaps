@@ -73,14 +73,14 @@ public class DoubleRadixAddressableHeapTest {
 		AddressableHeap<Double, Void> h = new DoubleRadixAddressableHeap<Void>(0.0, SIZE);
 
 		for (long i = 0; i < SIZE; i++) {
-			h.insert(Double.valueOf(i));
-			assertEquals(Double.valueOf(0), h.findMin().getKey(), 1e-9);
+			h.insert((double) i);
+			assertEquals(0d, h.findMin().getKey(), 1e-9);
 			assertFalse(h.isEmpty());
 			assertEquals(h.size(), i + 1);
 		}
 
 		for (int i = SIZE - 1; i >= 0; i--) {
-			assertEquals(Double.valueOf(SIZE - i - 1), h.findMin().getKey(), 1e-9);
+			assertEquals((double) (SIZE - i - 1), h.findMin().getKey(), 1e-9);
 			h.deleteMin();
 		}
 	}
@@ -165,37 +165,37 @@ public class DoubleRadixAddressableHeapTest {
 		AddressableHeap.Handle<Double, Void> array[];
 		array = new AddressableHeap.Handle[15];
 		for (int i = 0; i < 15; i++) {
-			array[i] = h.insert(Double.valueOf(i));
+			array[i] = h.insert((double) i);
 		}
 
 		array[5].delete();
-		assertEquals(Double.valueOf(0), h.findMin().getKey(), 1e-9);
+		assertEquals(0d, h.findMin().getKey(), 1e-9);
 		array[7].delete();
-		assertEquals(Double.valueOf(0), h.findMin().getKey(), 1e-9);
+		assertEquals(0d, h.findMin().getKey(), 1e-9);
 		array[0].delete();
-		assertEquals(Double.valueOf(1), h.findMin().getKey(), 1e-9);
+		assertEquals(1d, h.findMin().getKey(), 1e-9);
 		array[2].delete();
-		assertEquals(Double.valueOf(1), h.findMin().getKey(), 1e-9);
+		assertEquals(1d, h.findMin().getKey(), 1e-9);
 		array[1].delete();
-		assertEquals(Double.valueOf(3), h.findMin().getKey(), 1e-9);
+		assertEquals(3d, h.findMin().getKey(), 1e-9);
 		array[3].delete();
-		assertEquals(Double.valueOf(4), h.findMin().getKey(), 1e-9);
+		assertEquals(4d, h.findMin().getKey(), 1e-9);
 		array[9].delete();
-		assertEquals(Double.valueOf(4), h.findMin().getKey(), 1e-9);
+		assertEquals(4d, h.findMin().getKey(), 1e-9);
 		array[4].delete();
-		assertEquals(Double.valueOf(6), h.findMin().getKey(), 1e-9);
+		assertEquals(6d, h.findMin().getKey(), 1e-9);
 		array[8].delete();
-		assertEquals(Double.valueOf(6), h.findMin().getKey(), 1e-9);
+		assertEquals(6d, h.findMin().getKey(), 1e-9);
 		array[11].delete();
-		assertEquals(Double.valueOf(6), h.findMin().getKey(), 1e-9);
+		assertEquals(6d, h.findMin().getKey(), 1e-9);
 		array[6].delete();
-		assertEquals(Double.valueOf(10), h.findMin().getKey(), 1e-9);
+		assertEquals(10d, h.findMin().getKey(), 1e-9);
 		array[12].delete();
-		assertEquals(Double.valueOf(10), h.findMin().getKey(), 1e-9);
+		assertEquals(10d, h.findMin().getKey(), 1e-9);
 		array[10].delete();
-		assertEquals(Double.valueOf(13), h.findMin().getKey(), 1e-9);
+		assertEquals(13d, h.findMin().getKey(), 1e-9);
 		array[13].delete();
-		assertEquals(Double.valueOf(14), h.findMin().getKey(), 1e-9);
+		assertEquals(14d, h.findMin().getKey(), 1e-9);
 		array[14].delete();
 		assertTrue(h.isEmpty());
 	}
@@ -208,36 +208,36 @@ public class DoubleRadixAddressableHeapTest {
 		AddressableHeap.Handle<Double, Void> array[];
 		array = new AddressableHeap.Handle[8];
 		for (int i = 0; i < 8; i++) {
-			array[i] = h.insert(Double.valueOf(i));
+			array[i] = h.insert((double) i);
 		}
 
 		array[5].delete();
-		assertEquals(Double.valueOf(0), h.findMin().getKey(), 1e-9);
+		assertEquals(0d, h.findMin().getKey(), 1e-9);
 		array[7].delete();
-		assertEquals(Double.valueOf(0), h.findMin().getKey(), 1e-9);
+		assertEquals(0d, h.findMin().getKey(), 1e-9);
 		array[0].delete();
-		assertEquals(Double.valueOf(1), h.findMin().getKey(), 1e-9);
+		assertEquals(1d, h.findMin().getKey(), 1e-9);
 		array[2].delete();
-		assertEquals(Double.valueOf(1), h.findMin().getKey(), 1e-9);
+		assertEquals(1d, h.findMin().getKey(), 1e-9);
 		array[1].delete();
-		assertEquals(Double.valueOf(3), h.findMin().getKey(), 1e-9);
+		assertEquals(3d, h.findMin().getKey(), 1e-9);
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testAddDelete() {
-		AddressableHeap<Double, Void> h = new DoubleRadixAddressableHeap<Void>(0.0, Double.valueOf(SIZE));
+		AddressableHeap<Double, Void> h = new DoubleRadixAddressableHeap<Void>(0.0, (double) SIZE);
 
 		AddressableHeap.Handle<Double, Void> array[];
 		array = new AddressableHeap.Handle[SIZE];
 		for (int i = 0; i < SIZE; i++) {
-			array[i] = h.insert(Double.valueOf(i));
+			array[i] = h.insert((double) i);
 		}
 
 		for (int i = SIZE - 1; i >= 0; i--) {
 			array[i].delete();
 			if (i > 0) {
-				assertEquals(Double.valueOf(0), h.findMin().getKey(), 1e-9);
+				assertEquals(0d, h.findMin().getKey(), 1e-9);
 			}
 		}
 		assertTrue(h.isEmpty());
@@ -248,7 +248,7 @@ public class DoubleRadixAddressableHeapTest {
 		AddressableHeap<Double, Void> h = new DoubleRadixAddressableHeap<Void>(0.0, 15.0);
 
 		for (int i = 0; i < 15; i++) {
-			h.insert(Double.valueOf(i));
+			h.insert((double) i);
 		}
 
 		h.clear();
@@ -264,25 +264,25 @@ public class DoubleRadixAddressableHeapTest {
 		AddressableHeap.Handle<Double, Void> array[];
 		array = new AddressableHeap.Handle[15];
 		for (int i = 0; i < 15; i++) {
-			array[i] = h.insert(Double.valueOf(i));
+			array[i] = h.insert((double) i);
 		}
 
 		array[5].delete();
-		assertEquals(Double.valueOf(0), h.findMin().getKey(), 1e-9);
+		assertEquals(0d, h.findMin().getKey(), 1e-9);
 		array[7].delete();
-		assertEquals(Double.valueOf(0), h.findMin().getKey(), 1e-9);
+		assertEquals(0d, h.findMin().getKey(), 1e-9);
 		array[0].delete();
-		assertEquals(Double.valueOf(1), h.findMin().getKey(), 1e-9);
+		assertEquals(1d, h.findMin().getKey(), 1e-9);
 		array[2].delete();
-		assertEquals(Double.valueOf(1), h.findMin().getKey(), 1e-9);
+		assertEquals(1d, h.findMin().getKey(), 1e-9);
 		array[1].delete();
-		assertEquals(Double.valueOf(3), h.findMin().getKey(), 1e-9);
+		assertEquals(3d, h.findMin().getKey(), 1e-9);
 		array[3].delete();
-		assertEquals(Double.valueOf(4), h.findMin().getKey(), 1e-9);
+		assertEquals(4d, h.findMin().getKey(), 1e-9);
 		array[9].delete();
-		assertEquals(Double.valueOf(4), h.findMin().getKey(), 1e-9);
+		assertEquals(4d, h.findMin().getKey(), 1e-9);
 		array[4].delete();
-		assertEquals(Double.valueOf(6), h.findMin().getKey(), 1e-9);
+		assertEquals(6d, h.findMin().getKey(), 1e-9);
 
 		// again
 		array[2].delete();
@@ -302,7 +302,7 @@ public class DoubleRadixAddressableHeapTest {
 		AddressableHeap<Double, Void> h = new DoubleRadixAddressableHeap<Void>(99.0, 200.0);
 
 		for (int i = 100; i < 200; i++) {
-			h.insert(Double.valueOf(i));
+			h.insert((double) i);
 		}
 
 		h.deleteMin().delete();
@@ -313,7 +313,7 @@ public class DoubleRadixAddressableHeapTest {
 		AddressableHeap<Double, Void> h = new DoubleRadixAddressableHeap<Void>(100.0, 200.0);
 
 		for (int i = 100; i < 200; i++) {
-			h.insert(Double.valueOf(i));
+			h.insert((double) i);
 		}
 		h.deleteMin().decreaseKey(0.0);
 	}
@@ -329,7 +329,7 @@ public class DoubleRadixAddressableHeapTest {
 		h.insert(0.0); // monotone
 
 		for (int i = 0; i < 15; i++) {
-			array[i] = h.insert(Double.valueOf(i) + 100.0);
+			array[i] = h.insert((double) i + 100.0);
 		}
 
 		array[5].decreaseKey(5.0);
@@ -339,24 +339,24 @@ public class DoubleRadixAddressableHeapTest {
 		array[5].delete();
 		array[2].delete();
 
-		assertEquals(Double.valueOf(0.0), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(1.0), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(3.0), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(50.0), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(103.0), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(104.0), h.deleteMin().getKey(), 1e-9);
+		assertEquals(0.0, h.deleteMin().getKey(), 1e-9);
+		assertEquals(1.0, h.deleteMin().getKey(), 1e-9);
+		assertEquals(3.0, h.deleteMin().getKey(), 1e-9);
+		assertEquals(50.0, h.deleteMin().getKey(), 1e-9);
+		assertEquals(103.0, h.deleteMin().getKey(), 1e-9);
+		assertEquals(104.0, h.deleteMin().getKey(), 1e-9);
 
 		array[14].decreaseKey(107.5);
 		array[13].decreaseKey(108.5);
 
-		assertEquals(Double.valueOf(106.0), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(107.0), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(107.5), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(108.0), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(108.5), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(109.0), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(111.0), h.deleteMin().getKey(), 1e-9);
-		assertEquals(Double.valueOf(112.0), h.deleteMin().getKey(), 1e-9);
+		assertEquals(106.0, h.deleteMin().getKey(), 1e-9);
+		assertEquals(107.0, h.deleteMin().getKey(), 1e-9);
+		assertEquals(107.5, h.deleteMin().getKey(), 1e-9);
+		assertEquals(108.0, h.deleteMin().getKey(), 1e-9);
+		assertEquals(108.5, h.deleteMin().getKey(), 1e-9);
+		assertEquals(109.0, h.deleteMin().getKey(), 1e-9);
+		assertEquals(111.0, h.deleteMin().getKey(), 1e-9);
+		assertEquals(112.0, h.deleteMin().getKey(), 1e-9);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -367,7 +367,7 @@ public class DoubleRadixAddressableHeapTest {
 		AddressableHeap.Handle<Double, Void> array[];
 		array = new AddressableHeap.Handle[15];
 		for (int i = 0; i < 15; i++) {
-			array[i] = h.insert(Double.valueOf(i) + 100.0);
+			array[i] = h.insert((double) i + 100.0);
 		}
 
 		assertEquals(Double.valueOf(100), h.findMin().getKey());
@@ -383,7 +383,7 @@ public class DoubleRadixAddressableHeapTest {
 		AddressableHeap<Double, Void> h = new DoubleRadixAddressableHeap<Void>(0.0, 15.0);
 
 		for (int i = 0; i < 15; i++) {
-			h.insert(Double.valueOf(i));
+			h.insert((double) i);
 		}
 
 		// write
@@ -394,7 +394,6 @@ public class DoubleRadixAddressableHeapTest {
 		byte[] data = baos.toByteArray();
 
 		// read
-		h = null;
 
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object o = ois.readObject();
@@ -403,7 +402,7 @@ public class DoubleRadixAddressableHeapTest {
 
 		for (int i = 0; i < 15; i++) {
 			assertEquals(15 - i, h.size());
-			assertEquals(Double.valueOf(i), h.findMin().getKey(), 1e-9);
+			assertEquals((double) i, h.findMin().getKey(), 1e-9);
 			h.deleteMin();
 		}
 		assertTrue(h.isEmpty());

@@ -270,7 +270,6 @@ public class BinaryTreeSoftHeapTest {
         byte[] data = baos.toByteArray();
 
         // read
-        h = null;
 
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
         Object o = ois.readObject();
@@ -398,7 +397,7 @@ public class BinaryTreeSoftHeapTest {
         validateSoftHeap(h2, epsilon, n / 2);
         assertEquals(n / 2, h2.size());
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
 
         validateSoftHeap(h1, epsilon, n);
         validateSoftHeap(h2, epsilon, n);
@@ -421,7 +420,7 @@ public class BinaryTreeSoftHeapTest {
         validateSoftHeap(h2, epsilon, 2 * n / 3);
         assertEquals((int) Math.ceil(2.0 * n / 3.0), h2.size());
 
-        ((MergeableHeap<Integer>) h1).meld((MergeableHeap<Integer>) h2);
+        h1.meld(h2);
 
         validateSoftHeap(h1, epsilon, n);
         validateSoftHeap(h2, epsilon, n);

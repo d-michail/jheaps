@@ -134,19 +134,19 @@ public abstract class AbstractHeapTest {
 
         assertTrue(h.isEmpty());
 
-        h.insert(780l);
+        h.insert(780L);
         assertEquals(h.size(), 1);
         assertEquals(Long.valueOf(780).longValue(), h.findMin().longValue());
 
-        h.insert(-389l);
+        h.insert(-389L);
         assertEquals(h.size(), 2);
         assertEquals(Long.valueOf(-389), h.findMin());
 
-        h.insert(306l);
+        h.insert(306L);
         assertEquals(h.size(), 3);
         assertEquals(Long.valueOf(-389), h.findMin());
 
-        h.insert(579l);
+        h.insert(579L);
         assertEquals(h.size(), 4);
         assertEquals(Long.valueOf(-389), h.findMin());
 
@@ -314,7 +314,6 @@ public abstract class AbstractHeapTest {
         byte[] data = baos.toByteArray();
 
         // read
-        h = null;
 
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
         Object o = ois.readObject();
@@ -356,19 +355,19 @@ public abstract class AbstractHeapTest {
 
         assertTrue(h.isEmpty());
 
-        h.insert(780l);
+        h.insert(780L);
         assertEquals(h.size(), 1);
         assertEquals(Long.valueOf(780), h.findMin());
 
-        h.insert(-389l);
+        h.insert(-389L);
         assertEquals(h.size(), 2);
         assertEquals(Long.valueOf(780), h.findMin());
 
-        h.insert(306l);
+        h.insert(306L);
         assertEquals(h.size(), 3);
         assertEquals(Long.valueOf(780), h.findMin());
 
-        h.insert(579l);
+        h.insert(579L);
         assertEquals(h.size(), 4);
         assertEquals(Long.valueOf(780), h.findMin());
 
@@ -407,7 +406,6 @@ public abstract class AbstractHeapTest {
         byte[] data = baos.toByteArray();
 
         // read
-        h = null;
 
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
         Object o = ois.readObject();
