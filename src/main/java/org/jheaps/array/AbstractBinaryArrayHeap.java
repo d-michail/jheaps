@@ -38,23 +38,19 @@ abstract class AbstractBinaryArrayHeap<K> extends AbstractArrayHeap<K> implement
 
     @SuppressWarnings("unchecked")
     protected void fixup(int k) {
-        // assert k >= 1 && k <= size;
-
         K key = array[k];
-        while (k > 1 && ((Comparable<? super K>) array[k / 2]).compareTo(key) > 0) {
-            array[k] = array[k / 2];
-            k /= 2;
+        while (k > 1 && ((Comparable<? super K>) array[k >> 1]).compareTo(key) > 0) {
+            array[k] = array[k >> 1];
+            k >>= 1;
         }
         array[k] = key;
     }
 
     protected void fixupWithComparator(int k) {
-        // assert k >= 1 && k <= size;
-
         K key = array[k];
-        while (k > 1 && comparator.compare(array[k / 2], key) > 0) {
-            array[k] = array[k / 2];
-            k /= 2;
+        while (k > 1 && comparator.compare(array[k >> 1], key) > 0) {
+            array[k] = array[k >> 1];
+            k >>= 1;
         }
         array[k] = key;
     }
