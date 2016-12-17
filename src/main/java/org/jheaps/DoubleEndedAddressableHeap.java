@@ -94,8 +94,8 @@ public interface DoubleEndedAddressableHeap<K, V> extends AddressableHeap<K, V> 
     Handle<K, V> deleteMax();
 
     /**
-     * A heap element handle. Allows someone to address an element already in a
-     * heap and perform additional operations.
+     * A double-ended heap element handle. Allows someone to address an element
+     * already in a heap and perform additional operations.
      *
      * @param <K>
      *            the type of keys maintained by this heap

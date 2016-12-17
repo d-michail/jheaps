@@ -20,33 +20,21 @@ package org.jheaps.tree;
 import java.util.Comparator;
 
 import org.jheaps.AddressableHeap;
-import org.jheaps.AddressableHeapFactory;
-import org.jheaps.tree.FibonacciHeap;
-import org.jheaps.tree.ReflectedHeap;
 
 public class ReflectedFibonacciHeapAddressableHeapTest extends AbstractAddressableHeapTest {
 
-    private static AddressableHeapFactory<Integer, Void> FACTORY = new AddressableHeapFactory<Integer, Void>() {
-
-        @Override
-        public AddressableHeap<Integer, Void> get(Comparator<? super Integer> comparator) {
-            return new FibonacciHeap<Integer, Void>(comparator);
-        }
-
-    };
-
     @Override
     protected AddressableHeap<Integer, Void> createHeap() {
-        return new ReflectedHeap<Integer, Void>(FACTORY, null);
+        return new ReflectedFibonacciHeap<Integer, Void>();
     }
 
     @Override
     protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
-        return new ReflectedHeap<Integer, Void>(FACTORY, comparator);
+        return new ReflectedFibonacciHeap<Integer, Void>(comparator);
     }
 
     @Override
     protected AddressableHeap<Integer, String> createHeapWithStringValues() {
-        return new ReflectedHeap<Integer, String>(FACTORY, null);
+        return new ReflectedFibonacciHeap<Integer, String>(null);
     }
 }
