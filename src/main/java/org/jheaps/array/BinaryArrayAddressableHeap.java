@@ -35,7 +35,9 @@ import org.jheaps.annotations.LinearTime;
  * {@link java.util.Vector} does, providing amortized O(log(n)) time cost for
  * the {@code insert} and {@code deleteMin} operations. Operation
  * {@code findMin}, is a worst-case O(1) operation. Operations {@code delete}
- * and {@code decreaseKey} take worst-case O(log(n)) time.
+ * and {@code decreaseKey} take worst-case O(log(n)) time. The bounds are
+ * worst-case if the user initializes the heap with a capacity larger or equal
+ * to the total number of elements that are going to be inserted into the heap.
  * 
  * <p>
  * Constructing such a heap from an array of elements can be performed using the
@@ -71,14 +73,14 @@ import org.jheaps.annotations.LinearTime;
  *
  * @author Dimitrios Michail
  */
-public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddressableHeap<K, V> implements Serializable {
+public class BinaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap<K, V> implements Serializable {
 
     private final static long serialVersionUID = 1;
 
     /**
      * Default initial capacity of the binary heap.
      */
-    public static final int DEFAULT_HEAP_CAPACITY = 128;
+    public static final int DEFAULT_HEAP_CAPACITY = 16;
 
     /**
      * Constructs a new, empty heap, using the natural ordering of its keys.
@@ -94,12 +96,11 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddress
      * throw a {@code ClassCastException}.
      *
      * <p>
-     * The initial capacity of the heap is
-     * {@link BinaryArrayAddressableHeap#DEFAULT_HEAP_CAPACITY} and adjusts
-     * automatically based on the sequence of insertions and deletions.
+     * The initial capacity of the heap is {@link #DEFAULT_HEAP_CAPACITY} and
+     * adjusts automatically based on the sequence of insertions and deletions.
      */
     public BinaryArrayAddressableHeap() {
-        super(null, DEFAULT_HEAP_CAPACITY);
+        this(null, DEFAULT_HEAP_CAPACITY);
     }
 
     /**
@@ -118,13 +119,14 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddress
      *
      * <p>
      * The initial capacity of the heap is provided by the user and is adjusted
-     * automatically based on the sequence of insertions and deletions.
+     * automatically based on the sequence of insertions and deletions. The
+     * capacity will never become smaller than the initial requested capacity.
      *
      * @param capacity
      *            the initial heap capacity
      */
     public BinaryArrayAddressableHeap(int capacity) {
-        super(null, capacity);
+        this(null, capacity);
     }
 
     /**
@@ -139,9 +141,8 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddress
      * will throw a {@code ClassCastException}.
      *
      * <p>
-     * The initial capacity of the heap is
-     * {@link BinaryArrayAddressableHeap#DEFAULT_HEAP_CAPACITY} and adjusts
-     * automatically based on the sequence of insertions and deletions.
+     * The initial capacity of the heap is {@link #DEFAULT_HEAP_CAPACITY} and
+     * adjusts automatically based on the sequence of insertions and deletions.
      *
      * @param comparator
      *            the comparator that will be used to order this heap. If
@@ -149,7 +150,7 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddress
      *            the keys will be used.
      */
     public BinaryArrayAddressableHeap(Comparator<? super K> comparator) {
-        super(comparator, DEFAULT_HEAP_CAPACITY);
+        this(comparator, DEFAULT_HEAP_CAPACITY);
     }
 
     /**
@@ -166,7 +167,8 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddress
      *
      * <p>
      * The initial capacity of the heap is provided by the user and is adjusted
-     * automatically based on the sequence of insertions and deletions.
+     * automatically based on the sequence of insertions and deletions. The
+     * capacity will never become smaller than the initial requested capacity.
      *
      * @param comparator
      *            the comparator that will be used to order this heap. If
@@ -287,6 +289,88 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractBinaryArrayAddress
         ArrayHandle[] newArray = (ArrayHandle[]) Array.newInstance(ArrayHandle.class, capacity + 1);
         System.arraycopy(array, 1, newArray, 1, size);
         array = newArray;
+    }
+
+    @Override
+    protected void forceFixup(int k) {
+        // assert k >= 1 && k <= size;
+
+        ArrayHandle h = array[k];
+        while (k > 1) {
+            array[k] = array[k / 2];
+            array[k].index = k;
+            k /= 2;
+        }
+        array[k] = h;
+        h.index = k;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void fixup(int k) {
+        // assert k >= 1 && k <= size;
+
+        ArrayHandle h = array[k];
+        while (k > 1 && ((Comparable<? super K>) array[k / 2].getKey()).compareTo(h.getKey()) > 0) {
+            array[k] = array[k / 2];
+            array[k].index = k;
+            k /= 2;
+        }
+        array[k] = h;
+        h.index = k;
+    }
+
+    @Override
+    protected void fixupWithComparator(int k) {
+        // assert k >= 1 && k <= size;
+
+        ArrayHandle h = array[k];
+        while (k > 1 && comparator.compare(array[k / 2].getKey(), h.getKey()) > 0) {
+            array[k] = array[k / 2];
+            array[k].index = k;
+            k /= 2;
+        }
+        array[k] = h;
+        h.index = k;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void fixdown(int k) {
+        ArrayHandle h = array[k];
+        while (2 * k <= size) {
+            int j = 2 * k;
+            if (j < size && ((Comparable<? super K>) array[j].getKey()).compareTo(array[j + 1].getKey()) > 0) {
+                j++;
+            }
+            if (((Comparable<? super K>) h.getKey()).compareTo(array[j].getKey()) <= 0) {
+                break;
+            }
+            array[k] = array[j];
+            array[k].index = k;
+            k = j;
+        }
+        array[k] = h;
+        h.index = k;
+    }
+
+    @Override
+    protected void fixdownWithComparator(int k) {
+        ArrayHandle h = array[k];
+        while (2 * k <= size) {
+            int j = 2 * k;
+            if (j < size && comparator.compare(array[j].getKey(), array[j + 1].getKey()) > 0) {
+                j++;
+            }
+            if (comparator.compare(h.getKey(), array[j].getKey()) <= 0) {
+                break;
+            }
+            array[k] = array[j];
+            array[k].index = k;
+            k = j;
+        }
+        array[k] = h;
+        h.index = k;
     }
 
 }

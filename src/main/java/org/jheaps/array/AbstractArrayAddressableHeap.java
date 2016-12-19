@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 import org.jheaps.AddressableHeap;
+import org.jheaps.Constants;
 import org.jheaps.annotations.ConstantTime;
 import org.jheaps.annotations.LogarithmicTime;
 
@@ -77,14 +78,20 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
     protected int size;
 
     /**
+     * Minimum capacity due to initially requested capacity.
+     */
+    protected final int minCapacity;
+
+    /**
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     public AbstractArrayAddressableHeap(Comparator<? super K> comparator, int capacity) {
         checkCapacity(capacity);
-        this.array = (ArrayHandle[]) Array.newInstance(ArrayHandle.class, capacity + 1);
         this.size = 0;
         this.comparator = comparator;
+        this.minCapacity = Math.max(capacity, DOWNSIZING_MIN_HEAP_CAPACITY);
+        this.array = (ArrayHandle[]) Array.newInstance(ArrayHandle.class, minCapacity + 1);
     }
 
     /**
@@ -93,7 +100,7 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
     @Override
     @ConstantTime
     public Handle<K, V> findMin() {
-        if (size == 0) {
+        if (Constants.NOT_BENCHMARK && size == 0) {
             throw new NoSuchElementException();
         }
         return array[1];
@@ -149,16 +156,17 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
     @Override
     @LogarithmicTime(amortized = true)
     public Handle<K, V> insert(K key, V value) {
-        if (key == null) {
-            throw new NullPointerException("Null keys not permitted");
-        }
-
-        // make sure there is space
-        if (size == array.length - 1) {
-            if (array.length == 1) {
-                ensureCapacity(1);
-            } else {
-                ensureCapacity(2 * (array.length - 1));
+        if (Constants.NOT_BENCHMARK) {
+            if (key == null) {
+                throw new NullPointerException("Null keys not permitted");
+            }
+            // make sure there is space
+            if (size == array.length - 1) {
+                if (array.length == 1) {
+                    ensureCapacity(1);
+                } else {
+                    ensureCapacity(2 * (array.length - 1));
+                }
             }
         }
 
@@ -182,7 +190,7 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
     @Override
     @LogarithmicTime(amortized = true)
     public Handle<K, V> deleteMin() {
-        if (size == 0) {
+        if (Constants.NOT_BENCHMARK && size == 0) {
             throw new NoSuchElementException();
         }
 
@@ -200,8 +208,10 @@ abstract class AbstractArrayAddressableHeap<K, V> implements AddressableHeap<K, 
             }
         }
 
-        if (DOWNSIZING_MIN_HEAP_CAPACITY < array.length - 1 && 4 * size < array.length - 1) {
-            ensureCapacity((array.length - 1) / 2 + 1);
+        if (Constants.NOT_BENCHMARK) {
+            if (2 * minCapacity < array.length - 1 && 4 * size < array.length - 1) {
+                ensureCapacity((array.length - 1) / 2);
+            }
         }
         return result;
     }

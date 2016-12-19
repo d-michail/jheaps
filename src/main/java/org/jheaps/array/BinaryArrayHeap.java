@@ -91,9 +91,8 @@ public class BinaryArrayHeap<K> extends AbstractArrayHeap<K> {
      * throw a {@code ClassCastException}.
      *
      * <p>
-     * The initial capacity of the heap is
-     * {@link BinaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically
-     * based on the sequence of insertions and deletions.
+     * The initial capacity of the heap is {@link #DEFAULT_HEAP_CAPACITY} and
+     * adjusts automatically based on the sequence of insertions and deletions.
      */
     public BinaryArrayHeap() {
         super(null, DEFAULT_HEAP_CAPACITY);

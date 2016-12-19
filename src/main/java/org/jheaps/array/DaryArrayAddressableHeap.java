@@ -36,7 +36,9 @@ import org.jheaps.annotations.LinearTime;
  * the {@code insert} and amortized O(d log_d(n)) for the {@code deleteMin}
  * operation. Operation {@code findMin}, is a worst-case O(1) operation.
  * Operations {@code delete} and {@code decreaseKey} take worst-case O(log(n))
- * time.
+ * time. The bounds are worst-case if the user initializes the heap with a
+ * capacity larger or equal to the total number of elements that are going to be
+ * inserted into the heap.
  * 
  * <p>
  * Constructing such a heap from an array of elements can be performed using the
@@ -72,14 +74,19 @@ import org.jheaps.annotations.LinearTime;
  *
  * @author Dimitrios Michail
  */
-public class DaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressableHeap<K, V> implements Serializable {
+public class DaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap<K, V> implements Serializable {
 
     private final static long serialVersionUID = 1;
 
     /**
      * Default initial capacity of the binary heap.
      */
-    public static final int DEFAULT_HEAP_CAPACITY = 128;
+    public static final int DEFAULT_HEAP_CAPACITY = 16;
+
+    /**
+     * Degree
+     */
+    protected int d;
 
     /**
      * Constructs a new, empty heap, using the natural ordering of its keys.
@@ -95,9 +102,8 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressable
      * throw a {@code ClassCastException}.
      *
      * <p>
-     * The initial capacity of the heap is
-     * {@link DaryArrayHeap#DEFAULT_HEAP_CAPACITY} and adjusts automatically
-     * based on the sequence of insertions and deletions.
+     * The initial capacity of the heap is {@link #DEFAULT_HEAP_CAPACITY} and
+     * adjusts automatically based on the sequence of insertions and deletions.
      * 
      * @param d
      *            the number of children of each node in the d-ary heap
@@ -105,7 +111,7 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressable
      *             in case the number of children per node are less than 2
      */
     public DaryArrayAddressableHeap(int d) {
-        super(d, null, DEFAULT_HEAP_CAPACITY);
+        this(d, null, DEFAULT_HEAP_CAPACITY);
     }
 
     /**
@@ -124,7 +130,8 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressable
      *
      * <p>
      * The initial capacity of the heap is provided by the user and is adjusted
-     * automatically based on the sequence of insertions and deletions.
+     * automatically based on the sequence of insertions and deletions. The
+     * capacity will never become smaller than the initial requested capacity.
      *
      * @param d
      *            the number of children of each node in the d-ary heap
@@ -134,7 +141,7 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressable
      *             in case the number of children per node are less than 2
      */
     public DaryArrayAddressableHeap(int d, int capacity) {
-        super(d, null, capacity);
+        this(d, null, capacity);
     }
 
     /**
@@ -149,9 +156,8 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressable
      * will throw a {@code ClassCastException}.
      *
      * <p>
-     * The initial capacity of the heap is
-     * {@link DaryArrayAddressableHeap#DEFAULT_HEAP_CAPACITY} and adjusts
-     * automatically based on the sequence of insertions and deletions.
+     * The initial capacity of the heap is {@link #DEFAULT_HEAP_CAPACITY} and
+     * adjusts automatically based on the sequence of insertions and deletions.
      *
      * @param d
      *            the number of children of each node in the d-ary heap
@@ -163,7 +169,7 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressable
      *             in case the number of children per node are less than 2 *
      */
     public DaryArrayAddressableHeap(int d, Comparator<? super K> comparator) {
-        super(d, comparator, DEFAULT_HEAP_CAPACITY);
+        this(d, comparator, DEFAULT_HEAP_CAPACITY);
     }
 
     /**
@@ -180,7 +186,8 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressable
      *
      * <p>
      * The initial capacity of the heap is provided by the user and is adjusted
-     * automatically based on the sequence of insertions and deletions.
+     * automatically based on the sequence of insertions and deletions. The
+     * capacity will never become smaller than the initial requested capacity.
      *
      * @param d
      *            the number of children of each node in the d-ary heap
@@ -194,7 +201,11 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressable
      *             in case the number of children per node are less than 2
      */
     public DaryArrayAddressableHeap(int d, Comparator<? super K> comparator, int capacity) {
-        super(d, comparator, capacity);
+        super(comparator, capacity);
+        if (d < 2) {
+            throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
+        }
+        this.d = d;
     }
 
     /**
@@ -325,6 +336,103 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractDaryArrayAddressable
         ArrayHandle[] newArray = (ArrayHandle[]) Array.newInstance(ArrayHandle.class, capacity + 1);
         System.arraycopy(array, 1, newArray, 1, size);
         array = newArray;
+    }
+
+    @Override
+    protected void forceFixup(int k) {
+        // assert k >= 1 && k <= size;
+
+        ArrayHandle h = array[k];
+        while (k > 1) {
+            int p = (k - 2) / d + 1;
+            array[k] = array[p];
+            array[k].index = k;
+            k = p;
+        }
+        array[k] = h;
+        h.index = k;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void fixup(int k) {
+        // assert k >= 1 && k <= size;
+
+        ArrayHandle h = array[k];
+        while (k > 1) {
+            int p = (k - 2) / d + 1;
+            if (((Comparable<? super K>) array[p].getKey()).compareTo(h.getKey()) <= 0) {
+                break;
+            }
+            array[k] = array[p];
+            array[k].index = k;
+            k = p;
+        }
+        array[k] = h;
+        h.index = k;
+    }
+
+    @Override
+    protected void fixupWithComparator(int k) {
+        // assert k >= 1 && k <= size;
+
+        ArrayHandle h = array[k];
+        while (k > 1) {
+            int p = (k - 2) / d + 1;
+            if (comparator.compare(array[p].getKey(), h.getKey()) <= 0) {
+                break;
+            }
+            array[k] = array[p];
+            array[k].index = k;
+            k = p;
+        }
+        array[k] = h;
+        h.index = k;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void fixdown(int k) {
+        int c;
+        ArrayHandle h = array[k];
+        while ((c = d * (k - 1) + 2) <= size) {
+            int maxc = c;
+            for (int i = 1; i < d && c + i <= size; i++) {
+                if (((Comparable<? super K>) array[maxc].getKey()).compareTo(array[c + i].getKey()) > 0) {
+                    maxc = c + i;
+                }
+            }
+            if (((Comparable<? super K>) h.getKey()).compareTo(array[maxc].getKey()) <= 0) {
+                break;
+            }
+            array[k] = array[maxc];
+            array[k].index = k;
+            k = maxc;
+        }
+        array[k] = h;
+        h.index = k;
+    }
+
+    @Override
+    protected void fixdownWithComparator(int k) {
+        int c;
+        ArrayHandle h = array[k];
+        while ((c = d * (k - 1) + 2) <= size) {
+            int maxc = c;
+            for (int i = 1; i < d && c + i <= size; i++) {
+                if (comparator.compare(array[maxc].getKey(), array[c + i].getKey()) > 0) {
+                    maxc = c + i;
+                }
+            }
+            if (comparator.compare(h.getKey(), array[maxc].getKey()) <= 0) {
+                break;
+            }
+            array[k] = array[maxc];
+            array[k].index = k;
+            k = maxc;
+        }
+        array[k] = h;
+        h.index = k;
     }
 
 }
