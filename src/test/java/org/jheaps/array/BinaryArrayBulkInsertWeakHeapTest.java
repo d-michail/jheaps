@@ -20,40 +20,40 @@ package org.jheaps.array;
 import java.util.Comparator;
 
 import org.jheaps.Heap;
-import org.jheaps.tree.AbstractHeapTest;
+import org.jheaps.tree.AbstractComparatorLongHeapTest;
 import org.junit.Test;
 
-public class BinaryArrayBulkInsertWeakHeapTest extends AbstractHeapTest {
+public class BinaryArrayBulkInsertWeakHeapTest extends AbstractComparatorLongHeapTest {
 
-    protected Heap<Long> createHeap() {
-        return new BinaryArrayBulkInsertWeakHeap<Long>();
-    }
+	protected Heap<Long> createHeap() {
+		return new BinaryArrayBulkInsertWeakHeap<Long>();
+	}
 
-    protected Heap<Long> createHeap(int capacity) {
-        return new BinaryArrayBulkInsertWeakHeap<Long>(capacity);
-    }
+	protected Heap<Long> createHeap(int capacity) {
+		return new BinaryArrayBulkInsertWeakHeap<Long>(capacity);
+	}
 
-    @Override
-    protected Heap<Long> createHeap(Comparator<Long> comparator) {
-        return new BinaryArrayBulkInsertWeakHeap<Long>(comparator);
-    }
+	@Override
+	protected Heap<Long> createHeap(Comparator<Long> comparator) {
+		return new BinaryArrayBulkInsertWeakHeap<Long>(comparator);
+	}
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testIllegalSize() {
-        Heap<Long> h = createHeap(-4);
-        h.insert(1L);
-    }
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalSize() {
+		Heap<Long> h = createHeap(-4);
+		h.insert(1L);
+	}
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testIllegalSize1() {
-        Heap<Long> h = createHeap(-1);
-        h.insert(1L);
-    }
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalSize1() {
+		Heap<Long> h = createHeap(-1);
+		h.insert(1L);
+	}
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testIllegalSize2() {
-        Heap<Long> h = createHeap(Integer.MAX_VALUE - 8);
-        h.insert(1L);
-    }
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalSize2() {
+		Heap<Long> h = createHeap(Integer.MAX_VALUE - 8);
+		h.insert(1L);
+	}
 
 }

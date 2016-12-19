@@ -21,10 +21,10 @@ import java.util.Comparator;
 
 import org.jheaps.Heap;
 import org.jheaps.array.DaryArrayHeap;
-import org.jheaps.tree.AbstractHeapTest;
+import org.jheaps.tree.AbstractLongHeapTest;
 import org.junit.Test;
 
-public class D4DaryArrayHeapTest extends AbstractHeapTest {
+public class D4DaryArrayHeapTest extends AbstractLongHeapTest {
 
 	protected Heap<Long> createHeap() {
 		return new DaryArrayHeap<Long>(4);
