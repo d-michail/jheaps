@@ -20,6 +20,7 @@ package org.jheaps.array;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
+import org.jheaps.Constants;
 import org.jheaps.annotations.ConstantTime;
 import org.jheaps.annotations.LogarithmicTime;
 
@@ -35,6 +36,14 @@ abstract class AbstractArrayHeap<K> extends AbstractArrayWeakHeap<K> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Construct a new heap
+     * 
+     * @param comparator
+     *            the comparator to use
+     * @param capacity
+     *            the initial capacity
+     */
     public AbstractArrayHeap(Comparator<? super K> comparator, int capacity) {
         super(comparator, capacity);
     }
@@ -54,7 +63,7 @@ abstract class AbstractArrayHeap<K> extends AbstractArrayWeakHeap<K> {
     @Override
     @ConstantTime
     public K findMin() {
-        if (size == 0) {
+        if (Constants.NOT_BENCHMARK && size == 0) {
             throw new NoSuchElementException();
         }
         return array[1];
@@ -66,16 +75,17 @@ abstract class AbstractArrayHeap<K> extends AbstractArrayWeakHeap<K> {
     @Override
     @LogarithmicTime(amortized = true)
     public void insert(K key) {
-        if (key == null) {
-            throw new NullPointerException("Null keys not permitted");
-        }
-
-        // make sure there is space
-        if (size == array.length - 1) {
-            if (array.length == 1) {
-                ensureCapacity(1);
-            } else {
-                ensureCapacity(2 * (array.length - 1));
+        if (Constants.NOT_BENCHMARK) {
+            if (key == null) {
+                throw new NullPointerException("Null keys not permitted");
+            }
+            // make sure there is space
+            if (size == array.length - 1) {
+                if (array.length == 1) {
+                    ensureCapacity(1);
+                } else {
+                    ensureCapacity(2 * (array.length - 1));
+                }
             }
         }
 
@@ -94,7 +104,7 @@ abstract class AbstractArrayHeap<K> extends AbstractArrayWeakHeap<K> {
     @Override
     @LogarithmicTime(amortized = true)
     public K deleteMin() {
-        if (size == 0) {
+        if (Constants.NOT_BENCHMARK && size == 0) {
             throw new NoSuchElementException();
         }
 
@@ -113,9 +123,14 @@ abstract class AbstractArrayHeap<K> extends AbstractArrayWeakHeap<K> {
             }
         }
 
-        if (DOWNSIZING_MIN_HEAP_CAPACITY < array.length - 1 && 4 * size < array.length - 1) {
-            ensureCapacity((array.length - 1) / 2 + 1);
+        if (Constants.NOT_BENCHMARK) {
+            // free unused space
+            int currentCapacity = array.length - 1;
+            if (2 * minCapacity <= currentCapacity && 4 * size < currentCapacity) {
+                ensureCapacity(currentCapacity / 2);
+            }
         }
+
         return result;
     }
 

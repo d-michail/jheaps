@@ -32,7 +32,9 @@ import org.jheaps.annotations.LinearTime;
  * automatically maintains the size of the array much like a
  * {@link java.util.Vector} does, providing amortized O(log(n)) time cost for
  * the {@code insert} and {@code deleteMin} operations. Operation
- * {@code findMin}, is a worst-case O(1) operation.
+ * {@code findMin}, is a worst-case O(1) operation. The bounds are worst-case if
+ * the user initializes the heap with a capacity larger or equal to the total
+ * number of elements that are going to be inserted into the heap.
  * 
  * <p>
  * Constructing such a heap from an array of elements can be performed using the
@@ -66,7 +68,7 @@ import org.jheaps.annotations.LinearTime;
  *
  * @author Dimitrios Michail
  */
-public class BinaryArrayHeap<K> extends AbstractBinaryArrayHeap<K> {
+public class BinaryArrayHeap<K> extends AbstractArrayHeap<K> {
 
     private static final long serialVersionUID = 1L;
 
@@ -113,7 +115,8 @@ public class BinaryArrayHeap<K> extends AbstractBinaryArrayHeap<K> {
      *
      * <p>
      * The initial capacity of the heap is provided by the user and is adjusted
-     * automatically based on the sequence of insertions and deletions.
+     * automatically based on the sequence of insertions and deletions. The
+     * capacity will never become smaller than the initial requested capacity.
      *
      * @param capacity
      *            the initial heap capacity
@@ -161,7 +164,8 @@ public class BinaryArrayHeap<K> extends AbstractBinaryArrayHeap<K> {
      *
      * <p>
      * The initial capacity of the heap is provided by the user and is adjusted
-     * automatically based on the sequence of insertions and deletions.
+     * automatically based on the sequence of insertions and deletions. The
+     * capacity will never become smaller than the initial requested capacity.
      *
      * @param comparator
      *            the comparator that will be used to order this heap. If
@@ -255,6 +259,58 @@ public class BinaryArrayHeap<K> extends AbstractBinaryArrayHeap<K> {
         K[] newArray = (K[]) new Object[capacity + 1];
         System.arraycopy(array, 1, newArray, 1, size);
         array = newArray;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void fixup(int k) {
+        K key = array[k];
+        while (k > 1 && ((Comparable<? super K>) array[k >> 1]).compareTo(key) > 0) {
+            array[k] = array[k >> 1];
+            k >>= 1;
+        }
+        array[k] = key;
+    }
+
+    protected void fixupWithComparator(int k) {
+        K key = array[k];
+        while (k > 1 && comparator.compare(array[k >> 1], key) > 0) {
+            array[k] = array[k >> 1];
+            k >>= 1;
+        }
+        array[k] = key;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void fixdown(int k) {
+        K key = array[k];
+        while (2 * k <= size) {
+            int j = 2 * k;
+            if (j < size && ((Comparable<? super K>) array[j]).compareTo(array[j + 1]) > 0) {
+                j++;
+            }
+            if (((Comparable<? super K>) key).compareTo(array[j]) <= 0) {
+                break;
+            }
+            array[k] = array[j];
+            k = j;
+        }
+        array[k] = key;
+    }
+
+    protected void fixdownWithComparator(int k) {
+        K key = array[k];
+        while (2 * k <= size) {
+            int j = 2 * k;
+            if (j < size && comparator.compare(array[j], array[j + 1]) > 0) {
+                j++;
+            }
+            if (comparator.compare(key, array[j]) <= 0) {
+                break;
+            }
+            array[k] = array[j];
+            k = j;
+        }
+        array[k] = key;
     }
 
 }

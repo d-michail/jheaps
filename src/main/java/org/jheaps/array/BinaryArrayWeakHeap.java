@@ -20,8 +20,12 @@ package org.jheaps.array;
 import java.io.Serializable;
 import java.util.BitSet;
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 
+import org.jheaps.Constants;
+import org.jheaps.annotations.ConstantTime;
 import org.jheaps.annotations.LinearTime;
+import org.jheaps.annotations.LogarithmicTime;
 
 /**
  * An array based binary weak heap. The heap is sorted according to the
@@ -34,7 +38,9 @@ import org.jheaps.annotations.LinearTime;
  * automatically maintains the size of the array much like a
  * {@link java.util.Vector} does, providing amortized O(log(n)) time cost for
  * the {@code insert} and {@code deleteMin} operations. Operation
- * {@code findMin}, is a worst-case O(1) operation.
+ * {@code findMin}, is a worst-case O(1) operation. The bounds are worst-case if
+ * the user initializes the heap with a capacity larger or equal to the total
+ * number of elements that are going to be inserted into the heap.
  * 
  * <p>
  * Constructing such a heap from an array of elements can be performed using the
@@ -68,14 +74,19 @@ import org.jheaps.annotations.LinearTime;
  *
  * @author Dimitrios Michail
  */
-public class BinaryArrayWeakHeap<K> extends AbstractBinaryArrayWeakHeap<K> implements Serializable {
+public class BinaryArrayWeakHeap<K> extends AbstractArrayWeakHeap<K> implements Serializable {
 
-    private final static long serialVersionUID = 1;
+    private static final long serialVersionUID = 7721391024028836146L;
 
     /**
      * Default initial capacity of the binary heap.
      */
     public static final int DEFAULT_HEAP_CAPACITY = 16;
+
+    /**
+     * Reverse bits
+     */
+    protected BitSet reverse;
 
     /**
      * Constructs a new, empty heap, using the natural ordering of its keys.
@@ -115,7 +126,8 @@ public class BinaryArrayWeakHeap<K> extends AbstractBinaryArrayWeakHeap<K> imple
      *
      * <p>
      * The initial capacity of the heap is provided by the user and is adjusted
-     * automatically based on the sequence of insertions and deletions.
+     * automatically based on the sequence of insertions and deletions. The
+     * capacity will never become smaller than the initial requested capacity.
      *
      * @param capacity
      *            the initial heap capacity
@@ -163,7 +175,8 @@ public class BinaryArrayWeakHeap<K> extends AbstractBinaryArrayWeakHeap<K> imple
      *
      * <p>
      * The initial capacity of the heap is provided by the user and is adjusted
-     * automatically based on the sequence of insertions and deletions.
+     * automatically based on the sequence of insertions and deletions. The
+     * capacity will never become smaller than the initial requested capacity.
      *
      * @param comparator
      *            the comparator that will be used to order this heap. If
@@ -184,7 +197,7 @@ public class BinaryArrayWeakHeap<K> extends AbstractBinaryArrayWeakHeap<K> imple
      *            the type of keys maintained by the heap
      * @param array
      *            an array of elements
-     * @return a binary heap
+     * @return a heap
      * @throws IllegalArgumentException
      *             in case the array is null
      */
@@ -219,7 +232,7 @@ public class BinaryArrayWeakHeap<K> extends AbstractBinaryArrayWeakHeap<K> imple
      *            an array of elements
      * @param comparator
      *            the comparator to use
-     * @return a binary heap
+     * @return a heap
      * @throws IllegalArgumentException
      *             in case the array is null
      */
@@ -245,6 +258,93 @@ public class BinaryArrayWeakHeap<K> extends AbstractBinaryArrayWeakHeap<K> imple
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    @ConstantTime
+    public K findMin() {
+        if (Constants.NOT_BENCHMARK && size == 0) {
+            throw new NoSuchElementException();
+        }
+        return array[0];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @LogarithmicTime(amortized = true)
+    public void insert(K key) {
+        if (Constants.NOT_BENCHMARK) {
+            if (key == null) {
+                throw new NullPointerException("Null keys not permitted");
+            }
+            // make sure there is space
+            if (size == array.length) {
+                if (size == 0) {
+                    ensureCapacity(1);
+                } else {
+                    ensureCapacity(2 * array.length);
+                }
+            }
+        }
+
+        array[size] = key;
+        reverse.clear(size);
+
+        if (size % 2 == 0) {
+            reverse.clear(size / 2);
+        }
+
+        if (comparator == null) {
+            fixup(size);
+        } else {
+            fixupWithComparator(size);
+        }
+
+        ++size;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @LogarithmicTime(amortized = true)
+    public K deleteMin() {
+        if (Constants.NOT_BENCHMARK && size == 0) {
+            throw new NoSuchElementException();
+        }
+
+        K result = array[0];
+
+        size--;
+        array[0] = array[size];
+        array[size] = null;
+
+        if (size > 1) {
+            if (comparator == null) {
+                fixdown(0);
+            } else {
+                fixdownWithComparator(0);
+            }
+        }
+
+        if (Constants.NOT_BENCHMARK) {
+            if (2 * minCapacity < array.length && 4 * size < array.length) {
+                ensureCapacity(array.length / 2);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void initCapacity(int capacity) {
+        this.array = (K[]) new Object[capacity];
+        this.reverse = new BitSet(capacity);
+    }
+
+    /**
      * Ensure that the array representation has the necessary capacity.
      * 
      * @param capacity
@@ -260,6 +360,86 @@ public class BinaryArrayWeakHeap<K> extends AbstractBinaryArrayWeakHeap<K> imple
         BitSet newBitSet = new BitSet(capacity);
         newBitSet.or(reverse);
         reverse = newBitSet;
+    }
+
+    protected int dancestor(int j) {
+        while ((j % 2 == 1) == reverse.get(j / 2)) {
+            j = j / 2;
+        }
+        return j / 2;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected boolean join(int i, int j) {
+        if (((Comparable<? super K>) array[j]).compareTo(array[i]) < 0) {
+            K tmp = array[i];
+            array[i] = array[j];
+            array[j] = tmp;
+            reverse.flip(j);
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean joinWithComparator(int i, int j) {
+        if (comparator.compare(array[j], array[i]) < 0) {
+            K tmp = array[i];
+            array[i] = array[j];
+            array[j] = tmp;
+            reverse.flip(j);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    protected void fixup(int j) {
+        int i;
+        while (j > 0) {
+            i = dancestor(j);
+            if (join(i, j)) {
+                break;
+            }
+            j = i;
+        }
+    }
+
+    @Override
+    protected void fixupWithComparator(int j) {
+        int i;
+        while (j > 0) {
+            i = dancestor(j);
+            if (joinWithComparator(i, j)) {
+                break;
+            }
+            j = i;
+        }
+    }
+
+    @Override
+    protected void fixdown(int j) {
+        int k = 2 * j + (reverse.get(j) ? 0 : 1);
+        int c;
+        while ((c = 2 * k + (reverse.get(k) ? 1 : 0)) < size) {
+            k = c;
+        }
+        while (k != j) {
+            join(j, k);
+            k = k / 2;
+        }
+    }
+
+    @Override
+    protected void fixdownWithComparator(int j) {
+        int k = 2 * j + (reverse.get(j) ? 0 : 1);
+        int c;
+        while ((c = 2 * k + (reverse.get(k) ? 1 : 0)) < size) {
+            k = c;
+        }
+        while (k != j) {
+            joinWithComparator(j, k);
+            k = k / 2;
+        }
     }
 
 }

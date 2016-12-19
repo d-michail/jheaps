@@ -31,12 +31,9 @@ import org.jheaps.array.BinaryArrayAddressableHeap;
 import org.jheaps.array.BinaryArrayHeap;
 import org.jheaps.array.BinaryArrayWeakHeap;
 import org.jheaps.array.BinaryFixedArrayAddressableHeap;
-import org.jheaps.array.BinaryFixedArrayHeap;
-import org.jheaps.array.BinaryFixedArrayWeakHeap;
 import org.jheaps.array.DaryArrayAddressableHeap;
 import org.jheaps.array.DaryArrayHeap;
 import org.jheaps.array.DaryFixedArrayAddressableHeap;
-import org.jheaps.array.DaryFixedArrayHeap;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -66,7 +63,7 @@ public class HeapifyTest {
     public void testHeapifySort() {
         Random generator = new Random(1);
 
-        final int classes = 15;
+        final int classes = 8;
 
         Integer[] a = new Integer[SIZE];
         for (int i = 0; i < SIZE; i++) {
@@ -77,20 +74,13 @@ public class HeapifyTest {
         Heap<Integer>[] h = (Heap<Integer>[]) Array.newInstance(Heap.class, classes);
 
         h[0] = BinaryArrayHeap.heapify(a);
-        h[1] = BinaryFixedArrayHeap.heapify(a);
-        h[2] = DaryArrayHeap.heapify(2, a);
-        h[3] = DaryArrayHeap.heapify(3, a);
-        h[4] = DaryArrayHeap.heapify(4, a);
-        h[5] = DaryArrayHeap.heapify(5, a);
-        h[6] = DaryFixedArrayHeap.heapify(2, a);
-        h[7] = DaryFixedArrayHeap.heapify(3, a);
-        h[8] = DaryFixedArrayHeap.heapify(4, a);
-        h[9] = DaryFixedArrayHeap.heapify(5, a);
-        h[10] = BinaryArrayWeakHeap.heapify(a);
-        h[11] = BinaryFixedArrayWeakHeap.heapify(a);
-        h[12] = BinaryArrayBulkInsertWeakHeap.heapify(a);
-        h[13] = MinMaxBinaryArrayDoubleEndedHeap.heapify(a);
-        h[14] = MinMaxBinaryFixedArrayDoubleEndedHeap.heapify(a);
+        h[1] = DaryArrayHeap.heapify(2, a);
+        h[2] = DaryArrayHeap.heapify(3, a);
+        h[3] = DaryArrayHeap.heapify(4, a);
+        h[4] = DaryArrayHeap.heapify(5, a);
+        h[5] = BinaryArrayWeakHeap.heapify(a);
+        h[6] = BinaryArrayBulkInsertWeakHeap.heapify(a);
+        h[7] = MinMaxBinaryArrayDoubleEndedHeap.heapify(a);
 
         int elements = SIZE;
         Integer prev = null, cur;
@@ -114,7 +104,7 @@ public class HeapifyTest {
     public void testHeapifySortWithComparator() {
         Random generator = new Random(1);
 
-        final int classes = 15;
+        final int classes = 8;
 
         Integer[] a = new Integer[SIZE];
         for (int i = 0; i < SIZE; i++) {
@@ -125,20 +115,13 @@ public class HeapifyTest {
         Heap<Integer>[] h = (Heap<Integer>[]) Array.newInstance(Heap.class, classes);
 
         h[0] = BinaryArrayHeap.heapify(a, comparator);
-        h[1] = BinaryFixedArrayHeap.heapify(a, comparator);
-        h[2] = DaryArrayHeap.heapify(2, a, comparator);
-        h[3] = DaryArrayHeap.heapify(3, a, comparator);
-        h[4] = DaryArrayHeap.heapify(4, a, comparator);
-        h[5] = DaryArrayHeap.heapify(5, a, comparator);
-        h[6] = DaryFixedArrayHeap.heapify(2, a, comparator);
-        h[7] = DaryFixedArrayHeap.heapify(3, a, comparator);
-        h[8] = DaryFixedArrayHeap.heapify(4, a, comparator);
-        h[9] = DaryFixedArrayHeap.heapify(5, a, comparator);
-        h[10] = BinaryArrayWeakHeap.heapify(a, comparator);
-        h[11] = BinaryFixedArrayWeakHeap.heapify(a, comparator);
-        h[12] = BinaryArrayBulkInsertWeakHeap.heapify(a, comparator);
-        h[13] = MinMaxBinaryArrayDoubleEndedHeap.heapify(a, comparator);
-        h[14] = MinMaxBinaryFixedArrayDoubleEndedHeap.heapify(a, comparator);
+        h[1] = DaryArrayHeap.heapify(2, a, comparator);
+        h[2] = DaryArrayHeap.heapify(3, a, comparator);
+        h[3] = DaryArrayHeap.heapify(4, a, comparator);
+        h[4] = DaryArrayHeap.heapify(5, a, comparator);
+        h[5] = BinaryArrayWeakHeap.heapify(a, comparator);
+        h[6] = BinaryArrayBulkInsertWeakHeap.heapify(a, comparator);
+        h[7] = MinMaxBinaryArrayDoubleEndedHeap.heapify(a, comparator);
 
         int elements = SIZE;
         Integer prev = null, cur;
@@ -164,10 +147,8 @@ public class HeapifyTest {
         Integer[] a = new Integer[0];
 
         final int nonfixed = 8;
-        final int fixed = 7;
 
         Heap<Integer>[] h = (Heap<Integer>[]) Array.newInstance(Heap.class, nonfixed);
-        Heap<Integer>[] hf = (Heap<Integer>[]) Array.newInstance(Heap.class, fixed);
 
         h[0] = BinaryArrayHeap.heapify(a);
         h[1] = DaryArrayHeap.heapify(2, a);
@@ -178,29 +159,12 @@ public class HeapifyTest {
         h[6] = BinaryArrayBulkInsertWeakHeap.heapify(a);
         h[7] = MinMaxBinaryArrayDoubleEndedHeap.heapify(a);
 
-        hf[0] = BinaryFixedArrayHeap.heapify(a);
-        hf[1] = DaryFixedArrayHeap.heapify(2, a);
-        hf[2] = DaryFixedArrayHeap.heapify(3, a);
-        hf[3] = DaryFixedArrayHeap.heapify(4, a);
-        hf[4] = DaryFixedArrayHeap.heapify(5, a);
-        hf[5] = BinaryFixedArrayWeakHeap.heapify(a);
-        hf[6] = MinMaxBinaryFixedArrayDoubleEndedHeap.heapify(a);
-
         for (int i = 0; i < nonfixed; i++) {
             assertTrue(h[i].isEmpty());
             try {
                 h[i].insert(1);
             } catch (IllegalStateException e) {
                 fail("No!");
-            }
-        }
-
-        for (int i = 0; i < fixed; i++) {
-            assertTrue(hf[i].isEmpty());
-            try {
-                hf[i].insert(1);
-                fail("No!");
-            } catch (IllegalStateException ignored) {
             }
         }
     }
@@ -211,10 +175,8 @@ public class HeapifyTest {
         Integer[] a = new Integer[0];
 
         final int nonfixed = 8;
-        final int fixed = 7;
 
         Heap<Integer>[] h = (Heap<Integer>[]) Array.newInstance(Heap.class, nonfixed);
-        Heap<Integer>[] hf = (Heap<Integer>[]) Array.newInstance(Heap.class, fixed);
 
         h[0] = BinaryArrayHeap.heapify(a, comparator);
         h[1] = DaryArrayHeap.heapify(2, a, comparator);
@@ -225,29 +187,12 @@ public class HeapifyTest {
         h[6] = BinaryArrayBulkInsertWeakHeap.heapify(a, comparator);
         h[7] = MinMaxBinaryArrayDoubleEndedHeap.heapify(a, comparator);
 
-        hf[0] = BinaryFixedArrayHeap.heapify(a, comparator);
-        hf[1] = DaryFixedArrayHeap.heapify(2, a, comparator);
-        hf[2] = DaryFixedArrayHeap.heapify(3, a, comparator);
-        hf[3] = DaryFixedArrayHeap.heapify(4, a, comparator);
-        hf[4] = DaryFixedArrayHeap.heapify(5, a, comparator);
-        hf[5] = BinaryFixedArrayWeakHeap.heapify(a, comparator);
-        hf[6] = MinMaxBinaryFixedArrayDoubleEndedHeap.heapify(a, comparator);
-
         for (int i = 0; i < nonfixed; i++) {
             assertTrue(h[i].isEmpty());
             try {
                 h[i].insert(1);
             } catch (IllegalStateException e) {
                 fail("No!");
-            }
-        }
-
-        for (int i = 0; i < fixed; i++) {
-            assertTrue(hf[i].isEmpty());
-            try {
-                hf[i].insert(1);
-                fail("No!");
-            } catch (IllegalStateException ignored) {
             }
         }
     }
@@ -385,42 +330,6 @@ public class HeapifyTest {
         }
 
         try {
-            BinaryFixedArrayHeap.heapify(null);
-            fail("No!");
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        try {
-            BinaryFixedArrayHeap.heapify(null, comparator);
-            fail("No!");
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        try {
-            DaryFixedArrayHeap.heapify(1, a);
-            fail("No!");
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        try {
-            DaryFixedArrayHeap.heapify(1, a, comparator);
-            fail("No!");
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        try {
-            DaryFixedArrayHeap.heapify(2, null);
-            fail("No!");
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        try {
-            DaryFixedArrayHeap.heapify(2, null, comparator);
-            fail("No!");
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        try {
             BinaryArrayAddressableHeap.heapify(null, null);
             fail("No!");
         } catch (IllegalArgumentException ignored) {
@@ -553,18 +462,6 @@ public class HeapifyTest {
         }
 
         try {
-            BinaryFixedArrayWeakHeap.heapify(null);
-            fail("No!");
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        try {
-            BinaryFixedArrayWeakHeap.heapify(null, comparator);
-            fail("No!");
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        try {
             BinaryArrayBulkInsertWeakHeap.heapify(null);
             fail("No!");
         } catch (IllegalArgumentException ignored) {
@@ -584,18 +481,6 @@ public class HeapifyTest {
 
         try {
             MinMaxBinaryArrayDoubleEndedHeap.heapify(null, comparator);
-            fail("No!");
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        try {
-            MinMaxBinaryFixedArrayDoubleEndedHeap.heapify(null);
-            fail("No!");
-        } catch (IllegalArgumentException ignored) {
-        }
-
-        try {
-            MinMaxBinaryFixedArrayDoubleEndedHeap.heapify(null, comparator);
             fail("No!");
         } catch (IllegalArgumentException ignored) {
         }

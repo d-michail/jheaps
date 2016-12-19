@@ -39,7 +39,7 @@ abstract class AbstractArrayWeakHeap<K> implements Heap<K>, Serializable {
      *
      * @serial
      */
-    protected Comparator<? super K> comparator;
+    protected final Comparator<? super K> comparator;
 
     /**
      * The array used for representing the heap.
@@ -52,6 +52,11 @@ abstract class AbstractArrayWeakHeap<K> implements Heap<K>, Serializable {
     protected int size;
 
     /**
+     * Minimum capacity due to initially requested capacity.
+     */
+    protected final int minCapacity;
+
+    /**
      * Constructor
      * 
      * @param comparator
@@ -61,9 +66,10 @@ abstract class AbstractArrayWeakHeap<K> implements Heap<K>, Serializable {
      */
     public AbstractArrayWeakHeap(Comparator<? super K> comparator, int capacity) {
         checkCapacity(capacity);
-        initCapacity(capacity);
         this.size = 0;
         this.comparator = comparator;
+        this.minCapacity = Math.max(capacity, DOWNSIZING_MIN_HEAP_CAPACITY);
+        initCapacity(minCapacity);
     }
 
     /**
