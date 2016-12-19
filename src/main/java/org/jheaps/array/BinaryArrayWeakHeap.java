@@ -330,7 +330,7 @@ public class BinaryArrayWeakHeap<K> extends AbstractArrayWeakHeap<K> implements 
         }
 
         if (Constants.NOT_BENCHMARK) {
-            if (2 * minCapacity < array.length && 4 * size < array.length) {
+            if (2 * minCapacity <= array.length && 4 * size < array.length) {
                 ensureCapacity(array.length / 2);
             }
         }

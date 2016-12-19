@@ -57,12 +57,12 @@ public class BinaryArrayIntegerValueHeap<V> implements ValueHeap<Integer, V>, Se
     /**
      * Supremum
      */
-    private static final Integer SUP_KEY = Integer.MAX_VALUE;
+    private static final int SUP_KEY = Integer.MAX_VALUE;
 
     /**
      * Infimum
      */
-    private static final Integer INF_KEY = Integer.MIN_VALUE;
+    private static final int INF_KEY = Integer.MIN_VALUE;
 
     /**
      * The maximum heap capacity.
@@ -334,7 +334,7 @@ public class BinaryArrayIntegerValueHeap<V> implements ValueHeap<Integer, V>, Se
 
         private static final long serialVersionUID = 1L;
 
-        Integer key;
+        int key;
         V value;
 
         public Elem(Integer key, V value) {

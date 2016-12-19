@@ -367,7 +367,7 @@ public class BinaryArrayBulkInsertWeakHeap<K> extends BinaryArrayWeakHeap<K> imp
                     fixdownWithComparator(0);
                 }
             }
-            if (DOWNSIZING_MIN_HEAP_CAPACITY < array.length && 4 * size < array.length) {
+            if (minCapacity <= array.length && 4 * size < array.length) {
                 ensureCapacity(array.length / 2);
             }
         }
