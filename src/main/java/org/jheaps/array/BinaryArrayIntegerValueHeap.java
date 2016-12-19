@@ -15,10 +15,12 @@ import org.jheaps.annotations.LogarithmicTime;
  *
  * <p>
  * This is a highly optimized implementation which uses (a) the Wegener
- * bottom-up heuristic and (b) sentinel values. The implementation uses a fixed
- * size array in order to store the elements, providing worst case O(log(n))
- * time for the {@code insert} and {@code deleteMin} operations. Operation
- * {@code findMin}, is a worst-case O(1) operation.
+ * bottom-up heuristic and (b) sentinel values. The implementation uses an array
+ * in order to store the elements, providing amortized O(log(n)) time for the
+ * {@code insert} and {@code deleteMin} operations. Operation {@code findMin},
+ * is a worst-case O(1) operation. All bounds are worst-case if the user
+ * initializes the heap with a capacity larger or equal to the total number of
+ * elements that are going to be inserted into the heap.
  * 
  * <p>
  * See the following papers for details about the optimizations:
@@ -48,7 +50,7 @@ public class BinaryArrayIntegerValueHeap<V> implements ValueHeap<Integer, V>, Se
     private static final long serialVersionUID = 1L;
 
     /**
-     * Default initial capacity of the binary heap.
+     * Default initial capacity of the heap.
      */
     public static final int DEFAULT_HEAP_CAPACITY = 16;
 
