@@ -362,6 +362,13 @@ public class BinaryArrayWeakHeap<K> extends AbstractArrayWeakHeap<K> implements 
         reverse = newBitSet;
     }
 
+    /**
+     * Return the distinguished ancestor of an element.
+     * 
+     * @param j
+     *            the element
+     * @return the distinguished ancestor of the element
+     */
     protected int dancestor(int j) {
         while ((j % 2 == 1) == reverse.get(j / 2)) {
             j = j / 2;
@@ -369,6 +376,15 @@ public class BinaryArrayWeakHeap<K> extends AbstractArrayWeakHeap<K> implements 
         return j / 2;
     }
 
+    /**
+     * Join two weak heaps into one.
+     * 
+     * @param i
+     *            root of the first weak heap
+     * @param j
+     *            root of the second weak heap
+     * @return true if already a weak heap, false if a flip was needed
+     */
     @SuppressWarnings("unchecked")
     protected boolean join(int i, int j) {
         if (((Comparable<? super K>) array[j]).compareTo(array[i]) < 0) {
@@ -381,6 +397,15 @@ public class BinaryArrayWeakHeap<K> extends AbstractArrayWeakHeap<K> implements 
         return true;
     }
 
+    /**
+     * Join two weak heaps into one.
+     * 
+     * @param i
+     *            root of the first weak heap
+     * @param j
+     *            root of the second weak heap
+     * @return true if already a weak heap, false if a flip was needed
+     */
     protected boolean joinWithComparator(int i, int j) {
         if (comparator.compare(array[j], array[i]) < 0) {
             K tmp = array[i];

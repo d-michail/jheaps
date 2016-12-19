@@ -261,6 +261,7 @@ public class BinaryArrayHeap<K> extends AbstractArrayHeap<K> {
         array = newArray;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected void fixup(int k) {
         K key = array[k];
@@ -271,6 +272,7 @@ public class BinaryArrayHeap<K> extends AbstractArrayHeap<K> {
         array[k] = key;
     }
 
+    @Override
     protected void fixupWithComparator(int k) {
         K key = array[k];
         while (k > 1 && comparator.compare(array[k >> 1], key) > 0) {
@@ -280,6 +282,7 @@ public class BinaryArrayHeap<K> extends AbstractArrayHeap<K> {
         array[k] = key;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected void fixdown(int k) {
         K key = array[k];
@@ -297,6 +300,7 @@ public class BinaryArrayHeap<K> extends AbstractArrayHeap<K> {
         array[k] = key;
     }
 
+    @Override
     protected void fixdownWithComparator(int k) {
         K key = array[k];
         while (2 * k <= size) {

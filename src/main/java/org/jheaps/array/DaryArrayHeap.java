@@ -302,6 +302,7 @@ public class DaryArrayHeap<K> extends AbstractArrayHeap<K> {
         array = newArray;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected void fixup(int k) {
         // assert k >= 1 && k <= size;
@@ -318,6 +319,7 @@ public class DaryArrayHeap<K> extends AbstractArrayHeap<K> {
         array[k] = key;
     }
 
+    @Override
     protected void fixupWithComparator(int k) {
         // assert k >= 1 && k <= size;
 
@@ -333,6 +335,7 @@ public class DaryArrayHeap<K> extends AbstractArrayHeap<K> {
         array[k] = key;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected void fixdown(int k) {
         int c;
@@ -353,6 +356,7 @@ public class DaryArrayHeap<K> extends AbstractArrayHeap<K> {
         array[k] = key;
     }
 
+    @Override
     protected void fixdownWithComparator(int k) {
         int c;
         K key = array[k];
