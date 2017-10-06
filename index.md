@@ -7,9 +7,9 @@ layout: page
 
 ### What is the JHeaps library?
 
-JHeaps is a free library that provides various heap implementations written in Java. 
+JHeaps is a free library that provides various heap implementations written in Java.
 
-Key features: 
+Key features:
 
 * It is easy to use
 * The data structures have a well defined interface
@@ -18,19 +18,19 @@ Key features:
 * It does not depend on other libraries, so classpathing 'jheaps.jar' is sufficient
   to use in your project.
 
-JHeaps development happens on [github](https://github.com/d-michail/jheaps). Report issues and/or bugs 
+JHeaps development happens on [github](https://github.com/d-michail/jheaps). Report issues and/or bugs
 at the [issue tracker](https://github.com/d-michail/jheaps/issues).
 
 ### Latest version & Requirements
 
-The latest version of JHeaps is 0.6. 
+The latest version of JHeaps is 0.7.
 
 Every JHeaps release is published to the Maven Central Repository. You can add a dependency from your project as follows:
 
 ```
   <groupId>org.jheaps</groupId>
   <artifactId>jheaps</artifactId>
-  <version>0.6</version>
+  <version>0.7</version>
 ```
 
 ### Documentation
