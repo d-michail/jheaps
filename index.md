@@ -27,31 +27,31 @@ at the [issue tracker](https://github.com/d-michail/jheaps/issues).
 The library contains an extensive collection of heap data structures such as:
 
 * Tree-based
- * Fibonacci mergeable and addressable heaps
- * Simple Fibonacci heaps
- * Pairing mergeable and addressable heaps
- * Costless-meld variable of Pairing heaps
- * Leftist mergeable and addressable heaps
- * Explicit binary tree addressable heaps
- * Binary tree soft heaps
- * Skew heaps
+  * Fibonacci mergeable and addressable heaps
+  * Simple Fibonacci heaps
+  * Pairing mergeable and addressable heaps
+  * Costless-meld variable of Pairing heaps
+  * Leftist mergeable and addressable heaps
+  * Explicit binary tree addressable heaps
+  * Binary tree soft heaps
+  * Skew heaps
 * Double-ended mergeable and addressable heaps
- * Reflected Fibonacci heaps
- * Reflected Pairing heaps
+  * Reflected Fibonacci heaps
+  * Reflected Pairing heaps
 * Array-based
- * Binary heaps
- * Binary addressable heaps
- * D-ary heaps
- * D-ary addressable heaps
- * Binary weak heaps
- * Binary weak heaps supporting bulk insertion
- * Highly optimized binary heaps for integer keys using the Wegener
+  * Binary heaps
+  * Binary addressable heaps
+  * D-ary heaps
+  * D-ary addressable heaps
+  * Binary weak heaps
+  * Binary weak heaps supporting bulk insertion
+  * Highly optimized binary heaps for integer keys using the Wegener
    bottom-up heuristic and sentinel values
 * Double-ended array-based
- * Binary MinMax heaps
+  * Binary MinMax heaps
 * Monotone heaps
- * Addressable radix heaps with double, integer or BigInteger keys
- * Non-addressable radix heaps with double, integer or BigInteger keys
+  * Addressable radix heaps with double, integer or BigInteger keys
+  * Non-addressable radix heaps with double, integer or BigInteger keys
 
 ### Latest version & Requirements
 
