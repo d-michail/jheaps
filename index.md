@@ -17,9 +17,41 @@ Key features:
 * The heaps are written in a similar way as in the JDK
 * It does not depend on other libraries, so classpathing 'jheaps.jar' is sufficient
   to use in your project.
+* Supports JDK v1.6 and above
 
 JHeaps development happens on [github](https://github.com/d-michail/jheaps). Report issues and/or bugs
 at the [issue tracker](https://github.com/d-michail/jheaps/issues).
+
+### Available Heaps
+
+The library contains an extensive collection of heap data structures such as:
+
+* Tree-based
+ * Fibonacci mergeable and addressable heaps
+ * Simple Fibonacci heaps
+ * Pairing mergeable and addressable heaps
+ * Costless-meld variable of Pairing heaps
+ * Leftist mergeable and addressable heaps
+ * Explicit binary tree addressable heaps
+ * Binary tree soft heaps
+ * Skew heaps
+* Double-ended mergeable and addressable heaps
+ * Reflected Fibonacci heaps
+ * Reflected Pairing heaps
+* Array-based
+ * Binary heaps
+ * Binary addressable heaps
+ * D-ary heaps
+ * D-ary addressable heaps
+ * Binary weak heaps
+ * Binary weak heaps supporting bulk insertion
+ * Highly optimized binary heaps for integer keys using the Wegener
+   bottom-up heuristic and sentinel values
+* Double-ended array-based
+ * Binary MinMax heaps
+* Monotone heaps
+ * Addressable radix heaps with double, integer or BigInteger keys
+ * Non-addressable radix heaps with double, integer or BigInteger keys
 
 ### Latest version & Requirements
 
