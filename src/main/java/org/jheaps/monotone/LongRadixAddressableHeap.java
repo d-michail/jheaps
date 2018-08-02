@@ -92,7 +92,6 @@ public class LongRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<Lo
         this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
         this.size = 0;
         this.currentMin = null;
-        this.currentMinBucket = 0;
     }
 
     /**

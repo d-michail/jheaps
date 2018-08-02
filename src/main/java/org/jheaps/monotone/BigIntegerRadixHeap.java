@@ -96,7 +96,6 @@ public class BigIntegerRadixHeap extends AbstractRadixHeap<BigInteger> {
         }
         this.size = 0;
         this.currentMin = null;
-        this.currentMinBucket = 0;
     }
 
     /**

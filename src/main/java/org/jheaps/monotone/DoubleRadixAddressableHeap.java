@@ -101,7 +101,6 @@ public class DoubleRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<
         this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
         this.size = 0;
         this.currentMin = null;
-        this.currentMinBucket = 0;
     }
 
     /**
@@ -116,11 +115,14 @@ public class DoubleRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<
         long y = Double.doubleToLongBits(o2) ^ Long.MIN_VALUE;
 
         // assert
-        /*
-         * if (o1.doubleValue() < o2.doubleValue()) { assert x < y; } else if
-         * (o1.doubleValue() == o2.doubleValue()) { assert x == y; } else {
-         * assert x > y; }
-         */
+        if (o1.doubleValue() < o2.doubleValue()) { 
+            assert x < y; 
+        } else if (o1.doubleValue() == o2.doubleValue()) { 
+            assert x == y; } 
+        else {
+          assert x > y; 
+        }
+         
         return (x < y) ? -1 : ((x == y) ? 0 : 1);
     }
 

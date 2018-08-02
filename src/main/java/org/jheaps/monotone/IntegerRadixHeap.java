@@ -93,7 +93,6 @@ public class IntegerRadixHeap extends AbstractRadixHeap<Integer> {
         }
         this.size = 0;
         this.currentMin = null;
-        this.currentMinBucket = 0;
     }
 
     /**

@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 
 import org.jheaps.Heap;
 import org.jheaps.annotations.ConstantTime;
+import org.jheaps.annotations.LogarithmicTime;
 
 /**
  * Base abstract implementation of a radix heap.
@@ -35,11 +36,6 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
      * The current minimum value
      */
     protected K currentMin;
-
-    /**
-     * The bucket of the current minimum value
-     */
-    protected int currentMinBucket;
 
     /**
      * Minimum key allowed
@@ -95,9 +91,7 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
         }
 
         if (size == 0) {
-            buckets[0].add(key);
             currentMin = key;
-            currentMinBucket = 0;
         } else {
             if (compare(key, currentMin) < 0) {
                 throw new IllegalArgumentException("Invalid key. Monotone heap.");
@@ -115,75 +109,64 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
      * contains keys in the range [0, C] or equivalently [a, a+C].
      */
     @Override
-    @ConstantTime(amortized = true)
+    @LogarithmicTime(amortized = true)
     public K deleteMin() {
         if (size == 0) {
             throw new NoSuchElementException();
         }
 
-        List<K> b = buckets[currentMinBucket];
-        int bSize = b.size();
-
         K result = currentMin;
-        if (currentMinBucket == 0 || bSize == 1) {
-            b.remove(bSize - 1);
+        
+        // special case
+        if (size == 1) {
             currentMin = null;
             size--;
-            updateMin(currentMinBucket);
-        } else {
-            /*
-             * Find minimum and second minimum. Be careful with cached Long
-             * values.
-             */
-            int minPos = -1;
-            int pos = 0;
-            K min = null;
-            K secondMin = null;
-            for (K val : b) {
-                // track position of current minimum
-                if (currentMin == val) {
-                    minPos = pos;
-                }
-                // track minimum and second minimum values
-                if (min == null || compare(val, min) < 0) {
-                    secondMin = min;
-                    min = val;
-                } else if (secondMin == null || compare(val, secondMin) < 0) {
-                    secondMin = val;
-                }
-                pos++;
-            }
-
-            /*
-             * Redistribute all but minimum using second minimum. On purpose
-             * with position of minimum since Longs are often cached.
-             */
-            pos = 0;
-            int minNewBucket = currentMinBucket;
-            for (K val : b) {
-                if (pos != minPos) {
-                    int newBucket = computeBucket(val, secondMin);
-                    /*
-                     * if (newBucket == currentMinBucket) { throw new
-                     * IllegalStateException("bug! Please contact the developers"
-                     * ); }
-                     */
-                    if (newBucket < minNewBucket) {
-                        minNewBucket = newBucket;
-                    }
-                    buckets[newBucket].add(val);
-                }
-                pos++;
-            }
-
-            // empty bucket
-            b.clear();
-
-            // find current minimum
-            currentMin = null;
-            size--;
-            updateMin(minNewBucket);
+            return result;
         }
+        
+        // find first non-empty bucket
+        int first = -1;
+        for (int i = 0; i < this.buckets.length; i++) {
+            if (buckets[i].size() > 0) {
+                first = i;
+                break;
+            }
+        }
+        assert first >= 0;
+        
+        // new minimum was on the first bucket
+        if (first == 0) {
+            currentMin = buckets[first].remove(buckets[first].size()-1);
+            size--;
+            return result;
+        }
+        
+        // find new minimum and its position (beware of cached values)
+        currentMin = null;
+        int minPos = -1;
+        int pos = 0;
+        for (K val : buckets[first]) {
+            if (currentMin == null || compare(val, currentMin) < 0) { 
+                currentMin = val;
+                minPos = pos;
+            }
+            ++pos;
+        }
+        assert currentMin != null && minPos >= 0;
+        
+        // redistribute all elements
+        pos = 0;
+        for (K val : buckets[first]) {
+            if (pos != minPos) { 
+                int b = computeBucket(val, currentMin);
+                assert b < first;
+                buckets[b].add(val);     
+            }
+            ++pos;
+        }
+        buckets[first].clear();
+        
+        size--;
         return result;
     }
 
@@ -209,14 +192,12 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
      * {@inheritDoc}
      */
     @Override
-    @ConstantTime
     public void clear() {
         for (List<K> bucket : buckets) {
             bucket.clear();
         }
         size = 0;
         currentMin = null;
-        currentMinBucket = 0;
     }
 
     /**
@@ -270,30 +251,5 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
      *         are equal
      */
     protected abstract int msd(K a, K b);
-
-    /**
-     * Find the current minimum starting searching from a specified bucket.
-     */
-    protected void updateMin(int startBucket) {
-        if (size > 0) {
-            for (int i = startBucket; i < this.buckets.length; i++) {
-                if (buckets[i].size() > 0) {
-                    if (i == 0) {
-                        currentMin = buckets[i].get(buckets[i].size() - 1);
-                    } else {
-                        K min = null;
-                        for (K val : buckets[i]) {
-                            if (min == null || compare(val, min) < 0) {
-                                min = val;
-                            }
-                        }
-                        currentMin = min;
-                    }
-                    currentMinBucket = i;
-                    return;
-                }
-            }
-        }
-    }
 
 }

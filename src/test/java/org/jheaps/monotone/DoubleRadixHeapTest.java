@@ -30,6 +30,22 @@ public class DoubleRadixHeapTest {
 
 	private static final int SIZE = 100000;
 
+	/*
+	 * Affects version 0.7 of the library.
+	 */
+    @Test
+    public void testBug1() {
+        Heap<Double> h = new DoubleRadixHeap(0.0, 3.667944409236726);
+        h.insert(0.0);
+        assertEquals(0.0, h.findMin(), 1e-9);
+        h.insert(0.9169861023091815);
+        h.deleteMin();
+        assertEquals(0.9169861023091815, h.findMin(), 1e-9);
+        h.insert(1.7814708581727154);
+        h.deleteMin();
+        assertEquals(1.7814708581727154, h.findMin(), 1e-9);
+    }
+	
 	@Test
 	public void testVerySmall() {
 		Heap<Double> h = new DoubleRadixHeap(15.0, 50.5);

@@ -100,7 +100,6 @@ public class DoubleRadixHeap extends AbstractRadixHeap<Double> {
         }
         this.size = 0;
         this.currentMin = null;
-        this.currentMinBucket = 0;
     }
 
     /**

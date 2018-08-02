@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import org.jheaps.AddressableHeap;
 import org.jheaps.annotations.ConstantTime;
+import org.jheaps.annotations.LogarithmicTime;
 
 /**
  * Base abstract implementation of an addressable radix heap.
@@ -41,11 +42,6 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
      * The current minimum value
      */
     protected Node currentMin;
-
-    /**
-     * The bucket of the current minimum value
-     */
-    protected int currentMinBucket;
 
     /**
      * Minimum key allowed
@@ -120,10 +116,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 
         Node p = new Node(key, value);
         if (size == 0) {
-            p.bucket = 0;
-            buckets[0] = p;
             currentMin = p;
-            currentMinBucket = 0;
         } else {
             if (compare(key, currentMin.getKey()) < 0) {
                 throw new IllegalArgumentException("Invalid key. Monotone heap.");
@@ -149,91 +142,79 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
      * contains keys in the range [0, C] or equivalently [a, a+C].
      */
     @Override
-    @ConstantTime(amortized = true)
+    @LogarithmicTime(amortized = true)
     public Handle<K, V> deleteMin() {
         if (size == 0) {
             throw new NoSuchElementException();
         }
-
-        Node b = buckets[currentMinBucket];
+        
         Node result = currentMin;
-
-        if (currentMinBucket == 0 || b.next == null) {
-            if (b.next == null) {
-                buckets[currentMinBucket] = null;
-            } else {
-                b.next.prev = null;
-                buckets[currentMinBucket] = b.next;
-            }
-            b.next = null;
-            b.bucket = NO_BUCKET;
+        
+        // special case
+        if (size == 1) {
             currentMin = null;
             size--;
-            updateMin(currentMinBucket);
-        } else {
-            /*
-             * Find minimum and second minimum.
-             */
-            Node min = null;
-            Node secondMin = null;
-            Node val = b;
-            while (val != null) {
-                // track minimum and second minimum values
-                if (min == null || compare(val.getKey(), min.getKey()) < 0) {
-                    secondMin = min;
-                    min = val;
-                } else if (secondMin == null || compare(val.getKey(), secondMin.getKey()) < 0) {
-                    secondMin = val;
-                }
-                val = val.next;
+            return result;
+        }
+        
+        // find first non-empty bucket
+        int first = -1;
+        for (int i = 0; i < this.buckets.length; i++) {
+            if (buckets[i] != null) {
+                first = i;
+                break;
             }
-
-            /*
-             * Redistribute all but minimum using second minimum.
-             */
-            int minNewBucket = currentMinBucket;
-            val = b;
-            while (val != null) {
-                Node nextVal = val.next;
-                if (val != min) {
-                    int newBucket = computeBucket(val.getKey(), secondMin.getKey());
-                    /*
-                     * if (newBucket == currentMinBucket) { throw new
-                     * IllegalStateException("bug! Please contact the developers"
-                     * ); }
-                     */
-                    if (newBucket < minNewBucket) {
-                        minNewBucket = newBucket;
-                    }
-
-                    // add as first in bucket
-                    if (buckets[newBucket] == null) {
-                        buckets[newBucket] = val;
-                        val.next = null;
-                    } else {
-                        buckets[newBucket].prev = val;
-                        val.next = buckets[newBucket];
-                        buckets[newBucket] = val;
-                    }
-                    val.prev = null;
-                    val.bucket = newBucket;
-                } else {
-                    val.bucket = NO_BUCKET;
-                    val.next = null;
-                    val.prev = null;
-                }
-                val = nextVal;
+        }
+        assert first >= 0;
+        
+        // new minimum was on the first bucket
+        if (first == 0) {
+            currentMin = buckets[first];
+            buckets[first] = currentMin.next;
+            if (buckets[first] != null) { 
+                buckets[first].prev = null;
             }
-
-            // empty bucket
-            buckets[currentMinBucket] = null;
-
-            // find current minimum
-            currentMin = null;
+            currentMin.next = null;
+            currentMin.prev = null;
+            currentMin.bucket = NO_BUCKET;
             size--;
-            updateMin(minNewBucket);
+            return result;
         }
 
+        // find new minimum
+        currentMin = null;
+        Node val = buckets[first];
+        while(val != null) { 
+            if (currentMin == null || compare(val.key, currentMin.key) < 0) { 
+                currentMin = val;
+            }
+            val = val.next;
+        }
+        
+        // redistribute all elements
+        val = buckets[first];
+        while(val != null) {
+            buckets[first] = val.next;
+            if (buckets[first] != null) { 
+                buckets[first].prev = null;
+            }
+            val.next = null;
+            val.prev = null;
+            val.bucket = NO_BUCKET;
+            
+            if (val != currentMin) { 
+                int b = computeBucket(val.key, currentMin.key);
+                val.next = buckets[b];
+                if (buckets[b] != null) { 
+                    buckets[b].prev = val;
+                }
+                buckets[b] = val;
+                val.bucket = b;
+            }
+            val = buckets[first];
+        }
+        
+        size--;
         return result;
     }
 
@@ -259,14 +240,12 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
      * {@inheritDoc}
      */
     @Override
-    @ConstantTime
     public void clear() {
         for (int i = 0; i < buckets.length; i++) {
             buckets[i] = null;
         }
         size = 0;
         currentMin = null;
-        currentMinBucket = 0;
     }
 
     /**
@@ -322,33 +301,8 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
     protected abstract int msd(K a, K b);
 
     /**
-     * Find the current minimum starting searching from a specified bucket.
+     * List Node
      */
-    protected void updateMin(int startBucket) {
-        if (size > 0) {
-            for (int i = startBucket; i < this.buckets.length; i++) {
-                if (buckets[i] != null) {
-                    if (i == 0) {
-                        currentMin = buckets[i];
-                    } else {
-                        Node min = null;
-                        Node val = buckets[i];
-                        while (val != null) {
-                            if (min == null || compare(val.getKey(), min.getKey()) < 0) {
-                                min = val;
-                            }
-                            val = val.next;
-                        }
-                        currentMin = min;
-                    }
-                    currentMinBucket = i;
-                    return;
-                }
-            }
-        }
-    }
-
-    // list node
     protected class Node implements Handle<K, V>, Serializable {
 
         private static final long serialVersionUID = 1L;
@@ -384,27 +338,32 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 
         @Override
         public void decreaseKey(K newKey) {
-            if (bucket == NO_BUCKET) {
+            if (size == 0) { 
                 throw new IllegalArgumentException("Invalid handle!");
             }
             if (compare(newKey, currentMin.getKey()) < 0) {
                 throw new IllegalArgumentException("Invalid key. Monotone heap.");
             }
+            
             int c = compare(newKey, key);
             if (c > 0) {
                 throw new IllegalArgumentException("Keys can only be decreased!");
             }
+            
             key = newKey;
             if (c == 0) {
                 return;
             }
-
+            if (bucket == NO_BUCKET) {
+                throw new IllegalArgumentException("Invalid handle!");
+            }
+            
             // find new bucket
             int newBucket = computeBucket(key, currentMin.getKey());
             if (newBucket == bucket) {
                 return;
             }
-
+            
             // remove from list
             Node head = buckets[bucket];
             if (next != null) {
@@ -433,12 +392,13 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
 
         @Override
         public void delete() {
-            if (bucket == NO_BUCKET) {
-                throw new IllegalArgumentException("Invalid handle!");
-            }
             if (this == currentMin) {
                 deleteMin();
                 return;
+            }
+            
+            if (size == 0 || bucket == NO_BUCKET) {
+                throw new IllegalArgumentException("Invalid handle!");
             }
 
             // remove from list
