@@ -204,6 +204,29 @@ public class IntegerRadixHeapTest {
 		}
 		assertEquals(0, h.size());
 	}
+	
+    @Test
+    public void testMultipleDeleteMin() {
+        final int step = 7;
+        final int min = 0;
+        final int max = 100000;
+        
+        Heap<Integer> h = new IntegerRadixHeap(min, max);
+        
+        h.insert(min);
+        int cur = min;
+        while(cur < max) { 
+            assertEquals(cur, h.findMin(), 1e-9);
+            if (cur + step >= max) {
+                break;
+            }
+            int newCur = cur + step;
+            h.insert(newCur);
+            assertEquals(cur, h.findMin(), 1e-9);
+            assertEquals(cur, h.deleteMin(), 1e-9);
+            cur = newCur;
+        }
+    }
 
 	@Test
 	public void testMaxDifference() {

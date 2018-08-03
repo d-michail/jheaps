@@ -205,6 +205,29 @@ public class LongRadixHeapTest {
 		}
 		assertEquals(0, h.size());
 	}
+	
+    @Test
+    public void testMultipleDeleteMin() {
+        final long step = 7;
+        final long min = 0L;
+        final long max = 100000L;
+        
+        Heap<Long> h = new LongRadixHeap(min, max);
+        
+        h.insert(min);
+        long cur = min;
+        while(cur < max) { 
+            assertEquals(cur, h.findMin(), 1e-9);
+            if (cur + step >= max) {
+                break;
+            }
+            long newCur = cur + step;
+            h.insert(newCur);
+            assertEquals(cur, h.findMin(), 1e-9);
+            assertEquals(cur, h.deleteMin(), 1e-9);
+            cur = newCur;
+        }
+    }
 
 	@Test
 	public void testMaxDifference() {

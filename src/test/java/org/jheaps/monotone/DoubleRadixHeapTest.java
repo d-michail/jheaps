@@ -155,6 +155,28 @@ public class DoubleRadixHeapTest {
 		assertEquals(0, h.size());
 	}
 
+    @Test
+    public void testMultipleDeleteMin() {
+        final double step = 0.3333;
+        final double max = 1000.0;
+        
+        Heap<Double> h = new DoubleRadixHeap(0.0, max);
+        
+        h.insert(0.0);
+        double cur = 0.0;
+        while(cur < max) { 
+            assertEquals(cur, h.findMin(), 1e-9);
+            if (cur + step >= max) {
+                break;
+            }
+            double newCur = cur + step;
+            h.insert(newCur);
+            assertEquals(cur, h.findMin(), 1e-9);
+            assertEquals(cur, h.deleteMin(), 1e-9);
+            cur = newCur;
+        }
+    }
+	
 	@Test
 	public void testMaxDifference() {
 		Heap<Double> h = new DoubleRadixHeap(0.0, Double.MAX_VALUE);
@@ -167,7 +189,7 @@ public class DoubleRadixHeapTest {
 		assertEquals(Double.MAX_VALUE, h.deleteMin(), 1e-9);
 		assertEquals(0, h.size());
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction1() {
 		new DoubleRadixHeap(-1.0, Double.MAX_VALUE);

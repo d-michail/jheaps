@@ -126,6 +126,29 @@ public class BigIntegerRadixHeapTest {
 		assertEquals(0L, h.size());
 		assertTrue(h.isEmpty());
 	}
+	
+    @Test
+    public void testMultipleDeleteMin() {
+        final BigInteger step = BigInteger.valueOf(7);
+        final BigInteger min = BigInteger.ZERO;
+        final BigInteger max = BigInteger.valueOf(100000);
+        
+        Heap<BigInteger> h = new BigIntegerRadixHeap(min, max);
+        
+        h.insert(min);
+        BigInteger cur = min;
+        while(cur.compareTo(max) < 0) { 
+            assertEquals(cur, h.findMin());
+            if (cur.add(step).compareTo(max) >= 0) {
+                break;
+            }
+            BigInteger newCur = cur.add(step);
+            h.insert(newCur);
+            assertEquals(cur, h.findMin());
+            assertEquals(cur, h.deleteMin());
+            cur = newCur;
+        }
+    }
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMonotone() {
