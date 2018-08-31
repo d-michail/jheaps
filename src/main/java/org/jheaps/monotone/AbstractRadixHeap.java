@@ -41,8 +41,8 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
     /**
      * Denotes that a key does not belong to a bucket
      */
-    protected static final int NO_BUCKET = -1;
-    
+    protected static final int EMPTY = -1;
+
     /**
      * The buckets as lists. We use array-lists instead of linked-lists, to be
      * cache friendly.
@@ -53,7 +53,7 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
      * Number of elements
      */
     protected long size;
-    
+
     /**
      * Last deleted key. This value is used to distribute elements in the
      * buckets. Should be initialized with the {@link #minKey} value.
@@ -68,8 +68,8 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
     /**
      * The current minimum value bucket (cached)
      */
-    protected int currentMinBucket;   
-    
+    protected int currentMinBucket;
+
     /**
      * The current minimum value position in bucket (cached)
      */
@@ -95,12 +95,12 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
      * {@inheritDoc}
      */
     @Override
-    @LogarithmicTime(amortized = true)
+    @ConstantTime
     public K findMin() {
         if (size == 0) {
             throw new NoSuchElementException();
         }
-        return findAndCacheMinimum();
+        return currentMin;
     }
 
     /**
@@ -113,10 +113,11 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
      * @throws IllegalArgumentException
      *             if the key is more than the maximum allowed key
      * @throws IllegalArgumentException
-     *             if the key is less than the current minimum
+     *             if the key is less than the last deleted key (or the minimum
+     *             key allowed if no key has been deleted)
      */
     @Override
-    @LogarithmicTime(amortized = true)
+    @ConstantTime(amortized = true)
     public void insert(K key) {
         if (key == null) {
             throw new IllegalArgumentException("Null keys not permitted");
@@ -130,14 +131,14 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
         }
         int b = computeBucket(key, lastDeletedKey);
         buckets[b].add(key);
-        
-        // clear minimum key cache if needed
-        if (currentMin != null && compare(key, currentMin) < 0) {
-            currentMin = null;
-            currentMinBucket = NO_BUCKET;
-            currentMinPos = -1;
+
+        // update current minimum cache
+        if (currentMin == null || compare(key, currentMin) < 0) {
+            currentMin = key;
+            currentMinBucket = b;
+            currentMinPos = buckets[b].size() - 1;
         }
-        
+
         size++;
     }
 
@@ -154,36 +155,49 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
             throw new NoSuchElementException();
         }
 
-        K result = findAndCacheMinimum();
-
         // updated last deleted key
         lastDeletedKey = currentMin;
-        
+
         if (currentMinBucket == 0) {
-            // just remove since all values in first bucket are the same as the
-            // previous lastDeletedKey
             buckets[currentMinBucket].remove(currentMinPos);
+            if (--size > 0) {
+                currentMin = null;
+                currentMinBucket = EMPTY;
+                currentMinPos = EMPTY;
+                findAndCacheMinimum(currentMinBucket+1);
+            }
         } else {
+            K newMin = null;
+            int newMinBucket = EMPTY;
+            int newMinPos = EMPTY;
+            
             // redistribute all elements based on new lastDeletedKey
             int pos = 0;
             for (K val : buckets[currentMinBucket]) {
-                if (pos != currentMinPos) { 
+                if (pos != currentMinPos) {
                     int b = computeBucket(val, lastDeletedKey);
                     assert b < currentMinBucket;
-                    buckets[b].add(val);     
+                    buckets[b].add(val);
+                    
+                    if (newMin == null || compare(val, newMin) < 0) { 
+                        newMin = val;
+                        newMinBucket = b;
+                        newMinPos = buckets[b].size()-1;
+                    }
                 }
                 ++pos;
             }
             buckets[currentMinBucket].clear();
+            size--;
+ 
+            // update minimum cache
+            currentMin = newMin;
+            currentMinBucket = newMinBucket;
+            currentMinPos = newMinPos;
+            findAndCacheMinimum(currentMinBucket+1);
         }
-
-        // clear current minimum cache
-        currentMin = null;
-        currentMinBucket = NO_BUCKET;
-        currentMinPos = -1;
-
-        size--;
-        return result;
+        
+        return lastDeletedKey;
     }
 
     /**
@@ -215,8 +229,8 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
         size = 0;
         lastDeletedKey = minKey;
         currentMin = null;
-        currentMinBucket = NO_BUCKET;
-        currentMinPos = -1;
+        currentMinBucket = EMPTY;
+        currentMinPos = EMPTY;
     }
 
     /**
@@ -272,34 +286,34 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
     protected abstract int msd(K a, K b);
 
     /**
-     * Helper method for finding and caching the minimum. Assumes that the
-     * heap contains at least one element.
+     * Helper method for finding and caching the minimum. Assumes that the heap
+     * contains at least one element.
+     * 
+     * @param firstBucket start looking for elements from this bucket
      */
-    private K findAndCacheMinimum() {
+    private void findAndCacheMinimum(int firstBucket) {
         if (currentMin == null) {
             // find first non-empty bucket
-            currentMinBucket = NO_BUCKET;
-            for (int i = 0; i < this.buckets.length; i++) {
+            currentMinBucket = EMPTY;
+            for (int i = firstBucket; i < this.buckets.length; i++) {
                 if (!buckets[i].isEmpty()) {
                     currentMinBucket = i;
                     break;
                 }
             }
-            assert currentMinBucket >= 0;
-            
             // find new minimum and its position (beware of cached values)
-            currentMinPos = -1;
-            int pos = 0;
-            for (K val : buckets[currentMinBucket]) {
-                if (currentMin == null || compare(val, currentMin) < 0) { 
-                    currentMin = val;
-                    currentMinPos = pos;
+            currentMinPos = EMPTY;
+            if (currentMinBucket >= 0) {
+                int pos = 0;
+                for (K val : buckets[currentMinBucket]) {
+                    if (currentMin == null || compare(val, currentMin) < 0) {
+                        currentMin = val;
+                        currentMinPos = pos;
+                    }
+                    ++pos;
                 }
-                ++pos;
             }
-            assert currentMin != null && currentMinPos >= 0;
         }
-        return currentMin;
     }
-    
+
 }
