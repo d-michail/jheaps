@@ -100,7 +100,6 @@ public class BigIntegerRadixAddressableHeap<V> extends AbstractRadixAddressableH
         this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
         this.size = 0;
         this.currentMin = null;
-        this.currentMinBucket = NO_BUCKET;
     }
 
     /**
