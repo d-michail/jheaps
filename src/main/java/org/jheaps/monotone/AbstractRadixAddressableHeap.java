@@ -193,8 +193,9 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
             currentMin.prev = null;
             currentMin.bucket = EMPTY;
 
+            // update minimum cache
+            currentMin = buckets[0];
             if (--size > 0) {
-                currentMin = null;
                 findAndCacheMinimum(0);
             }
         } else {
@@ -232,11 +233,11 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
                 val = buckets[currentMinBucket];
             }
             
-            size--;
- 
             // update minimum cache
             currentMin = newMin;
-            findAndCacheMinimum(currentMinBucket+1);
+            if (--size > 0) {
+            	findAndCacheMinimum(currentMinBucket+1);
+            }
         }
 
         return result;

@@ -48,6 +48,16 @@ public class DoubleRadixAddressableHeapTest {
         assertEquals(1.7814708581727154, h.findMin().getKey(), 1e-9);
 	}
 	
+    @Test
+    public void testBug2() {
+        AddressableHeap<Double, Void> h = new DoubleRadixAddressableHeap<Void>(0.0, 100.0);
+        h.insert(0.0);
+        assertEquals(0.0, h.findMin().getKey(), 1e-9);
+        assertEquals(0.0, h.deleteMin().getKey(), 1e-9);
+        h.insert(15.0);
+        assertEquals(15.0, h.findMin().getKey(), 1e-9);
+    }
+	
 	@Test
 	public void testVerySmall() {
 		AddressableHeap<Double, Void> h = new DoubleRadixAddressableHeap<Void>(15.0, 50.5);

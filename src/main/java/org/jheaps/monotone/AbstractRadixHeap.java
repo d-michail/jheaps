@@ -160,11 +160,13 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
 
         if (currentMinBucket == 0) {
             buckets[currentMinBucket].remove(currentMinPos);
+            
+            // update minimum cache
+            currentMin = null;
+            currentMinBucket = EMPTY;
+            currentMinPos = EMPTY;
             if (--size > 0) {
-                currentMin = null;
-                currentMinBucket = EMPTY;
-                currentMinPos = EMPTY;
-                findAndCacheMinimum(currentMinBucket+1);
+                findAndCacheMinimum(0);
             }
         } else {
             K newMin = null;
@@ -188,13 +190,14 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
                 ++pos;
             }
             buckets[currentMinBucket].clear();
-            size--;
  
             // update minimum cache
             currentMin = newMin;
             currentMinBucket = newMinBucket;
             currentMinPos = newMinPos;
-            findAndCacheMinimum(currentMinBucket+1);
+            if (--size > 0) {
+            	findAndCacheMinimum(currentMinBucket+1);
+            }
         }
         
         return lastDeletedKey;

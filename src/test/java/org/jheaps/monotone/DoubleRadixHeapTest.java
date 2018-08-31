@@ -45,6 +45,16 @@ public class DoubleRadixHeapTest {
         h.deleteMin();
         assertEquals(1.7814708581727154, h.findMin(), 1e-9);
     }
+    
+    @Test
+    public void testBug2() {
+        Heap<Double> h = new DoubleRadixHeap(0.0, 100.0);
+        h.insert(0.0);
+        assertEquals(0.0, h.findMin(), 1e-9);
+        assertEquals(0.0, h.deleteMin(), 1e-9);
+        h.insert(15.0);
+        assertEquals(15.0, h.findMin(), 1e-9);
+    }
 	
 	@Test
 	public void testVerySmall() {
