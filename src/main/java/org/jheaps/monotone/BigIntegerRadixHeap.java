@@ -77,6 +77,7 @@ public class BigIntegerRadixHeap extends AbstractRadixHeap<BigInteger> {
             throw new IllegalArgumentException("Minimum key must be non-negative");
         }
         this.minKey = minKey;
+        this.lastDeletedKey = minKey;        
         if (maxKey == null) {
             throw new IllegalArgumentException("Maximum key cannot be null");
         }

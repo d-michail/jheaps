@@ -254,10 +254,21 @@ public class IntegerRadixHeapTest {
 		assertTrue(h.isEmpty());
 	}
 
+	@Test
+    public void testMonotoneOkOnLastDeleted() {
+        Heap<Integer> h = new IntegerRadixHeap(0, 1000);
+        h.insert(100);
+        assertEquals(100, h.findMin().intValue());
+        h.insert(99);
+        assertEquals(99, h.findMin().intValue());
+    }
+	
 	@Test(expected = IllegalArgumentException.class)
-	public void testMonotone() {
+	public void testMonotoneNotOkOnLastDeleted() {
 		Heap<Integer> h = new IntegerRadixHeap(0, 1000);
 		h.insert(100);
+		assertEquals(100, h.findMin().intValue());
+		h.deleteMin();
 		h.insert(99);
 	}
 

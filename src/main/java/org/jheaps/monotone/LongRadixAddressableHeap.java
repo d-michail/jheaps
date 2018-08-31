@@ -75,6 +75,7 @@ public class LongRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<Lo
             throw new IllegalArgumentException("Minimum key must be non-negative");
         }
         this.minKey = minKey;
+        this.lastDeletedKey = minKey;
         if (maxKey < minKey) {
             throw new IllegalArgumentException("Maximum key cannot be less than the minimum");
         }
@@ -92,6 +93,7 @@ public class LongRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<Lo
         this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
         this.size = 0;
         this.currentMin = null;
+        this.currentMinBucket = NO_BUCKET;
     }
 
     /**

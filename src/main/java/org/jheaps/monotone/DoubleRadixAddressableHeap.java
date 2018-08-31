@@ -86,6 +86,7 @@ public class DoubleRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<
             throw new IllegalArgumentException("Minimum key must be finite and non-negative");
         }
         this.minKey = minKey;
+        this.lastDeletedKey = minKey;
         if (!Double.isFinite(maxKey) || maxKey < minKey) {
             throw new IllegalArgumentException("Maximum key must be finite and not less than the minimum");
         }
@@ -101,6 +102,7 @@ public class DoubleRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<
         this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
         this.size = 0;
         this.currentMin = null;
+        this.currentMinBucket = NO_BUCKET;
     }
 
     /**

@@ -150,12 +150,22 @@ public class BigIntegerRadixHeapTest {
         }
     }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testMonotone() {
+	@Test
+	public void testMonotoneOkOnLastDeleted() {
 		Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.ZERO, BigInteger.valueOf(100));
 		h.insert(BigInteger.valueOf(100L));
+		assertEquals(BigInteger.valueOf(100L), h.findMin());
 		h.insert(BigInteger.valueOf(99L));
+		assertEquals(BigInteger.valueOf(99L), h.findMin());
 	}
+	
+    @Test(expected = IllegalArgumentException.class)
+    public void testMonotoneNotOkOnLastDeleted() {
+        Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.ZERO, BigInteger.valueOf(100));
+        h.insert(BigInteger.valueOf(100L));
+        h.deleteMin();
+        h.insert(BigInteger.valueOf(99L));
+    }
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction() {

@@ -261,12 +261,22 @@ public class LongRadixHeapTest {
 		assertNull(h.comparator());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testMonotone() {
+	@Test
+	public void testMonotoneOkOnLastDeleted() {
 		Heap<Long> h = new LongRadixHeap(0, 1000);
 		h.insert(100L);
+		assertEquals(100L, h.findMin().longValue());
 		h.insert(99L);
+		assertEquals(99L, h.findMin().longValue());
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+    public void testMonotoneNotOkOnLastDeleted() {
+        Heap<Long> h = new LongRadixHeap(0, 1000);
+        h.insert(100L);
+        h.deleteMin();
+        h.insert(99L);
+    }
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalConstruction() {

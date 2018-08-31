@@ -115,11 +115,22 @@ public class BigIntegerRadixAddressableHeapTest {
 		}
 	}
 
+	@Test
+    public void testMonotoneOkOnLastDeleted() {
+        AddressableHeap<BigInteger, Void> h = new BigIntegerRadixAddressableHeap<Void>(BigInteger.ZERO,
+                BigInteger.valueOf(100));
+        h.insert(BigInteger.valueOf(100L));
+        assertEquals(BigInteger.valueOf(100L), h.findMin().getKey());
+        h.insert(BigInteger.valueOf(99L));
+        assertEquals(BigInteger.valueOf(99L), h.findMin().getKey());
+    }
+	
 	@Test(expected = IllegalArgumentException.class)
-	public void testMonotone() {
+	public void testMonotoneNotOkOnLastDeleted() {
 		AddressableHeap<BigInteger, Void> h = new BigIntegerRadixAddressableHeap<Void>(BigInteger.ZERO,
 				BigInteger.valueOf(100));
 		h.insert(BigInteger.valueOf(100L));
+		h.deleteMin();
 		h.insert(BigInteger.valueOf(99L));
 	}
 

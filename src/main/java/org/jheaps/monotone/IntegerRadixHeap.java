@@ -73,6 +73,7 @@ public class IntegerRadixHeap extends AbstractRadixHeap<Integer> {
             throw new IllegalArgumentException("Minimum key must be non-negative");
         }
         this.minKey = minKey;
+        this.lastDeletedKey = minKey;        
         if (maxKey < minKey) {
             throw new IllegalArgumentException("Maximum key cannot be less than the minimum");
         }

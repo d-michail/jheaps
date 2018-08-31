@@ -83,6 +83,7 @@ public class BigIntegerRadixAddressableHeap<V> extends AbstractRadixAddressableH
             throw new IllegalArgumentException("Minimum key must be non-negative");
         }
         this.minKey = minKey;
+        this.lastDeletedKey = minKey;
         if (maxKey == null) {
             throw new IllegalArgumentException("Maximum key cannot be null");
         }
@@ -99,6 +100,7 @@ public class BigIntegerRadixAddressableHeap<V> extends AbstractRadixAddressableH
         this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
         this.size = 0;
         this.currentMin = null;
+        this.currentMinBucket = NO_BUCKET;
     }
 
     /**

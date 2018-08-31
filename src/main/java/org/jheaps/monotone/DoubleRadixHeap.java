@@ -82,6 +82,7 @@ public class DoubleRadixHeap extends AbstractRadixHeap<Double> {
             throw new IllegalArgumentException("Minimum key must be finite and non-negative");
         }
         this.minKey = minKey;
+        this.lastDeletedKey = minKey;        
         if (!Double.isFinite(maxKey) || maxKey < minKey) {
             throw new IllegalArgumentException("Maximum key must be finite and not less than the minimum");
         }
