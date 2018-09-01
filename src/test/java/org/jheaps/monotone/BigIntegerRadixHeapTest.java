@@ -39,6 +39,16 @@ public class BigIntegerRadixHeapTest {
 	private static final BigInteger SIZE = BigInteger.valueOf(100000);
 
 	@Test
+    public void testBug2() {
+        Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.ZERO, BigInteger.valueOf(100));
+        h.insert(BigInteger.ZERO);
+        assertEquals(BigInteger.ZERO, h.findMin());
+        assertEquals(BigInteger.ZERO, h.deleteMin());
+        h.insert(BigInteger.valueOf(15));
+        assertEquals(BigInteger.valueOf(15), h.findMin());
+    }
+	
+	@Test
 	public void test() {
 		Heap<BigInteger> h = new BigIntegerRadixHeap(BigInteger.ZERO, SIZE);
 

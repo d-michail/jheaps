@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2014-2016, by Dimitrios Michail
+ * (C) Copyright 2014-2018, by Dimitrios Michail
  *
  * JHeaps Library
  * 
@@ -36,6 +36,16 @@ public class IntegerRadixAddressableHeapTest {
 
 	private static final int SIZE = 100000;
 
+	@Test
+    public void testBug2() {
+		AddressableHeap<Integer, Void> h = new IntegerRadixAddressableHeap<Void>(0, 100);
+        h.insert(0);
+        assertEquals(0, h.findMin().getKey().intValue());
+        assertEquals(0, h.deleteMin().getKey().intValue());
+        h.insert(15);
+        assertEquals(15, h.findMin().getKey().intValue());
+    }
+	
 	@Test
 	public void testVerySmall() {
 		AddressableHeap<Integer, Void> h = new IntegerRadixAddressableHeap<Void>(15, 100);

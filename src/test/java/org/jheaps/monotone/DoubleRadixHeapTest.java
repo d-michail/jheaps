@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2014-2016, by Dimitrios Michail
+ * (C) Copyright 2014-2018, by Dimitrios Michail
  *
  * JHeaps Library
  * 

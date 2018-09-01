@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2014-2016, by Dimitrios Michail
+ * (C) Copyright 2014-2018, by Dimitrios Michail
  *
  * JHeaps Library
  * 
@@ -39,6 +39,16 @@ public class LongRadixHeapTest {
 
 	private static final int SIZE = 100000;
 
+    @Test
+    public void testBug2() {
+        Heap<Long> h = new LongRadixHeap(0L, 100L);
+        h.insert(0L);
+        assertEquals(0L, h.findMin().longValue());
+        assertEquals(0L, h.deleteMin().longValue());
+        h.insert(15L);
+        assertEquals(15L, h.findMin().longValue());
+    }
+	
 	@Test
 	public void test() {
 		Heap<Long> h = new LongRadixHeap(0, SIZE);

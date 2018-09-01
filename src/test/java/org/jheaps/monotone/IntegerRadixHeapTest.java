@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2014-2016, by Dimitrios Michail
+ * (C) Copyright 2014-2018, by Dimitrios Michail
  *
  * JHeaps Library
  * 
@@ -38,6 +38,16 @@ public class IntegerRadixHeapTest {
 
 	private static final int SIZE = 100000;
 
+    @Test
+    public void testBug2() {
+        Heap<Integer> h = new IntegerRadixHeap(0, 100);
+        h.insert(0);
+        assertEquals(0, h.findMin().intValue());
+        assertEquals(0, h.deleteMin().intValue());
+        h.insert(15);
+        assertEquals(15, h.findMin().intValue());
+    }
+	
 	@Test
 	public void test() {
 		Heap<Integer> h = new IntegerRadixHeap(0, SIZE);
