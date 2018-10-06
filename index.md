@@ -30,7 +30,7 @@ The library contains an extensive collection of heap data structures such as:
   * Fibonacci mergeable and addressable heaps
   * Simple Fibonacci heaps
   * Pairing mergeable and addressable heaps
-  * Costless-meld variable of Pairing heaps
+  * Costless-meld variant of Pairing heaps
   * Leftist mergeable and addressable heaps
   * Explicit binary tree addressable heaps
   * Binary tree soft heaps
@@ -50,8 +50,8 @@ The library contains an extensive collection of heap data structures such as:
 * Double-ended array-based
   * Binary MinMax heaps
 * Monotone heaps
-  * Addressable radix heaps with double, integer or BigInteger keys
-  * Non-addressable radix heaps with double, integer or BigInteger keys
+  * Addressable radix heaps with double, long, int or BigInteger keys
+  * Non-addressable radix heaps with double, long, int or BigInteger keys
 
 ### Latest version & Requirements
 
