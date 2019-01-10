@@ -20,7 +20,9 @@ package org.jheaps.array;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Comparator;
+import java.util.Iterator;
 
+import org.jheaps.AddressableHeap;
 import org.jheaps.annotations.LinearTime;
 
 /**
@@ -321,6 +323,33 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap
         }
 
         return h;
+    }
+
+    /**
+     * Get an iterator for all handles currently in the heap.
+     * 
+     * This method is especially useful when building a heap using the heapify
+     * method. Unspecified behavior will occur if the heap is modified while
+     * using this iterator.
+     * 
+     * @return an iterator which will return all handles of the heap
+     */
+    public Iterator<AddressableHeap.Handle<K, V>> handlesIterator() {
+        return new Iterator<AddressableHeap.Handle<K, V>>() {
+            private int pos = 1;
+
+            public boolean hasNext() {
+                return pos <= size;
+            }
+
+            public AddressableHeap.Handle<K, V> next() {
+                return array[pos++];
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     /**

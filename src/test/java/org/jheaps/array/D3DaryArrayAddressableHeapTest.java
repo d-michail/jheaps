@@ -17,9 +17,16 @@
  */
 package org.jheaps.array;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.jheaps.AddressableHeap;
+import org.jheaps.AddressableHeap.Handle;
 import org.jheaps.array.DaryArrayAddressableHeap;
 import org.jheaps.tree.AbstractAddressableHeapTest;
 import org.junit.Test;
@@ -54,6 +61,24 @@ public class D3DaryArrayAddressableHeapTest extends AbstractAddressableHeapTest 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegal2() {
 		new DaryArrayAddressableHeap<Integer, String>(3, Integer.MAX_VALUE);
+	}
+	
+	@Test
+	public void testHandlesIterator() {
+		Integer[] a = new Integer[SIZE];
+        for (int i = 0; i < SIZE; i++) {
+        	a[i] = SIZE-i;
+        }
+		
+        DaryArrayAddressableHeap<Integer, Void> heap = DaryArrayAddressableHeap.heapify(3, a, null);
+		Iterator<Handle<Integer, Void>> it = heap.handlesIterator();
+
+		Set<Integer> found = new HashSet<Integer>();
+		while(it.hasNext()) {
+			Handle<Integer, Void> handle = it.next();
+			assertTrue(found.add(handle.getKey()));
+		}
+		assertEquals(SIZE, found.size());
 	}
 
 }

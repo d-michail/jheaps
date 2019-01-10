@@ -17,38 +17,62 @@
  */
 package org.jheaps.array;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.jheaps.AddressableHeap;
-import org.jheaps.array.BinaryArrayAddressableHeap;
+import org.jheaps.AddressableHeap.Handle;
 import org.jheaps.tree.AbstractAddressableHeapTest;
 import org.junit.Test;
 
 public class BinaryArrayAddressableHeapTest extends AbstractAddressableHeapTest {
 
-	@Override
-	protected AddressableHeap<Integer, Void> createHeap() {
-		return new BinaryArrayAddressableHeap<Integer, Void>();
-	}
+    @Override
+    protected AddressableHeap<Integer, Void> createHeap() {
+        return new BinaryArrayAddressableHeap<Integer, Void>();
+    }
 
-	@Override
-	protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
-		return new BinaryArrayAddressableHeap<Integer, Void>(comparator);
-	}
+    @Override
+    protected AddressableHeap<Integer, Void> createHeap(Comparator<Integer> comparator) {
+        return new BinaryArrayAddressableHeap<Integer, Void>(comparator);
+    }
 
-	@Override
-	protected AddressableHeap<Integer, String> createHeapWithStringValues() {
-		return new BinaryArrayAddressableHeap<Integer, String>();
-	}
+    @Override
+    protected AddressableHeap<Integer, String> createHeapWithStringValues() {
+        return new BinaryArrayAddressableHeap<Integer, String>();
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegal1() {
-		new BinaryArrayAddressableHeap<Integer, String>(-5);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegal1() {
+        new BinaryArrayAddressableHeap<Integer, String>(-5);
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testIllegal2() {
-		new BinaryArrayAddressableHeap<Integer, String>(Integer.MAX_VALUE);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegal2() {
+        new BinaryArrayAddressableHeap<Integer, String>(Integer.MAX_VALUE);
+    }
+
+    @Test
+    public void testHandlesIterator() {
+        Integer[] a = new Integer[SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            a[i] = SIZE - i;
+        }
+
+        BinaryArrayAddressableHeap<Integer, Void> heap = BinaryArrayAddressableHeap.heapify(a, null);
+        Iterator<Handle<Integer, Void>> it = heap.handlesIterator();
+
+        Set<Integer> found = new HashSet<Integer>();
+        while (it.hasNext()) {
+            Handle<Integer, Void> handle = it.next();
+            assertTrue(found.add(handle.getKey()));
+        }
+        assertEquals(SIZE, found.size());
+    }
 
 }

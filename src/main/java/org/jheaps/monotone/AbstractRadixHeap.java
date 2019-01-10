@@ -160,7 +160,7 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
 
         if (currentMinBucket == 0) {
             buckets[currentMinBucket].remove(currentMinPos);
-            
+
             // update minimum cache
             currentMin = null;
             currentMinBucket = EMPTY;
@@ -172,7 +172,7 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
             K newMin = null;
             int newMinBucket = EMPTY;
             int newMinPos = EMPTY;
-            
+
             // redistribute all elements based on new lastDeletedKey
             int pos = 0;
             for (K val : buckets[currentMinBucket]) {
@@ -180,26 +180,26 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
                     int b = computeBucket(val, lastDeletedKey);
                     assert b < currentMinBucket;
                     buckets[b].add(val);
-                    
-                    if (newMin == null || compare(val, newMin) < 0) { 
+
+                    if (newMin == null || compare(val, newMin) < 0) {
                         newMin = val;
                         newMinBucket = b;
-                        newMinPos = buckets[b].size()-1;
+                        newMinPos = buckets[b].size() - 1;
                     }
                 }
                 ++pos;
             }
             buckets[currentMinBucket].clear();
- 
+
             // update minimum cache
             currentMin = newMin;
             currentMinBucket = newMinBucket;
             currentMinPos = newMinPos;
             if (--size > 0) {
-            	findAndCacheMinimum(currentMinBucket+1);
+                findAndCacheMinimum(currentMinBucket + 1);
             }
         }
-        
+
         return lastDeletedKey;
     }
 
@@ -292,7 +292,8 @@ abstract class AbstractRadixHeap<K> implements Heap<K>, Serializable {
      * Helper method for finding and caching the minimum. Assumes that the heap
      * contains at least one element.
      * 
-     * @param firstBucket start looking for elements from this bucket
+     * @param firstBucket
+     *            start looking for elements from this bucket
      */
     private void findAndCacheMinimum(int firstBucket) {
         if (currentMin == null) {

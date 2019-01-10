@@ -155,7 +155,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
         if (currentMin == null || compare(key, currentMin.key) < 0) {
             currentMin = p;
         }
-        
+
         size++;
         return p;
     }
@@ -172,7 +172,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
         if (size == 0) {
             throw new NoSuchElementException();
         }
-        
+
         // updated last deleted key
         Node result = currentMin;
         lastDeletedKey = currentMin.key;
@@ -201,7 +201,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
         } else {
             // redistribute all elements based on new lastDeletedKey
             Node newMin = null;
-            
+
             int currentMinBucket = currentMin.bucket;
             Node val = buckets[currentMinBucket];
             while (val != null) {
@@ -224,19 +224,19 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
                     }
                     buckets[b] = val;
                     val.bucket = b;
-                    
-                    if (newMin == null || compare(val.key, newMin.key) < 0) { 
+
+                    if (newMin == null || compare(val.key, newMin.key) < 0) {
                         newMin = val;
                     }
-                    
+
                 }
                 val = buckets[currentMinBucket];
             }
-            
+
             // update minimum cache
             currentMin = newMin;
             if (--size > 0) {
-            	findAndCacheMinimum(currentMinBucket+1);
+                findAndCacheMinimum(currentMinBucket + 1);
             }
         }
 
@@ -373,7 +373,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
             if (compare(newKey, lastDeletedKey) < 0) {
                 throw new IllegalArgumentException("Invalid key. Monotone heap.");
             }
-            
+
             int c = compare(newKey, key);
             if (c > 0) {
                 throw new IllegalArgumentException("Keys can only be decreased!");
@@ -383,11 +383,11 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
             if (c == 0) {
                 return;
             }
-            
+
             // update minimum cache
             if (this == currentMin || compare(key, currentMin.key) < 0) {
                 currentMin = this;
-            } 
+            }
 
             // find new bucket
             int newBucket = computeBucket(key, lastDeletedKey);
@@ -426,7 +426,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
             if (size == 0 || bucket == EMPTY) {
                 throw new IllegalArgumentException("Invalid handle!");
             }
-            
+
             if (this == currentMin) {
                 deleteMin();
                 return;
@@ -451,10 +451,11 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
     }
 
     /**
-     * Helper method for finding and caching the minimum. Assumes that the
-     * heap contains at least one element.
+     * Helper method for finding and caching the minimum. Assumes that the heap
+     * contains at least one element.
      * 
-     * @param firstBucket start looking for elements from this bucket
+     * @param firstBucket
+     *            start looking for elements from this bucket
      */
     private void findAndCacheMinimum(int firstBucket) {
         if (currentMin == null) {
@@ -467,7 +468,7 @@ abstract class AbstractRadixAddressableHeap<K, V> implements AddressableHeap<K, 
                 }
             }
             // find new minimum and cache it
-            if (currentMinBucket >= 0) { 
+            if (currentMinBucket >= 0) {
                 Node val = buckets[currentMinBucket];
                 while (val != null) {
                     if (currentMin == null || compare(val.key, currentMin.key) < 0) {
