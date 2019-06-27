@@ -485,7 +485,7 @@ public class RankPairingHeap<K, V> implements MergeableAddressableHeap<K, V>, Se
          * {@inheritDoc}
          */
         @Override
-        @LogarithmicTime(amortized = true)
+        @ConstantTime(amortized = true)
         public void decreaseKey(K newKey) {
             getOwner().decreaseKey(this, newKey);
         }
