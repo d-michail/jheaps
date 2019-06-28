@@ -180,7 +180,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
             throw new NullPointerException("Null keys not permitted");
         }
 
-        Item<K, V> item = new Item<K, V>(value);
+        Item<K, V> item = new Item<K, V>(key, value);
         HollowNode<K, V> node = new HollowNode<K, V>(this, key);
         node.item = item;
         item.node = node;
@@ -317,20 +317,18 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         private final static long serialVersionUID = 1;
 
         private HollowNode<K, V> node;
+        private K key;
         private V value;
 
-        public Item(V value) {
+        public Item(K key, V value) {
+            this.key = key;
             this.value = value;
             this.node = null;
         }
 
         @Override
         public K getKey() {
-            return node.key;
-        }
-
-        private void setKey(K key) {
-            node.key = key;
+            return key;
         }
 
         @Override
@@ -345,16 +343,24 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
 
         @Override
         public void decreaseKey(K newKey) {
+            checkInvalid();
             getOwner().decreaseKey(this, newKey);
         }
 
         @Override
         public void delete() {
+            checkInvalid();
             getOwner().delete(this);
         }
 
         HollowHeap<K, V> getOwner() {
             return node.getOwner();
+        }
+        
+        private void checkInvalid() { 
+            if (node == null) {
+                throw new IllegalArgumentException("Invalid handle!");
+            }
         }
 
     }
@@ -425,10 +431,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
      */
     @SuppressWarnings("unchecked")
     private void decreaseKey(Item<K, V> e, K newKey) {
-        if (e.node == null) {
-            throw new IllegalArgumentException("Invalid handle!");
-        }
-
+        assert e.node != null;
         int c;
         if (comparator == null) {
             c = ((Comparable<? super K>) newKey).compareTo(e.getKey());
@@ -439,14 +442,10 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
             throw new IllegalArgumentException("Keys can only be decreased!");
         }
 
-        if (c == 0) {
-            e.setKey(newKey);
-            return;
-        }
-
         HollowNode<K, V> u = e.node;
-        if (u == root) {
-            e.setKey(newKey);
+        if (c == 0 || u == root) {
+            e.key = newKey;
+            u.key = newKey;
             return;
         }
 
@@ -454,6 +453,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         HollowNode<K, V> v = new HollowNode<K, V>(this, newKey);
         nodes++;
         v.item = e;
+        e.key = newKey;
         e.node = v;
         if (u.rank > 2) {
             v.rank = u.rank - 2;
@@ -469,13 +469,11 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
     /**
      * Delete an item
      * 
-     * @param n
+     * @param e
      *            the item
      */
     private void delete(Item<K, V> e) {
-        if (e.node == null) {
-            throw new IllegalArgumentException("Invalid handle!");
-        }
+        assert e.node != null;
 
         // delete item
         e.node.item = null;
