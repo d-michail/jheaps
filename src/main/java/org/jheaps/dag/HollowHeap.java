@@ -80,7 +80,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
     /**
      * Size of bucket array. Based on maximum rank.
      */
-    private final static int AUX_BUCKET_ARRAY_SIZE = 65;
+    private final static int AUX_BUCKET_ARRAY_SIZE = 128;
 
     /**
      * The comparator used to maintain order in this heap, or null if it uses
@@ -511,6 +511,9 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
                 }
             }
             nodes--; // garbage collect v
+            v.next = null;
+            v.child = null;
+            v.sp = null;
         }
         doUnrankedLinks(maxRank);
     }
