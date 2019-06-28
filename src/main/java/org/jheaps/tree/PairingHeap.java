@@ -64,9 +64,9 @@ import org.jheaps.annotations.LogarithmicTime;
  * defined in terms of the {@code equals} operation, but a pairing heap performs
  * all key comparisons using its {@code compareTo} (or {@code compare}) method,
  * so two keys that are deemed equal by this method are, from the standpoint of
- * the pairing heap, equal. The behavior of a heap <em>is</em> well-defined even
- * if its ordering is inconsistent with {@code equals}; it just fails to obey
- * the general contract of the {@code AddressableHeap} interface.
+ * this heap, equal. The behavior of a heap <em>is</em> well-defined even if its
+ * ordering is inconsistent with {@code equals}; it just fails to obey the
+ * general contract of the {@code AddressableHeap} interface.
  *
  * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
@@ -83,6 +83,7 @@ import org.jheaps.annotations.LogarithmicTime;
  *
  * @author Dimitrios Michail
  *
+ * @see RankPairingHeap
  * @see CostlessMeldPairingHeap
  * @see FibonacciHeap
  */
