@@ -486,7 +486,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         }
 
         // minimum deletion
-        int maxRank = 0;
+        int maxRank = -1;
         while (root != null) {
             HollowNode<K, V> w = root.child;
             HollowNode<K, V> v = root;
@@ -494,6 +494,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
             while (w != null) {
                 HollowNode<K, V> u = w;
                 w = w.next;
+                u.next = null;
                 if (u.item == null) {
                     if (u.sp == null) {
                         u.next = root;
@@ -523,7 +524,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         while (aux[r] != null) {
             u = link(u, aux[r]);
             aux[r] = null;
-            u.rank = ++r;
+            u.rank = ++r;            
         }
         aux[r] = u;
         return r;
