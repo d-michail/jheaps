@@ -9,6 +9,50 @@ import org.jheaps.AddressableHeap;
 import org.jheaps.annotations.ConstantTime;
 import org.jheaps.annotations.LogarithmicTime;
 
+/**
+ * An explicit d-ary tree addressable heap. The heap is sorted according to the
+ * {@linkplain Comparable natural ordering} of its keys, or by a
+ * {@link Comparator} provided at heap creation time, depending on which
+ * constructor is used.
+ *
+ * <p>
+ * The worst-case cost of {@code insert}, {@code deleteMin}, {@code delete} and
+ * {@code decreaceKey} operations is O(d log_d(n)) and the cost of {@code findMin}
+ * is O(1).
+ *
+ * <p>
+ * Note that the ordering maintained by a binary heap, like any heap, and
+ * whether or not an explicit comparator is provided, must be <em>consistent
+ * with {@code equals}</em> if this heap is to correctly implement the
+ * {@code Heap} interface. (See {@code Comparable} or {@code Comparator} for a
+ * precise definition of <em>consistent with equals</em>.) This is so because
+ * the {@code Heap} interface is defined in terms of the {@code equals}
+ * operation, but a binary heap performs all key comparisons using its
+ * {@code compareTo} (or {@code compare}) method, so two keys that are deemed
+ * equal by this method are, from the standpoint of the binary heap, equal. The
+ * behavior of a heap <em>is</em> well-defined even if its ordering is
+ * inconsistent with {@code equals}; it just fails to obey the general contract
+ * of the {@code Heap} interface.
+ *
+ * <p>
+ * <strong>Note that this implementation is not synchronized.</strong> If
+ * multiple threads access a heap concurrently, and at least one of the threads
+ * modifies the heap structurally, it <em>must</em> be synchronized externally.
+ * (A structural modification is any operation that adds or deletes one or more
+ * elements or changing the key of some element.) This is typically accomplished
+ * by synchronizing on some object that naturally encapsulates the heap.
+ *
+ * @param <K>
+ *            the type of keys maintained by this heap
+ * @param <V>
+ *            the type of values maintained by this heap
+ *
+ * @author Dimitrios Michail
+ * 
+ * @see AddressableHeap
+ * @see Comparable
+ * @see Comparator
+ */
 public class DaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, Serializable {
 
     private final static long serialVersionUID = 1;
@@ -98,6 +142,7 @@ public class DaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, Ser
     }
 
     @Override
+    @LogarithmicTime
     public Handle<K, V> insert(K key, V value) {
         if (key == null) {
             throw new NullPointerException("Null keys not permitted");
@@ -126,11 +171,13 @@ public class DaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, Ser
     }
 
     @Override
+    @LogarithmicTime
     public Handle<K, V> insert(K key) {
         return insert(key, null);
     }
 
     @Override
+    @ConstantTime
     public Handle<K, V> findMin() {
         if (size == 0) {
             throw new NoSuchElementException();
@@ -139,6 +186,7 @@ public class DaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, Ser
     }
 
     @Override
+    @LogarithmicTime
     public Handle<K, V> deleteMin() {
         if (size == 0) {
             throw new NoSuchElementException();
