@@ -26,11 +26,15 @@ handle can later be used to additionally perform the following operations:
 * DELETE(H,x): delete the element x from the heap
 
 Implicit heaps are represented using arrays. They are not addressable as the location of the elements
-in memory can change.
+in memory can change. However, they can be made to be addressable by using an additional layer of indirection.
+In this case we store handles inside the array. Each handle contains an additional integer property, designating
+the location in the array where the handle is stored. 
 
 Some heaps are meldable, that is they efficiently support the union operation: 
 
 * MELD(H1,H2): add all elements of H2 into H1 and destroy H2
+
+As a general rule, heaps using an array representation are not meldable.
 
 ### Applications?
 
