@@ -63,32 +63,32 @@ public class DaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, Ser
      *
      * @serial
      */
-    private final Comparator<? super K> comparator;
+    protected final Comparator<? super K> comparator;
 
     /**
      * Size of the heap
      */
-    private long size;
+    protected long size;
 
     /**
      * Root node of the heap
      */
-    private Node root;
+    protected Node root;
 
     /**
      * Branching factor. Always a power of two.
      */
-    private final int d;
+    protected final int d;
 
     /**
      * Base 2 logarithm of branching factor.
      */
-    private final int log2d;
+    protected final int log2d;
 
     /**
      * Auxiliary for swapping children.
      */
-    private Node[] aux;
+    protected Node[] aux;
 
     /**
      * Constructs a new, empty heap, using the natural ordering of its keys.
