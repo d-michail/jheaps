@@ -104,7 +104,7 @@ import org.jheaps.annotations.VisibleForTesting;
  */
 public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressableHeap<K, V>, Serializable {
 
-    private final static long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
     /**
      * The comparator used to maintain order in this heap, or null if it uses
@@ -117,7 +117,7 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
     /**
      * Already computed values for target sizes.
      */
-    private final static long[] TARGET_SIZE = { 1, 2, 3, 5, 8, 12, 18, 27, 41, 62, 93, 140, 210, 315, 473, 710, 1065,
+    private static final long[] TARGET_SIZE = { 1, 2, 3, 5, 8, 12, 18, 27, 41, 62, 93, 140, 210, 315, 473, 710, 1065,
             1598, 2397, 3596, 5394, 8091, 12137, 18206, 27309, 40964, 61446, 92169, 138254, 207381, 311072, 466608,
             699912, 1049868, 1574802, 2362203, 3543305, 5314958, 7972437, 11958656, 17937984, 26906976, 40360464,
             60540696, 90811044, 136216566, 204324849, 306487274, 459730911, 689596367, 1034394551, 1551591827,
@@ -378,7 +378,7 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
     @VisibleForTesting
     static class RootList<K, V> implements Serializable {
 
-        private final static long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
 
         RootListNode<K, V> head;
         RootListNode<K, V> tail;
@@ -393,7 +393,7 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
     @VisibleForTesting
     static class RootListNode<K, V> implements Serializable {
 
-        private final static long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
 
         RootListNode<K, V> next;
         RootListNode<K, V> prev;
@@ -413,7 +413,7 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
     @VisibleForTesting
     static class TreeNode<K, V> implements Serializable {
 
-        private final static long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
 
         // rank
         int rank;
@@ -463,7 +463,7 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
     @VisibleForTesting
     static class SoftHandle<K, V> implements AddressableHeap.Handle<K, V>, Serializable {
 
-        private final static long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
 
         /*
          * We maintain explicitly the belonging heap, instead of using an inner
@@ -549,9 +549,9 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
                 // path-compression
                 BinaryTreeSoftAddressableHeap<K, V> cur = heap;
                 while (cur.other != root) {
-                    BinaryTreeSoftAddressableHeap<K, V> next = cur.other;
+                    BinaryTreeSoftAddressableHeap<K, V> nextOne = cur.other;
                     cur.other = root;
-                    cur = next;
+                    cur = nextOne;
                 }
                 heap = root;
             }
@@ -600,7 +600,6 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
                 x.left = xRight;
                 x.right = xLeft;
                 xLeft = x.left;
-                xRight = x.right;
             }
 
             // grab non-empty list from left child
@@ -702,6 +701,7 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
      * @param tail
      *            the list tail
      */
+    @SuppressWarnings("squid:S2259")
     private void mergeInto(RootListNode<K, V> head, RootListNode<K, V> tail) {
         // if root list empty, just copy
         if (rootList.head == null) {
@@ -739,7 +739,8 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
         }
 
         // merge
-        int rank1, rank2;
+        int rank1;
+        int rank2;
         while (true) {
             int resultRank = resultTail.root.rank;
 
@@ -811,6 +812,8 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
                         cur1.prev = null;
                     }
                     break;
+                default: 
+                    break;
                 }
             } else {
                 // symmetric case rank2 < rank1
@@ -858,6 +861,8 @@ public class BinaryTreeSoftAddressableHeap<K, V> implements MergeableAddressable
                     if (cur2 != null) {
                         cur2.prev = null;
                     }
+                    break;
+                default: 
                     break;
                 }
             }

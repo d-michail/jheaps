@@ -83,7 +83,7 @@ import org.jheaps.annotations.VisibleForTesting;
  */
 public class BinaryTreeSoftHeap<K> implements Heap<K>, MergeableHeap<K>, Serializable {
 
-    private final static long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
     /**
      * The comparator used to maintain order in this heap, or null if it uses
@@ -96,7 +96,7 @@ public class BinaryTreeSoftHeap<K> implements Heap<K>, MergeableHeap<K>, Seriali
     /**
      * Already computed values for target sizes.
      */
-    private final static long[] TARGET_SIZE = { 1, 2, 3, 5, 8, 12, 18, 27, 41, 62, 93, 140, 210, 315, 473, 710, 1065,
+    private static final long[] TARGET_SIZE = { 1, 2, 3, 5, 8, 12, 18, 27, 41, 62, 93, 140, 210, 315, 473, 710, 1065,
             1598, 2397, 3596, 5394, 8091, 12137, 18206, 27309, 40964, 61446, 92169, 138254, 207381, 311072, 466608,
             699912, 1049868, 1574802, 2362203, 3543305, 5314958, 7972437, 11958656, 17937984, 26906976, 40360464,
             60540696, 90811044, 136216566, 204324849, 306487274, 459730911, 689596367, 1034394551, 1551591827,
@@ -329,7 +329,7 @@ public class BinaryTreeSoftHeap<K> implements Heap<K>, MergeableHeap<K>, Seriali
     @VisibleForTesting
     static class RootList<K> implements Serializable {
 
-        private final static long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
 
         RootListNode<K> head;
         RootListNode<K> tail;
@@ -344,7 +344,7 @@ public class BinaryTreeSoftHeap<K> implements Heap<K>, MergeableHeap<K>, Seriali
     @VisibleForTesting
     static class RootListNode<K> implements Serializable {
 
-        private final static long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
 
         RootListNode<K> next;
         RootListNode<K> prev;
@@ -363,7 +363,7 @@ public class BinaryTreeSoftHeap<K> implements Heap<K>, MergeableHeap<K>, Seriali
     @VisibleForTesting
     static class TreeNode<K> implements Serializable {
 
-        private final static long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
 
         int rank;
         // left child
@@ -403,7 +403,7 @@ public class BinaryTreeSoftHeap<K> implements Heap<K>, MergeableHeap<K>, Seriali
     @VisibleForTesting
     static class SoftHandle<K> implements Serializable {
 
-        private final static long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
 
         K key;
         SoftHandle<K> next;
@@ -455,7 +455,6 @@ public class BinaryTreeSoftHeap<K> implements Heap<K>, MergeableHeap<K>, Seriali
                 x.left = xRight;
                 x.right = xLeft;
                 xLeft = x.left;
-                xRight = x.right;
             }
 
             // grab non-empty list from left child
@@ -551,6 +550,7 @@ public class BinaryTreeSoftHeap<K> implements Heap<K>, MergeableHeap<K>, Seriali
      * @param tail
      *            the list tail
      */
+    @SuppressWarnings("squid:S2259")
     private void mergeInto(RootListNode<K> head, RootListNode<K> tail) {
         // if root list empty, just copy
         if (rootList.head == null) {
@@ -588,7 +588,8 @@ public class BinaryTreeSoftHeap<K> implements Heap<K>, MergeableHeap<K>, Seriali
         }
 
         // merge
-        int rank1, rank2;
+        int rank1; 
+        int rank2;
         while (true) {
             int resultRank = resultTail.root.rank;
 
@@ -659,6 +660,8 @@ public class BinaryTreeSoftHeap<K> implements Heap<K>, MergeableHeap<K>, Seriali
                         cur1.prev = null;
                     }
                     break;
+                default:
+                    break;
                 }
             } else {
                 // symmetric case rank2 < rank1
@@ -705,6 +708,8 @@ public class BinaryTreeSoftHeap<K> implements Heap<K>, MergeableHeap<K>, Seriali
                     if (cur2 != null) {
                         cur2.prev = null;
                     }
+                    break;
+                default: 
                     break;
                 }
 

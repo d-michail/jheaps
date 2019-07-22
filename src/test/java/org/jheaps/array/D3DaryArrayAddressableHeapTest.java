@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.jheaps.AddressableHeap;
@@ -80,5 +81,31 @@ public class D3DaryArrayAddressableHeapTest extends AbstractAddressableHeapTest 
 		}
 		assertEquals(SIZE, found.size());
 	}
+	
+	@Test(expected = NoSuchElementException.class)
+    public void testHandlesIteratorTooMuch() {
+        Integer[] a = new Integer[SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            a[i] = SIZE-i;
+        }
+        
+        DaryArrayAddressableHeap<Integer, Void> heap = DaryArrayAddressableHeap.heapify(3, a, null);
+        Iterator<Handle<Integer, Void>> it = heap.handlesIterator();
+        while(it.hasNext()) {
+            it.next();
+        }
+        it.next();
+    }
+	
+    @Test(expected = UnsupportedOperationException.class)
+    public void testNoRemove() {
+        Integer[] a = new Integer[SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            a[i] = SIZE-i;
+        }
+        DaryArrayAddressableHeap<Integer, Void> heap = DaryArrayAddressableHeap.heapify(3, a, null);
+        Iterator<Handle<Integer, Void>> it = heap.handlesIterator();
+        it.remove();
+    }
 
 }

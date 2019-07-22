@@ -72,7 +72,7 @@ import org.jheaps.annotations.LogarithmicTime;
  */
 public class BinaryArrayBulkInsertWeakHeap<K> extends BinaryArrayWeakHeap<K> implements Serializable {
 
-    private final static long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
     /**
      * Insertion buffer capacity for integer size since we are using Java arrays
@@ -213,7 +213,7 @@ public class BinaryArrayBulkInsertWeakHeap<K> extends BinaryArrayWeakHeap<K> imp
     @Override
     @ConstantTime
     public long size() {
-        return size + insertionBufferSize;
+        return (long)size + insertionBufferSize;
     }
 
     /**
@@ -452,7 +452,7 @@ public class BinaryArrayBulkInsertWeakHeap<K> extends BinaryArrayWeakHeap<K> imp
         if (insertionBufferSize >= insertionBuffer.length) {
             return true;
         }
-        double sizeAsDouble = size + insertionBufferSize;
+        double sizeAsDouble = (double)size + insertionBufferSize;
         return Math.getExponent(sizeAsDouble) + 3 >= insertionBuffer.length;
     }
 

@@ -34,7 +34,7 @@
 		<maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
 		<maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
 		<maven-bundle-plugin.version>4.1.0</maven-bundle-plugin.version>
-		<jacoco.version>0.7.7.201606060606</jacoco.version>
+		<jacoco.version>0.8.4</jacoco.version>
 	</properties>
 
 	<scm>

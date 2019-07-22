@@ -48,7 +48,7 @@ import java.lang.reflect.Array;
  */
 public class LongRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<Long, V> {
 
-    private final static long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
     /**
      * Constructs a new heap which can store values between a minimum and a
@@ -86,7 +86,7 @@ public class LongRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<Lo
         if (maxKey == minKey) {
             numBuckets = 2;
         } else {
-            numBuckets = 2 + 1 + (int) Math.floor(Math.log(maxKey - minKey) / Math.log(2));
+            numBuckets = 2 + 1 + (int) Math.floor(Math.log((double)maxKey - minKey) / Math.log(2));
         }
 
         // construct representation

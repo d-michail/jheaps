@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.jheaps.AddressableHeap;
 import org.jheaps.annotations.LinearTime;
@@ -291,14 +292,20 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHe
         return new Iterator<AddressableHeap.Handle<K, V>>() {
             private int pos = 1;
 
+            @Override
             public boolean hasNext() {
                 return pos <= size;
             }
 
+            @Override
             public AddressableHeap.Handle<K, V> next() {
+                if (pos > size) { 
+                    throw new NoSuchElementException();
+                }
                 return array[pos++];
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }
@@ -322,8 +329,6 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHe
 
     @Override
     protected void forceFixup(int k) {
-        // assert k >= 1 && k <= size;
-
         ArrayHandle h = array[k];
         while (k > 1) {
             array[k] = array[k / 2];
@@ -337,8 +342,6 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHe
     @Override
     @SuppressWarnings("unchecked")
     protected void fixup(int k) {
-        // assert k >= 1 && k <= size;
-
         ArrayHandle h = array[k];
         while (k > 1 && ((Comparable<? super K>) array[k / 2].getKey()).compareTo(h.getKey()) > 0) {
             array[k] = array[k / 2];
@@ -351,8 +354,6 @@ public class BinaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHe
 
     @Override
     protected void fixupWithComparator(int k) {
-        // assert k >= 1 && k <= size;
-
         ArrayHandle h = array[k];
         while (k > 1 && comparator.compare(array[k / 2].getKey(), h.getKey()) > 0) {
             array[k] = array[k / 2];

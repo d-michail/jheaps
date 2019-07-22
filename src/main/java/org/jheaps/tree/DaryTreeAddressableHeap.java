@@ -55,7 +55,7 @@ import org.jheaps.annotations.LogarithmicTime;
  */
 public class DaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, Serializable {
 
-    private final static long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
     /**
      * The comparator used to maintain order in this heap, or null if it uses
@@ -63,32 +63,32 @@ public class DaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, Ser
      *
      * @serial
      */
-    protected final Comparator<? super K> comparator;
+    private final Comparator<? super K> comparator;
 
     /**
      * Size of the heap
      */
-    protected long size;
+    private long size;
 
     /**
      * Root node of the heap
      */
-    protected Node root;
+    private Node root;
 
     /**
      * Branching factor. Always a power of two.
      */
-    protected final int d;
+    private final int d;
 
     /**
      * Base 2 logarithm of branching factor.
      */
-    protected final int log2d;
+    private final int log2d;
 
     /**
      * Auxiliary for swapping children.
      */
-    protected Node[] aux;
+    private Node[] aux;
 
     /**
      * Constructs a new, empty heap, using the natural ordering of its keys.
@@ -331,7 +331,7 @@ public class DaryTreeAddressableHeap<K, V> implements AddressableHeap<K, V>, Ser
         if (node == 0)
             return root;
 
-        long mask = d - 1;
+        long mask = (long)d - 1;
         long location = (node - 1);
         int log = log2(node - 1) / log2d;
 

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2014-2016, by Dimitrios Michail
+ * (C) Copyright 2014-2019, by Dimitrios Michail
  *
  * JHeaps Library
  * 
@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.jheaps.AddressableHeap;
 import org.jheaps.annotations.LinearTime;
@@ -78,8 +79,10 @@ import org.jheaps.annotations.LinearTime;
  */
 public class DaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap<K, V> implements Serializable {
 
-    private final static long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
+    private static final String D_ARY_HEAPS_MUST_HAVE_AT_LEAST_2_CHILDREN_PER_NODE = "D-ary heaps must have at least 2 children per node";
+    
     /**
      * Default initial capacity of the binary heap.
      */
@@ -205,7 +208,7 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap
     public DaryArrayAddressableHeap(int d, Comparator<? super K> comparator, int capacity) {
         super(comparator, capacity);
         if (d < 2) {
-            throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
+            throw new IllegalArgumentException(D_ARY_HEAPS_MUST_HAVE_AT_LEAST_2_CHILDREN_PER_NODE);
         }
         this.d = d;
     }
@@ -236,7 +239,7 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap
     @LinearTime
     public static <K, V> DaryArrayAddressableHeap<K, V> heapify(int d, K[] keys, V[] values) {
         if (d < 2) {
-            throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
+            throw new IllegalArgumentException(D_ARY_HEAPS_MUST_HAVE_AT_LEAST_2_CHILDREN_PER_NODE);
         }
         if (keys == null) {
             throw new IllegalArgumentException("Key array cannot be null");
@@ -295,7 +298,7 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap
     public static <K, V> DaryArrayAddressableHeap<K, V> heapify(int d, K[] keys, V[] values,
             Comparator<? super K> comparator) {
         if (d < 2) {
-            throw new IllegalArgumentException("D-ary heaps must have at least 2 children per node");
+            throw new IllegalArgumentException(D_ARY_HEAPS_MUST_HAVE_AT_LEAST_2_CHILDREN_PER_NODE);
         }
         if (keys == null) {
             throw new IllegalArgumentException("Keys array cannot be null");
@@ -338,14 +341,20 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap
         return new Iterator<AddressableHeap.Handle<K, V>>() {
             private int pos = 1;
 
+            @Override
             public boolean hasNext() {
                 return pos <= size;
             }
 
+            @Override
             public AddressableHeap.Handle<K, V> next() {
+                if (pos > size) { 
+                    throw new NoSuchElementException();
+                }
                 return array[pos++];
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }
@@ -369,8 +378,6 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap
 
     @Override
     protected void forceFixup(int k) {
-        // assert k >= 1 && k <= size;
-
         ArrayHandle h = array[k];
         while (k > 1) {
             int p = (k - 2) / d + 1;
@@ -385,8 +392,6 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap
     @Override
     @SuppressWarnings("unchecked")
     protected void fixup(int k) {
-        // assert k >= 1 && k <= size;
-
         ArrayHandle h = array[k];
         while (k > 1) {
             int p = (k - 2) / d + 1;
@@ -403,8 +408,6 @@ public class DaryArrayAddressableHeap<K, V> extends AbstractArrayAddressableHeap
 
     @Override
     protected void fixupWithComparator(int k) {
-        // assert k >= 1 && k <= size;
-
         ArrayHandle h = array[k];
         while (k > 1) {
             int p = (k - 2) / d + 1;
