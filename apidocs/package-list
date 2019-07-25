@@ -1,5 +1,6 @@
 org.jheaps
 org.jheaps.annotations
 org.jheaps.array
+org.jheaps.dag
 org.jheaps.monotone
 org.jheaps.tree
