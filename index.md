@@ -31,10 +31,13 @@ The library contains an extensive collection of heap data structures such as:
   * Simple Fibonacci heaps
   * Pairing mergeable and addressable heaps
   * Costless-meld variant of Pairing heaps
+  * Rank-Pairing (type-1) mergeable and addressable heaps
   * Leftist mergeable and addressable heaps
   * Explicit binary tree addressable heaps
   * Binary tree soft heaps
   * Skew heaps
+* Dag-based
+  * Hollow mergeable and addressable heaps
 * Double-ended mergeable and addressable heaps
   * Reflected Fibonacci heaps
   * Reflected Pairing heaps
@@ -55,14 +58,14 @@ The library contains an extensive collection of heap data structures such as:
 
 ### Latest version & Requirements
 
-The latest version of JHeaps is 0.11.
+The latest version of JHeaps is 0.12.
 
 Every JHeaps release is published to the Maven Central Repository. You can add a dependency from your project as follows:
 
 ```
   <groupId>org.jheaps</groupId>
   <artifactId>jheaps</artifactId>
-  <version>0.11</version>
+  <version>0.12</version>
 ```
 
 ### Documentation
