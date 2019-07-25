@@ -3,7 +3,7 @@
 
 	<groupId>org.jheaps</groupId>
 	<artifactId>jheaps</artifactId>
-	<version>0.12-SNAPSHOT</version>
+	<version>0.12</version>
 	<packaging>jar</packaging>
 
 	<name>JHeaps</name>
@@ -41,7 +41,7 @@
 		<connection>scm:git:git@github.com:d-michail/jheaps.git</connection>
 		<url>https://github.com/d-michail/jheaps.git</url>
 		<developerConnection>scm:git:git@github.com:d-michail/jheaps.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>jheaps-0.12</tag>
 	</scm>
 
 	<issueManagement>
