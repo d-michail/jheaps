@@ -96,17 +96,17 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
     private HollowNode<K, V> root;
 
     /**
-     * Size of the pairing heap
+     * Size of the heap
      */
     private long size;
 
     /**
-     * Number of nodes (hollow or not). Used for rebuilding.
+     * Number of nodes (hollow or not). Useful for rebuilding.
      */
     private long nodes;
 
     /**
-     * Auxiliary array for consolidation.
+     * Auxiliary array for performing links.
      */
     private HollowNode<K, V>[] aux;
 
@@ -180,20 +180,20 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
             throw new NullPointerException("Null keys not permitted");
         }
 
-        Item<K, V> item = new Item<K, V>(key, value);
-        HollowNode<K, V> node = new HollowNode<K, V>(this, key);
-        node.item = item;
-        item.node = node;
+        Item<K, V> e = new Item<K, V>(key, value);
+        HollowNode<K, V> u = new HollowNode<K, V>(this, key);
+        u.item = e;
+        e.node = u;
         nodes++;
 
         if (root == null) {
-            root = node;
+            root = u;
         } else {
-            root = link(root, node);
+            root = link(root, u);
         }
-
+        
         size++;
-        return item;
+        return e;
     }
 
     /**
@@ -419,6 +419,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
             }
             return heap;
         }
+        
     }
 
     /**
@@ -452,14 +453,15 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         // move item to new node
         HollowNode<K, V> v = new HollowNode<K, V>(this, newKey);
         nodes++;
+        u.item = null;
         v.item = e;
-        e.key = newKey;
         e.node = v;
+        e.key = newKey;
+        
         if (u.rank > 2) {
             v.rank = u.rank - 2;
         }
         v.child = u;
-        u.item = null;
         u.sp = v;
 
         // link new node with root
@@ -474,6 +476,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
      */
     private void delete(Item<K, V> e) {
         assert e.node != null;
+        assert e.node.item == e;
 
         // delete item
         e.node.item = null;
@@ -488,49 +491,52 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         // minimum deletion
         int maxRank = -1;
         while (root != null) {
-            HollowNode<K, V> w = root.child;
-            HollowNode<K, V> v = root;
+        	HollowNode<K, V> v = root;
             root = root.next;
+        	
+            HollowNode<K, V> w = v.child;
             while (w != null) {
                 HollowNode<K, V> u = w;
                 w = w.next;
                 u.next = null;
-                if (u.item == null) {
-                    if (u.sp == null) {
-                        u.next = root;
-                        root = u;
-                    } else {
-                        if (u.sp == v) {
-                            w = null;
-                        } else {
-                            u.next = null;
-                        }
-                        u.sp = null;
-                    }
-                } else {
-                    maxRank = Math.max(maxRank, doRankedLinks(u));
+                
+                if (u.item == null) { // hollow
+                	if (u.sp == null) { // v is the only parent
+                		u.next = root;
+                		root = u;
+                	} else { // two parents 
+                		if (u.sp == v) { // v is the second parent 
+                			u.sp = null;
+                		} else { // v is the first parent
+                			u.sp = null;
+                			u.next = null;
+                		}
+                	}
+                } else { 
+                	maxRank = Math.max(maxRank, doRankedLinks(u));
                 }
             }
             nodes--; // garbage collect v
             v.next = null;
             v.child = null;
             v.sp = null;
+            v.item = null;
         }
         doUnrankedLinks(maxRank);
     }
 
     private int doRankedLinks(HollowNode<K, V> u) {
-        int r = u.rank;
-        while (aux[r] != null) {
-            u = link(u, aux[r]);
-            aux[r] = null;
-            u.rank = ++r;            
+        while (aux[u.rank] != null) {
+            u = link(u, aux[u.rank]);
+            aux[u.rank] = null;
+            u.rank += 1;            
         }
-        aux[r] = u;
-        return r;
+        aux[u.rank] = u;
+        return u.rank;
     }
 
     private void doUnrankedLinks(int maxRank) {
+    	assert root == null;
         for (int i = 0; i <= maxRank; i++) {
             HollowNode<K, V> u = aux[i];
             if (u != null) {
@@ -552,7 +558,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         } else {
             c = comparator.compare(v.key, w.key);
         }
-        if (c >= 0) {
+        if (c > 0) {
             // v a child of w
             v.next = w.child;
             w.child = v;
