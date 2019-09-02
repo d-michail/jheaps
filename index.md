@@ -58,14 +58,14 @@ The library contains an extensive collection of heap data structures such as:
 
 ### Latest version & Requirements
 
-The latest version of JHeaps is 0.12.
+The latest version of JHeaps is 0.13.
 
 Every JHeaps release is published to the Maven Central Repository. You can add a dependency from your project as follows:
 
 ```
   <groupId>org.jheaps</groupId>
   <artifactId>jheaps</artifactId>
-  <version>0.12</version>
+  <version>0.13</version>
 ```
 
 ### Documentation
