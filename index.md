@@ -17,7 +17,7 @@ Key features:
 * The heaps are written in a similar way as in the JDK
 * It does not depend on other libraries, so classpathing 'jheaps.jar' is sufficient
   to use in your project.
-* Supports JDK v1.6 and above
+* Supports JDK 8 and above
 
 JHeaps development happens on [github](https://github.com/d-michail/jheaps). Report issues and/or bugs
 at the [issue tracker](https://github.com/d-michail/jheaps/issues).
@@ -58,14 +58,14 @@ The library contains an extensive collection of heap data structures such as:
 
 ### Latest version & Requirements
 
-The latest version of JHeaps is 0.13.
+The latest version of JHeaps is 0.14.
 
 Every JHeaps release is published to the Maven Central Repository. You can add a dependency from your project as follows:
 
 ```
   <groupId>org.jheaps</groupId>
   <artifactId>jheaps</artifactId>
-  <version>0.13</version>
+  <version>0.14</version>
 ```
 
 ### Documentation
@@ -75,4 +75,4 @@ Extensive documentation of the available classes and interfaces can be found in 
 
 ### Compatibility
 
-The library requires JDK v1.6 and above.
+The library requires JDK 8 and above.
