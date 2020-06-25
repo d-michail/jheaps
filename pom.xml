@@ -113,6 +113,7 @@
 				<version>${maven-release-plugin.version}</version>
 				<configuration>
 					<mavenExecutorId>forked-path</mavenExecutorId>
+					<releaseProfiles>release</releaseProfiles>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -270,7 +271,7 @@
 
 	<profiles>
 		<profile>
-			<id>release-sign-artifacts</id>
+			<id>release</id>
 			<activation>
 				<property>
 					<name>performRelease</name>
@@ -282,7 +283,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.5</version>
+						<version>1.6</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
