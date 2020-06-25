@@ -19,22 +19,22 @@
 	</licenses>
 
 	<properties>
-		<java.version>1.6</java.version>
-		<junit.version>4.12</junit.version>
-		<checkstyle.version>8.18</checkstyle.version>
+		<java.version>1.8</java.version>
+		<junit.version>4.13</junit.version>
+		<checkstyle.version>8.33</checkstyle.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
-		<maven-javadoc-plugin.version>2.10.4</maven-javadoc-plugin.version>
-		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
-		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
-		<maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
-		<maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
-		<maven-bundle-plugin.version>4.1.0</maven-bundle-plugin.version>
-		<jacoco.version>0.8.4</jacoco.version>
+		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+		<maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+		<maven-release-plugin.version>3.0.0-M1</maven-release-plugin.version>
+		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+		<maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
+		<maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
+		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+		<maven-bundle-plugin.version>4.2.1</maven-bundle-plugin.version>
+		<jacoco.version>0.8.5</jacoco.version>
 	</properties>
 
 	<scm>
@@ -122,6 +122,9 @@
 				<configuration>
 					<show>public</show>
 					<windowtitle>JHeaps</windowtitle>
+					<doclint>none</doclint>
+                    <source>8</source>
+                    <additionalJOption>--no-module-directories</additionalJOption>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -159,6 +162,8 @@
                     <instructions>
                         <Automatic-Module-Name>org.jheaps</Automatic-Module-Name>
                         <Bundle-Vendor>Dimitrios Michail</Bundle-Vendor>
+                        <!--  Suppress import of own exported packages  -->
+                        <Import-Package>!org.jheaps.*,*</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
@@ -291,10 +296,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<configuration>
-							<show>public</show>
-							<windowtitle>JHeaps</windowtitle>
-						</configuration>
+						<version>${maven-javadoc-plugin.version}</version>
 						<executions>
 							<execution>
 								<id>attach-javadocs</id>

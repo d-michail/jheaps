@@ -191,7 +191,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         } else {
             root = link(root, u);
         }
-        
+
         size++;
         return e;
     }
@@ -356,8 +356,8 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         HollowHeap<K, V> getOwner() {
             return node.getOwner();
         }
-        
-        private void checkInvalid() { 
+
+        private void checkInvalid() {
             if (node == null) {
                 throw new IllegalArgumentException("Invalid handle!");
             }
@@ -419,7 +419,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
             }
             return heap;
         }
-        
+
     }
 
     /**
@@ -457,7 +457,7 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         v.item = e;
         e.node = v;
         e.key = newKey;
-        
+
         if (u.rank > 2) {
             v.rank = u.rank - 2;
         }
@@ -491,29 +491,29 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         // minimum deletion
         int maxRank = -1;
         while (root != null) {
-        	HollowNode<K, V> v = root;
+            HollowNode<K, V> v = root;
             root = root.next;
-        	
+
             HollowNode<K, V> w = v.child;
             while (w != null) {
                 HollowNode<K, V> u = w;
                 w = w.next;
                 u.next = null;
-                
+
                 if (u.item == null) { // hollow
-                	if (u.sp == null) { // v is the only parent
-                		u.next = root;
-                		root = u;
-                	} else { // two parents 
-                		if (u.sp == v) { // v is the second parent 
-                			u.sp = null;
-                		} else { // v is the first parent
-                			u.sp = null;
-                			u.next = null;
-                		}
-                	}
-                } else { 
-                	maxRank = Math.max(maxRank, doRankedLinks(u));
+                    if (u.sp == null) { // v is the only parent
+                        u.next = root;
+                        root = u;
+                    } else { // two parents
+                        if (u.sp == v) { // v is the second parent
+                            u.sp = null;
+                        } else { // v is the first parent
+                            u.sp = null;
+                            u.next = null;
+                        }
+                    }
+                } else {
+                    maxRank = Math.max(maxRank, doRankedLinks(u));
                 }
             }
             nodes--; // garbage collect v
@@ -529,14 +529,14 @@ public class HollowHeap<K, V> implements MergeableAddressableHeap<K, V>, Seriali
         while (aux[u.rank] != null) {
             u = link(u, aux[u.rank]);
             aux[u.rank] = null;
-            u.rank += 1;            
+            u.rank += 1;
         }
         aux[u.rank] = u;
         return u.rank;
     }
 
     private void doUnrankedLinks(int maxRank) {
-    	assert root == null;
+        assert root == null;
         for (int i = 0; i <= maxRank; i++) {
             HollowNode<K, V> u = aux[i];
             if (u != null) {
