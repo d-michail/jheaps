@@ -22,6 +22,7 @@ Key features:
 JHeaps development happens on [github](https://github.com/d-michail/jheaps). Report issues and/or bugs
 at the [issue tracker](https://github.com/d-michail/jheaps/issues).
 
+
 ### Available Heaps
 
 The library contains an extensive collection of heap data structures such as:
@@ -76,3 +77,16 @@ Extensive documentation of the available classes and interfaces can be found in 
 ### Compatibility
 
 The library requires JDK 8 and above.
+
+### Python Bindings
+
+We also provide Python bindings which compile the Java library into a native shared library using 
+[GraalVM](https://www.graalvm.org/).
+The result is a native self-contained library with no dependency on the JVM! For more information 
+see the following links: 
+
+* <https://pypi.org/project/jheaps/>
+* <https://python-jheaps.readthedocs.io/en/latest/>
+* <https://github.com/d-michail/python-jheaps/>
+* <https://github.com/d-michail/jheaps-capi/>
+
