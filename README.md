@@ -63,4 +63,15 @@ As a general rule, heaps using an array representation are not meldable.
 
 The library requires JDK v1.8 and above. 
 
+### Python Bindings
+
+We also provide Python bindings which compile the Java library into a native shared library using
+[GraalVM](https://www.graalvm.org/).
+The result is a native self-contained library with no dependency on the JVM! For more information
+see the following links:
+
+* <https://pypi.org/project/jheaps/>
+* <https://python-jheaps.readthedocs.io/en/latest/>
+* <https://github.com/d-michail/python-jheaps/>
+* <https://github.com/d-michail/jheaps-capi/>
 
