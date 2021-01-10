@@ -59,11 +59,45 @@ Some heaps are meldable, that is they efficiently support the union operation:
 
 As a general rule, heaps using an array representation are not meldable.
 
+### Available Heaps
+
+The library contains an extensive collection of heap data structures such as:
+
+* Tree-based
+  * Fibonacci mergeable and addressable heaps
+  * Simple Fibonacci heaps
+  * Pairing mergeable and addressable heaps
+  * Costless-meld variant of Pairing heaps
+  * Rank-Pairing (type-1) mergeable and addressable heaps
+  * Leftist mergeable and addressable heaps
+  * Explicit binary tree addressable heaps
+  * Binary tree soft heaps
+  * Skew heaps
+* Dag-based
+  * Hollow mergeable and addressable heaps
+* Double-ended mergeable and addressable heaps
+  * Reflected Fibonacci heaps
+  * Reflected Pairing heaps
+* Array-based
+  * Binary heaps
+  * Binary addressable heaps
+  * D-ary heaps
+  * D-ary addressable heaps
+  * Binary weak heaps
+  * Binary weak heaps supporting bulk insertion
+  * Highly optimized binary heaps for integer keys using the Wegener
+   bottom-up heuristic and sentinel values
+* Double-ended array-based
+  * Binary MinMax heaps
+* Monotone heaps
+  * Addressable radix heaps with double, long, int or BigInteger keys
+  * Non-addressable radix heaps with double, long, int or BigInteger keys
+
 ## Compatibility
 
 The library requires JDK v1.8 and above. 
 
-### Python Bindings
+## Python Bindings
 
 We also provide Python bindings which compile the Java library into a native shared library using
 [GraalVM](https://www.graalvm.org/).
