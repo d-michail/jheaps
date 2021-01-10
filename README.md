@@ -59,7 +59,7 @@ Some heaps are meldable, that is they efficiently support the union operation:
 
 As a general rule, heaps using an array representation are not meldable.
 
-### Available Heaps
+## Available Heaps
 
 The library contains an extensive collection of heap data structures such as:
 
