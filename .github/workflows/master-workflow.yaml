@@ -1,4 +1,4 @@
-name: JHeaps Pull Request build
+name: JHeaps master build
 on:
   push:
     branches:
