@@ -1,3 +1,5 @@
+![Build Status](https://github.com/d-michail/jheaps/actions/workflows/master.yml/badge.svg)
+
 # JHeaps Library
 
 Copyright (C) 2014-2021 Dimitrios Michail
