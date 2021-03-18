@@ -1,4 +1,4 @@
-![Build Status](https://github.com/d-michail/jheaps/actions/workflows/master.yml/badge.svg)
+![Build Status](https://github.com/d-michail/jheaps/actions/workflows/master.yaml/badge.svg)
 
 # JHeaps Library
 
