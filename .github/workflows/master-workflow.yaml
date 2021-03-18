@@ -1,6 +1,11 @@
-name: JHeaps master build
+name: JHeaps 
+
 on:
   push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
     branches:
       - master
 
@@ -24,5 +29,5 @@ jobs:
       - name: Build with Maven
         run: |
           set -e
-          mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V && mvn verify -B && mvn javadoc:aggregate && mvn checkstyle:check -P checkstyle
+          mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V && mvn verify -B && mvn checkstyle:check -P checkstyle
 
