@@ -99,6 +99,24 @@ The library contains an extensive collection of heap data structures such as:
 
 The library requires JDK v1.8 and above. 
 
+## Artifact signatures
+
+Artifacts published to Maven Central are signed with an OpenPGP key. The
+trusted public keys are included in [KEYS](KEYS); compare the complete
+fingerprint reported by GnuPG with this table:
+
+| Releases | Signing key fingerprint |
+| --- | --- |
+| 0.14 | `5F459557BD5F70C12DF0BB91274E4517777B86B2` |
+| 0.15 and later | `378082934133270C0A2A3C849F3B2D205686F675` |
+
+To verify a downloaded artifact and its matching `.asc` signature:
+
+```shell
+gpg --import KEYS
+gpg --verify jheaps-0.15.jar.asc jheaps-0.15.jar
+```
+
 ## Python Bindings
 
 We also provide Python bindings which compile the Java library into a native shared library using
