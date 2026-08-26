@@ -8,33 +8,38 @@
 
 	<name>JHeaps</name>
 	<description>A free, production-ready, efficient Java library containing a collection of heap data-structures.</description>
-	<url>http://www.jheaps.org</url>
+	<url>https://www.jheaps.org</url>
 
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
 
 	<properties>
-		<java.version>1.8</java.version>
-		<junit.version>4.13.1</junit.version>
+		<java.version>8</java.version>
+		<junit.version>4.13.2</junit.version>
 		<checkstyle.version>8.41</checkstyle.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-		<maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
-		<maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
-		<maven-release-plugin.version>3.0.0-M1</maven-release-plugin.version>
-		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-		<maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
-		<maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
-		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
-		<maven-bundle-plugin.version>4.2.1</maven-bundle-plugin.version>
-		<jacoco.version>0.8.5</jacoco.version>
+		<maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
+		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+		<maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+		<maven-jar-plugin.version>3.5.1</maven-jar-plugin.version>
+		<maven-install-plugin.version>3.1.4</maven-install-plugin.version>
+		<maven-release-plugin.version>3.3.1</maven-release-plugin.version>
+		<maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+		<maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
+		<maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+		<maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
+		<maven-bundle-plugin.version>6.0.2</maven-bundle-plugin.version>
+		<maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+		<central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
+		<jacoco.version>0.8.14</jacoco.version>
 	</properties>
 
 	<scm>
@@ -57,31 +62,6 @@
 		</developer>
 	</developers>
 
-	<repositories>
-		<repository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -95,12 +75,21 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>${maven-clean-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<release>${java.version}</release>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven-resources-plugin.version}</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -124,8 +113,7 @@
 					<show>public</show>
 					<windowtitle>JHeaps</windowtitle>
 					<doclint>none</doclint>
-                    <source>8</source>
-                    <additionalJOption>--no-module-directories</additionalJOption>
+					<source>${java.version}</source>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -146,6 +134,11 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>${maven-install-plugin.version}</version>
 			</plugin>
 			<plugin>
                 <groupId>org.apache.felix</groupId>
@@ -283,7 +276,10 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
+						<version>${maven-gpg-plugin.version}</version>
+						<configuration>
+							<bestPractices>true</bestPractices>
+						</configuration>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -293,6 +289,15 @@
 								</goals>
 							</execution>
 						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
+						<version>${central-publishing-maven-plugin.version}</version>
+						<extensions>true</extensions>
+						<configuration>
+							<publishingServerId>central</publishingServerId>
+						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>

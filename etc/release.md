@@ -1,38 +1,52 @@
+# How to perform a release
 
-# How to perform a release 
+Releases are published through the Maven Central Publisher Portal. Sign in and
+open <https://central.sonatype.com/usertoken>, then:
 
-Open ~/.m2/settings.xml and add
+1. Select **Generate User Token**.
+2. Give the token a descriptive name and choose an expiration date.
+3. Save the generated username and password immediately. They cannot be
+   retrieved after the dialog is closed; generate a replacement if they are
+   lost.
 
+Add the generated credentials to `~/.m2/settings.xml`:
+
+```xml
 <settings>
   <servers>
     <server>
-      <id>ossrh</id>
-      <username>myusername</username>
-      <password>mypassword</password>
+      <id>central</id>
+      <username>token username</username>
+      <password>token password</password>
     </server>
-
-    <server>
-      <id>gpg.passphrase</id>
-      <passphrase>clear or encrypted text</passphrase>
-    </server>
-
   </servers>
+
+  <profiles>
+    <profile>
+      <id>jheaps-signing</id>
+      <properties>
+        <gpg.keyname>YOUR_KEY_FINGERPRINT</gpg.keyname>
+      </properties>
+    </profile>
+  </profiles>
+
+  <activeProfiles>
+    <activeProfile>jheaps-signing</activeProfile>
+  </activeProfiles>
 </settings>
-
-Make sure you have an account at the staging repositories at https://oss.sonatype.org/#stagingRepositories .
-Also make sure that you have your gpg key imported in your keyring.
-
-Execute the following:
 ```
+
+Replace `YOUR_KEY_FINGERPRINT` with the fingerprint of the signing key available
+to GnuPG. Prime `gpg-agent` interactively before starting the Maven release.
+This keeps the passphrase out of the POM, Maven settings, environment, and shell
+history:
+
+```shell
+gpg --local-user YOUR_KEY_FINGERPRINT --sign </dev/null >/dev/null
 mvn release:prepare
-```
-
-If it succeeds then: 
-
-```
 mvn release:perform
 ```
 
-Go to https://oss.sonatype.org/#stagingRepositories and after validating that the files are correct, you 
-need to first close the opened staged repository and then release it.
-
+The release profile signs the artifacts and uploads the deployment bundle to
+the Central Publisher Portal. After validation succeeds, review and publish the
+deployment at <https://central.sonatype.com/publishing/deployments>.

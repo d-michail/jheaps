@@ -2,13 +2,13 @@
 
 # JHeaps Library
 
-Copyright (C) 2014-2021 Dimitrios Michail
+Copyright (C) 2014-2026 Dimitrios Michail
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+    https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -110,4 +110,3 @@ see the following links:
 * <https://python-jheaps.readthedocs.io/en/latest/>
 * <https://github.com/d-michail/python-jheaps/>
 * <https://github.com/d-michail/jheaps-capi/>
-
