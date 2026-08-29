@@ -464,4 +464,111 @@ public abstract class AbstractMergeableAddressableHeapTest {
         assertTrue(h1.isEmpty());
     }
 
+    @Test
+    public void testMeldEvenOddSizes() {
+        MergeableAddressableHeap<Integer, String> a = createHeap();
+        a.insert(10);
+        a.insert(11);
+        a.insert(12);
+        a.insert(13);
+
+        MergeableAddressableHeap<Integer, String> b = createHeap();
+        b.insert(14);
+        b.insert(15);
+        b.insert(16);
+
+        a.meld(b);
+
+        assertEquals(7, a.size());
+        assertTrue(b.isEmpty());
+        assertEquals(0, b.size());
+
+        assertEquals(Integer.valueOf(10), a.findMin().getKey());
+    }
+
+    @Test
+    public void testMeldOddOddSizes() {
+        MergeableAddressableHeap<Integer, String> a = createHeap();
+        a.insert(10);
+        a.insert(11);
+        a.insert(12);
+
+        MergeableAddressableHeap<Integer, String> b = createHeap();
+        b.insert(14);
+        b.insert(15);
+        b.insert(16);
+
+        a.meld(b);
+
+        assertEquals(6, a.size());
+        assertTrue(b.isEmpty());
+        assertEquals(0, b.size());
+
+        assertEquals(Integer.valueOf(10), a.findMin().getKey());
+    }
+
+    @Test
+    public void testMeldOddEvenSizes() {
+        MergeableAddressableHeap<Integer, String> a = createHeap();
+        a.insert(10);
+        a.insert(11);
+        a.insert(12);
+
+        MergeableAddressableHeap<Integer, String> b = createHeap();
+        b.insert(13);
+        b.insert(14);
+        b.insert(15);
+        b.insert(16);
+
+        a.meld(b);
+
+        assertEquals(7, a.size());
+        assertTrue(b.isEmpty());
+        assertEquals(0, b.size());
+
+        assertEquals(Integer.valueOf(10), a.findMin().getKey());
+    }
+
+    @Test
+    public void testMeldEmptyIntoEmpty() {
+        MergeableAddressableHeap<Integer, String> a = createHeap();
+        MergeableAddressableHeap<Integer, String> b = createHeap();
+
+        a.meld(b);
+
+        assertTrue(a.isEmpty());
+        assertEquals(0, a.size());
+        assertTrue(b.isEmpty());
+        assertEquals(0, b.size());
+    }
+
+    @Test
+    public void testMeldThenClearAndReuse() {
+        MergeableAddressableHeap<Integer, String> a = createHeap();
+        a.insert(10);
+        a.insert(11);
+
+        MergeableAddressableHeap<Integer, String> b = createHeap();
+        b.insert(12);
+        b.insert(13);
+
+        a.meld(b);
+        assertEquals(4, a.size());
+
+        a.clear();
+        assertEquals(0, a.size());
+        assertTrue(a.isEmpty());
+
+        a.insert(20);
+        assertEquals(1, a.size());
+        assertEquals(Integer.valueOf(20), a.findMin().getKey());
+
+        a.insert(5);
+        assertEquals(2, a.size());
+        assertEquals(Integer.valueOf(5), a.findMin().getKey());
+
+        a.deleteMin();
+        assertEquals(Integer.valueOf(20), a.findMin().getKey());
+    }
+
 }

@@ -19,6 +19,7 @@ package org.jheaps.tree;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -27,7 +28,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
@@ -770,6 +774,148 @@ public abstract class AbstractAddressableHeapTest {
     public void testGetComparator() {
         AddressableHeap<Integer, Void> h = createHeap(comparator);
         assertEquals(comparator, h.comparator());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testInsertNullKeySingleArg() {
+        AddressableHeap<Integer, Void> h = createHeap();
+        h.insert(null);
+    }
+
+    @Test
+    public void testInsertReturnsNullValue() {
+        AddressableHeap<Integer, Void> h = createHeap();
+        assertNull(h.insert(5).getValue());
+    }
+
+    @Test
+    public void testClearAndReuse() {
+        AddressableHeap<Integer, Void> h = createHeap();
+
+        for (int i = 0; i < 15; i++) {
+            h.insert(i);
+        }
+
+        h.clear();
+        assertEquals(0L, h.size());
+        assertTrue(h.isEmpty());
+
+        h.insert(780);
+        assertEquals(h.size(), 1);
+        assertEquals(Integer.valueOf(780), h.findMin().getKey());
+
+        h.insert(-389);
+        assertEquals(h.size(), 2);
+        assertEquals(Integer.valueOf(-389), h.findMin().getKey());
+
+        h.deleteMin();
+        assertEquals(h.size(), 1);
+        assertEquals(Integer.valueOf(780), h.findMin().getKey());
+
+        h.deleteMin();
+        assertEquals(h.size(), 0);
+        assertTrue(h.isEmpty());
+    }
+
+    @Test
+    public void testDuplicateKeys() {
+        AddressableHeap<Integer, Void> h = createHeap();
+
+        Integer[] keys = { 5, 3, 5, 1, 3, 3, 1, 5 };
+        for (Integer k : keys) {
+            h.insert(k);
+        }
+
+        List<Integer> drained = new ArrayList<>();
+        while (!h.isEmpty()) {
+            drained.add(h.deleteMin().getKey());
+        }
+
+        Integer[] expected = keys.clone();
+        Arrays.sort(expected);
+        assertEquals(Arrays.asList(expected), drained);
+    }
+
+    @Test
+    public void testSortWithDuplicatesRandomSeed1() {
+        AddressableHeap<Integer, Void> h = createHeap();
+
+        Random generator = new Random(1);
+
+        for (int i = 0; i < SIZE; i++) {
+            h.insert(generator.nextInt(1000));
+        }
+
+        Integer prev = null, cur;
+        int count = 0;
+        while (!h.isEmpty()) {
+            cur = h.deleteMin().getKey();
+            if (prev != null) {
+                assertTrue(prev.compareTo(cur) <= 0);
+            }
+            prev = cur;
+            count++;
+        }
+        assertEquals(SIZE, count);
+    }
+
+    @Test
+    public void testNegativeAndDuplicateKeys() {
+        AddressableHeap<Integer, Void> h = createHeap();
+
+        Random generator = new Random(3);
+
+        for (int i = 0; i < SIZE; i++) {
+            h.insert(generator.nextInt(2001) - 1000);
+        }
+
+        Integer prev = null, cur;
+        int count = 0;
+        while (!h.isEmpty()) {
+            cur = h.deleteMin().getKey();
+            if (prev != null) {
+                assertTrue(prev.compareTo(cur) <= 0);
+            }
+            prev = cur;
+            count++;
+        }
+        assertEquals(SIZE, count);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testDecreaseKeyStressRandom() {
+        AddressableHeap<Integer, Void> h = createHeap();
+
+        AddressableHeap.Handle<Integer, Void> array[];
+        array = new AddressableHeap.Handle[SIZE];
+        int[] currentKey = new int[SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            currentKey[i] = 2 * i;
+            array[i] = h.insert(currentKey[i]);
+        }
+
+        Random generator = new Random(1);
+        for (int i = 0; i < SIZE / 2; i++) {
+            int idx = generator.nextInt(SIZE);
+            if (currentKey[idx] > 0) {
+                int newKey = generator.nextInt(currentKey[idx]);
+                array[idx].decreaseKey(newKey);
+                currentKey[idx] = newKey;
+            }
+        }
+
+        Integer prev = null, cur;
+        int count = 0;
+        while (!h.isEmpty()) {
+            cur = h.deleteMin().getKey();
+            if (prev != null) {
+                assertTrue(prev.compareTo(cur) <= 0);
+            }
+            prev = cur;
+            count++;
+        }
+        assertEquals(SIZE, count);
     }
 
 }
