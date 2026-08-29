@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"org.jheaps"},{"l":"org.jheaps.annotations"},{"l":"org.jheaps.array"},{"l":"org.jheaps.dag"},{"l":"org.jheaps.monotone"},{"l":"org.jheaps.tree"}]
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.jheaps"},{"l":"org.jheaps.annotations"},{"l":"org.jheaps.array"},{"l":"org.jheaps.dag"},{"l":"org.jheaps.monotone"},{"l":"org.jheaps.tree"}];updateSearchResults();
