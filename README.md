@@ -68,6 +68,7 @@ The library contains an extensive collection of heap data structures such as:
 * Tree-based
   * Fibonacci mergeable and addressable heaps
   * Simple Fibonacci heaps
+  * Strict Fibonacci heaps
   * Pairing mergeable and addressable heaps
   * Pure variant of Pairing heaps
   * Costless-meld variant of Pairing heaps
