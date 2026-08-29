@@ -33,7 +33,6 @@ import java.util.Random;
 
 import org.jheaps.Heap;
 import org.jheaps.MergeableHeap;
-import org.jheaps.tree.BinaryTreeSoftHeap;
 import org.jheaps.tree.BinaryTreeSoftHeap.RootListNode;
 import org.jheaps.tree.BinaryTreeSoftHeap.SoftHandle;
 import org.jheaps.tree.BinaryTreeSoftHeap.TreeNode;
@@ -85,7 +84,7 @@ public class BinaryTreeSoftHeapTest {
         final int n = SIZE;
         double epsilon = 1.0 / (n + 1);
 
-        BinaryTreeSoftHeap<Integer> a = new BinaryTreeSoftHeap<Integer>(epsilon, comparator);
+        BinaryTreeSoftHeap<Integer> a = new BinaryTreeSoftHeap<>(epsilon, comparator);
 
         for (int i = 0; i < n; i++) {
             a.insert(i);
@@ -100,7 +99,7 @@ public class BinaryTreeSoftHeapTest {
 
     @Test
     public void testSort1RandomSeed1() {
-        Heap<Integer> h = new BinaryTreeSoftHeap<Integer>(1.0 / (SIZE + 1));
+        Heap<Integer> h = new BinaryTreeSoftHeap<>(1.0 / (SIZE + 1));
 
         Random generator = new Random(1);
 
@@ -120,7 +119,7 @@ public class BinaryTreeSoftHeapTest {
 
     @Test
     public void testSort1RandomSeed1WithComparator() {
-        Heap<Integer> h = new BinaryTreeSoftHeap<Integer>(1.0 / (SIZE + 1), comparator);
+        Heap<Integer> h = new BinaryTreeSoftHeap<>(1.0 / (SIZE + 1), comparator);
 
         Random generator = new Random(1);
 
@@ -140,14 +139,14 @@ public class BinaryTreeSoftHeapTest {
 
     @Test
     public void testComparator() {
-        Heap<Long> h = new BinaryTreeSoftHeap<Long>(0.5);
+        Heap<Long> h = new BinaryTreeSoftHeap<>(0.5);
 
         assertNull(h.comparator());
     }
 
     @Test
     public void testFindMinDeleteMinSameObject() {
-        Heap<Long> h = new BinaryTreeSoftHeap<Long>(0.5);
+        Heap<Long> h = new BinaryTreeSoftHeap<>(0.5);
 
         Random generator = new Random(1);
 
