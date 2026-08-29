@@ -96,6 +96,33 @@ The library contains an extensive collection of heap data structures such as:
   * Addressable radix heaps with double, long, int or BigInteger keys
   * Non-addressable radix heaps with double, long, int or BigInteger keys
 
+## Cite
+
+If you use this library please cite the following paper:
+
+- D. Michail.
+   **JHeaps: An open-source library of priority queues.**
+   SoftwareX, 16:100869, 2021.
+   <i class="far fa-file-pdf"></i> [web](https://doi.org/10.1016/j.softx.2021.100869)
+
+```
+@article{michail2021jheaps,
+      title={JHeaps: An open-source library of priority queues},
+      author={Michail, Dimitrios},
+      journal={SoftwareX},
+      volume={16},
+      pages={100869},
+      year={2021},
+      publisher={Elsevier},
+      doi={10.1016/j.softx.2021.100869},
+      url={https://doi.org/10.1016/j.softx.2021.100869},
+}
+```
+
+Citing software is just as important as citing any other important sources in your research.
+If you’re not sure whether or not to cite something, [Shouldacite](http://bit.ly/shouldacite) can help
+you decide if you should.
+
 ## Compatibility
 
 The library requires JDK v1.8 and above. 
