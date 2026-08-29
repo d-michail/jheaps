@@ -120,7 +120,7 @@ If you use this library please cite the following paper:
 ```
 
 Citing software is just as important as citing any other important sources in your research.
-If you’re not sure whether or not to cite something, [Shouldacite](http://bit.ly/shouldacite) can help
+If you’re not sure whether or not to cite something, [Shouldacite](https://mr-c.github.io/shouldacite/index.html) can help
 you decide if you should.
 
 ## Compatibility
