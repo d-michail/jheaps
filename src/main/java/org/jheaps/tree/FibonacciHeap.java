@@ -492,7 +492,7 @@ public class FibonacciHeap<K, V> implements MergeableAddressableHeap<K, V>, Seri
         if (c > 0) {
             throw new IllegalArgumentException("Keys can only be decreased!");
         }
-        n.key = newKey;
+        
         if (c == 0) {
             return;
         }
@@ -500,6 +500,8 @@ public class FibonacciHeap<K, V> implements MergeableAddressableHeap<K, V>, Seri
         if (n.next == null) {
             throw new IllegalArgumentException("Invalid handle!");
         }
+
+        n.key = newKey;
 
         // if not root and heap order violation
         Node<K, V> y = n.parent;
@@ -522,7 +524,7 @@ public class FibonacciHeap<K, V> implements MergeableAddressableHeap<K, V>, Seri
         if (c > 0) {
             throw new IllegalArgumentException("Keys can only be decreased!");
         }
-        n.key = newKey;
+        
         if (c == 0) {
             return;
         }
@@ -530,6 +532,8 @@ public class FibonacciHeap<K, V> implements MergeableAddressableHeap<K, V>, Seri
         if (n.next == null) {
             throw new IllegalArgumentException("Invalid handle!");
         }
+
+        n.key = newKey;
 
         // if not root and heap order violation
         Node<K, V> y = n.parent;
