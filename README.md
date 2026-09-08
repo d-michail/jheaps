@@ -157,3 +157,10 @@ see the following links:
 * <https://python-jheaps.readthedocs.io/en/latest/>
 * <https://github.com/d-michail/python-jheaps/>
 * <https://github.com/d-michail/jheaps-capi/>
+
+## Rust Port
+
+[rheaps](https://github.com/d-michail/rheaps) is an idiomatic Rust port of JHeaps.
+It is also available in Python through
+[python-rheaps](https://github.com/d-michail/python-rheaps), whose bindings are based on
+[PyO3](https://github.com/pyo3/pyo3).
