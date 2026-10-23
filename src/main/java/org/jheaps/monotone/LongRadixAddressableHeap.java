@@ -82,12 +82,7 @@ public class LongRadixAddressableHeap<V> extends AbstractRadixAddressableHeap<Lo
         this.maxKey = maxKey;
 
         // compute number of buckets
-        int numBuckets;
-        if (maxKey == minKey) {
-            numBuckets = 2;
-        } else {
-            numBuckets = 2 + 1 + (int) Math.floor(Math.log((double)maxKey - minKey) / Math.log(2));
-        }
+        int numBuckets = 2 + Long.SIZE - Long.numberOfLeadingZeros(maxKey - minKey);
 
         // construct representation
         this.buckets = (Node[]) Array.newInstance(Node.class, numBuckets);
