@@ -40,6 +40,37 @@ public class LongRadixHeapTest {
 	private static final int SIZE = 100000;
 
     @Test
+    public void testAdjacentKeysAboveDoublePrecision() {
+        assertValidRange(1L << 53, (1L << 53) + 1);
+    }
+
+    @Test
+    public void testRangeNearLongMaximum() {
+        assertValidRange(Long.MAX_VALUE - 1, Long.MAX_VALUE);
+        assertValidRange(Long.MAX_VALUE, Long.MAX_VALUE);
+    }
+
+    @Test
+    public void testRangesAcrossPowersOfTwo() {
+        for (int exponent = 1; exponent < Long.SIZE - 1; exponent++) {
+            long middle = 1L << exponent;
+            assertValidRange(middle - 1, middle + 1);
+        }
+    }
+
+    private void assertValidRange(long min, long max) {
+        LongRadixHeap heap = new LongRadixHeap(min, max);
+        heap.insert(max);
+        heap.insert(min);
+        assertEquals(2, heap.size());
+        assertEquals(min, heap.findMin().longValue());
+        assertEquals(min, heap.deleteMin().longValue());
+        assertEquals(max, heap.deleteMin().longValue());
+        assertTrue(heap.isEmpty());
+    }
+
+
+    @Test
     public void testBug2() {
         Heap<Long> h = new LongRadixHeap(0L, 100L);
         h.insert(0L);
